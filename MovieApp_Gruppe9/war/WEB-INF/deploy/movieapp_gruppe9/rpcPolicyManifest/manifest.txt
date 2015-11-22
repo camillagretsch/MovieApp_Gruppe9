@@ -1,2 +1,3 @@
 # Module movieapp_gruppe9
 # RPC service class, partial path of RPC policy file
+com.SE.gruppe9.client.DataImportService, D6F7335A40E063E5D44D35914F5F2C94.gwt.rpc

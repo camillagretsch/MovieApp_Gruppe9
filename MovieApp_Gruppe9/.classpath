@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwtextux/gwtextux.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwt-charts-0.9.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

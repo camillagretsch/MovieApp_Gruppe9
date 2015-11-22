@@ -3,16 +3,11 @@ package com.SE.gruppe9.client;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
 import com.gwtext.client.widgets.layout.VerticalLayout;
@@ -20,13 +15,15 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 public class UserInterface {
 
 	// Arrays to get the data for the Listboxes TODO nicht mehr notwendig
-	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
+	private final String[] BoxOfficeRevenue = { "Box Office Revenue",
+			"< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private String[] Languages = { "English Language", "French Language", "Thai Language", "German Language" };
+	private String[] Languages = { "English Language", "French Language",
+			"Thai Language", "German Language" };
 	private String[] Countries = { "United Kingdom", "Germany", "Spain" };
 	private String[] Genres = { "Action", "Comedy" };
 
-	//all Buttons Tetxtbox and Listboxes
+	// all Buttons Tetxtbox and Listboxes
 	private final Button goButton = new Button("GO!");
 	private final TextBox searchMovieField = new TextBox();
 	private final ListBox listBoxYear = new ListBox();
@@ -43,22 +40,24 @@ public class UserInterface {
 	private Table table = new Table();
 	private String searchedMovie;
 	private int count = 0;
-	
-	public Panel getHPanel(){
+
+	public Panel getHPanel() {
 		return hPanel;
 	}
-	
-	public Panel getVPanel(){
+
+	public Panel getVPanel() {
 		return vPanel;
 	}
 
 	/**
-	 * 
+	 * Create all Buttons, Listboxes, TextBox
 	 */
 	private void createAll() {
+
 		hPanel.setLayout(new HorizontalLayout(10));
-		vPanel.setLayout(new VerticalLayout(1));
+		vPanel.setLayout(new VerticalLayout());
 		h1Panel.setLayout(new HorizontalLayout(10));
+
 		// Textbox for movie name
 		searchMovieField.setText("Entre a movie name");
 		hPanel.add(searchMovieField);
@@ -90,7 +89,7 @@ public class UserInterface {
 
 		// listbox for language
 		listBoxLanguage.addItem("Language");
-		//importFilterValue
+		// importFilterValue
 		for (int i = 0; i < Languages.length; i++) {
 			listBoxLanguage.addItem(Languages[i]);
 		}
@@ -115,22 +114,20 @@ public class UserInterface {
 
 		// button to delete filter
 		h1Panel.add(deleteButton);
-		
+
 		vPanel.add(h1Panel);
-//		RootPanel.get("first").add(hPanel);
-//		RootPanel.get("second").add(vPanel);
 	}
 
 	/**
-	 * 
+	 * all change events and click events
 	 */
 	public void choseEvents() {
 		createAll();
-		
+
 		// change event for listbox year
 		listBoxYear.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxYear.getSelectedIndex();
 
@@ -148,16 +145,17 @@ public class UserInterface {
 			}
 
 		});
-		
-		// change event for listbox box office revenue 
+
+		// change event for listbox box office revenue
 		listBoxOffice.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-			
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxOffice.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxOffice.getValue(itemSelected);
+				String itemStringSelected = listBoxOffice
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.createFlexTable();
 					table.firstFilter(itemStringSelected, 4);
@@ -170,16 +168,17 @@ public class UserInterface {
 			}
 
 		});
-		
+
 		// change event for listbox runtime
 		listBoxRuntime.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxRuntime.getSelectedIndex();
-				
+
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxRuntime.getValue(itemSelected);
+				String itemStringSelected = listBoxRuntime
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.createFlexTable();
 					table.firstFilter(itemStringSelected, 5);
@@ -191,11 +190,11 @@ public class UserInterface {
 				count++;
 			}
 		});
-		
+
 		// change event for listbox language
 		listBoxLanguage.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxLanguage.getSelectedIndex();
 
@@ -213,16 +212,17 @@ public class UserInterface {
 				}
 			}
 		});
-		
+
 		// change event for listbox country
 		listBoxCountry.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxCountry.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxCountry.getValue(itemSelected);
+				String itemStringSelected = listBoxCountry
+						.getValue(itemSelected);
 				if (count < 1) {
 					Window.alert("Chose first Release Year, Box Time Office or Runtime");
 					listBoxCountry.setSelectedIndex(0);
@@ -234,18 +234,18 @@ public class UserInterface {
 				}
 			}
 		});
-		
+
 		// change event for listbox genre
 
 		listBoxGenre.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				
+
 				// Get the index of the selected Item
 				int itemSelected = listBoxGenre.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
 				String itemStringSelected = listBoxGenre.getValue(itemSelected);
-				if (count < 1){
+				if (count < 1) {
 					Window.alert("Chose first Release Year, Box Time Office or Runtime");
 					listBoxGenre.setSelectedIndex(0);
 				} else {
@@ -267,36 +267,27 @@ public class UserInterface {
 				listBoxLanguage.setSelectedIndex(0);
 				listBoxCountry.setSelectedIndex(0);
 				listBoxGenre.setSelectedIndex(0);
-				
+
 			}
 		});
 	}
-	
-/*public DataImportServiceAsync filter = GWT.create(DataImportService.class);
-	
-	public void importFilterValues(String[] keys, int constant) {
-		// Initialize the service proxy.
-		if (filter == null) {
-			filter = GWT.create(DataImportService.class);
-		}
-		// Set up the callback object.
-		final AsyncCallback<String[]> callback = new AsyncCallback<String[]>() {
 
-			public void onFailure(Throwable caught) {
-			}
-
-			public void onSuccess(String[] result) {
-				for (int i = 0; i < result.length; i++) {
-					Languages[i] = result[i].toString();
-				}
-				for (int i = 0; i < Languages.length; i++) {
-					if (!Languages[i].equals("{}")) {
-						listBoxLanguage.addItem(Languages[i]);
-					}
-				}
-			}
-		};
-
-		filter.filterColumnValues(keys, constant, callback);
-	}*/
+	/*
+	 * public DataImportServiceAsync filter =
+	 * GWT.create(DataImportService.class);
+	 * 
+	 * public void importFilterValues(String[] keys, int constant) { //
+	 * Initialize the service proxy. if (filter == null) { filter =
+	 * GWT.create(DataImportService.class); } // Set up the callback object.
+	 * final AsyncCallback<String[]> callback = new AsyncCallback<String[]>() {
+	 * 
+	 * public void onFailure(Throwable caught) { }
+	 * 
+	 * public void onSuccess(String[] result) { for (int i = 0; i <
+	 * result.length; i++) { Languages[i] = result[i].toString(); } for (int i =
+	 * 0; i < Languages.length; i++) { if (!Languages[i].equals("{}")) {
+	 * listBoxLanguage.addItem(Languages[i]); } } } };
+	 * 
+	 * filter.filterColumnValues(keys, constant, callback); }
+	 */
 }

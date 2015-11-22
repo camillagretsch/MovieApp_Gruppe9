@@ -5,13 +5,14 @@ import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.gwtext.client.widgets.Panel;
+import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class Table {
-
-	private VerticalPanel vPanel = new VerticalPanel();
+private Panel vPanel = new Panel();
 	private FlexTable flexibleTable = new FlexTable();
 	private Map<String, String> resultMap = new HashMap<String, String>();
 	private Map<String, String> tmpMap = new HashMap<String, String>();
@@ -21,6 +22,7 @@ public class Table {
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 
 	public void createFlexTable() {
+		vPanel.setLayout(new VerticalLayout());
 		// name of each column
 		flexibleTable.setText(0, 0, "Wikipedia ID");
 		flexibleTable.setText(0, 1, "Movie Name");
@@ -34,13 +36,16 @@ public class Table {
 		flexibleTable.setCellPadding(2);
 		flexibleTable.setCellPadding(3);
 		flexibleTable.setBorderWidth(2);
-
-		// Assemble the main panel
-		vPanel.add(flexibleTable);
-		// Associate the main panel with the HTML host page
-		RootPanel.get("filterTable").add(vPanel);
+	
+    	vPanel.add(flexibleTable);
+//		RootPanel.get("flex").add(vPanel);
+		
 	}
 
+public Panel getTable(){
+	
+	return vPanel;
+}
 	/**
 	 * remove all entries from the table
 	 */
