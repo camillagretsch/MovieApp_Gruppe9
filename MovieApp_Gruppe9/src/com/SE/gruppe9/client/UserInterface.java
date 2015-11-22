@@ -121,7 +121,7 @@ public class UserInterface {
 	/**
 	 * all change events and click events
 	 */
-	public void choseEvents() {
+	public Table choseEvents() {
 		createAll();
 
 		// change event for listbox year
@@ -270,6 +270,7 @@ public class UserInterface {
 
 			}
 		});
+		return table;
 	}
 
 	/*
