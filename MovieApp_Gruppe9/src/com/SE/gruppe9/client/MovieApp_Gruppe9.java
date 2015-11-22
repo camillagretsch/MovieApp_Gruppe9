@@ -28,6 +28,7 @@ import com.gwtext.client.widgets.Viewport;
 import com.gwtext.client.widgets.layout.BorderLayout;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
 import com.gwtext.client.widgets.layout.FitLayout;
+import com.gwtext.client.widgets.layout.HorizontalLayout;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -42,10 +43,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	private Panel chartsPanel = new Panel("Charts");
 	private Panel mapPanel = new Panel("Map");
 	
-	/*private Panel mapExtension = new Panel();
+	private Panel mapExtension = new Panel();
 
-	private HorizontalPanel hPanel = new HorizontalPanel();
-	private final Button heatMapButton = new Button("Create Heatmap");*/
+	private Panel hPanel = new Panel();
+	private final Button heatMapButton = new Button("Create Heatmap");
 
 	public void onModuleLoad() {
 		
@@ -76,30 +77,30 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// tab for map
 		mapPanel.setLayout(new FitLayout());
 		mapPanel.setIconCls("tab.icon");
+		 mapPanel.add(createPanelMap()); 
 		tabPanel.add(mapPanel);
 		
 		
+		
+		//hPanel.setBorderWidth(10);
+		 //mapPanel.add(heatMapButton);
+		// heatMapButton.addStyleName("heatMapButton");
+		// RootPanel.get("heatMapButton").add(hPanel);
+		 
 
-		/*
-		 * mapPanel.add(hPanel); hPanel.setBorderWidth(10);
-		 * mapPanel.add(heatMapButton);
-		 * heatMapButton.addStyleName("heatMapButton");
-		 * hPanel.add(heatMapButton);
-		 * RootPanel.get("heatMapButton").add(hPanel);
-		 */
+		
+//		 heatMapButton.addClickHandler(new ClickHandler() { 
+//			 public void onClick(ClickEvent event) { 
+//				 Heatmap heatmap = new Heatmap();
+//				 heatmap.createChart(); }
+//		 
+//		 });
+		 
 
-		/*
-		 * heatMapButton.addClickHandler(new ClickHandler() { public void
-		 * onClick(ClickEvent event) { Heatmap heatmap = new Heatmap();
-		 * heatmap.createChart(); }
-		 * 
-		 * });
-		 */
-
-		/*
-		 * mapExtension.setLayout(new BorderLayout());
-		 * mapExtension.add(mapPanel);
-		 */
+		
+		  mapExtension.setLayout(new BorderLayout());
+		  mapExtension.add(mapPanel);
+		 
 
 		Viewport viewport = new Viewport(panel);
 	}
@@ -158,7 +159,18 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		return borderPanel;
 	}
 	
-	/*private Panel createPanelMap(){
-		return 
-	}*/
+	private Panel createPanelMap(){
+		
+		hPanel.setLayout(new HorizontalLayout(10));
+		hPanel.add(heatMapButton);
+		
+		heatMapButton.addClickHandler(new ClickHandler() { 
+			 public void onClick(ClickEvent event) { 
+				 Heatmap heatmap = new Heatmap();
+				 heatmap.createChart(); }
+		 
+		 });
+		return hPanel;
+		
+	}
 }

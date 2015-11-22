@@ -19,13 +19,15 @@ import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.geochart.GeoChart;
 import com.googlecode.gwt.charts.client.geochart.GeoChartColorAxis;
 import com.googlecode.gwt.charts.client.geochart.GeoChartOptions;
+import com.gwtext.client.widgets.Panel;
+import com.gwtext.client.widgets.layout.VerticalLayout;
 
 
 
 
 public class Heatmap  {
 	
-	VerticalPanel verticalPanel = new VerticalPanel();	
+	VerticalPanel verticalPanel = new VerticalPanel();
 	UserInterface ui = new UserInterface();
 	
 	private Map<String, String> resultMap = new HashMap<String, String>();
