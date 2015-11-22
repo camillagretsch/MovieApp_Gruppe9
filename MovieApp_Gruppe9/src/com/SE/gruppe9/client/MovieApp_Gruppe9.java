@@ -79,36 +79,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		mapPanel.setIconCls("tab.icon");
 		 mapPanel.add(createPanelMap()); 
 		tabPanel.add(mapPanel);
-		
-		
-		
-		//hPanel.setBorderWidth(10);
-		 //mapPanel.add(heatMapButton);
-		// heatMapButton.addStyleName("heatMapButton");
-		// RootPanel.get("heatMapButton").add(hPanel);
-		 
-
-		
-//		 heatMapButton.addClickHandler(new ClickHandler() { 
-//			 public void onClick(ClickEvent event) { 
-//				 Heatmap heatmap = new Heatmap();
-//				 heatmap.createChart(); }
-//		 
-//		 });
-		 
-
-		
-		  mapExtension.setLayout(new BorderLayout());
-		  mapExtension.add(mapPanel);
-		 
 
 		Viewport viewport = new Viewport(panel);
 	}
 
 	private Panel createBorderPanelTable() {
 
-		Table table = new Table();
-		user.choseEvents();
+		Table table = user.choseEvents();
 		
 		Panel borderPanel = new Panel();
 		Panel northPanel = new Panel();
@@ -170,6 +147,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 				 heatmap.createChart(); }
 		 
 		 });
+		
+		 mapExtension.setLayout(new BorderLayout());
+		  mapExtension.add(mapPanel);
+		 
 		return hPanel;
 		
 	}
