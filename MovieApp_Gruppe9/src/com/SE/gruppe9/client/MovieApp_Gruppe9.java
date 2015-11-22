@@ -19,16 +19,31 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.gwtext.client.core.EventObject;
 import com.gwtext.client.core.Margins;
 import com.gwtext.client.core.Position;
 import com.gwtext.client.core.RegionPosition;
+import com.gwtext.client.data.ArrayReader;
+import com.gwtext.client.data.FieldDef;
+import com.gwtext.client.data.RecordDef;
+import com.gwtext.client.data.Store;
+import com.gwtext.client.data.StringFieldDef;
+import com.gwtext.client.widgets.PagingToolbar;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.TabPanel;
+import com.gwtext.client.widgets.ToolTip;
 import com.gwtext.client.widgets.Viewport;
+import com.gwtext.client.widgets.form.Field;
+import com.gwtext.client.widgets.form.NumberField;
+import com.gwtext.client.widgets.form.event.FieldListenerAdapter;
+import com.gwtext.client.widgets.grid.ColumnConfig;
+import com.gwtext.client.widgets.grid.ColumnModel;
+import com.gwtext.client.widgets.grid.GridPanel;
 import com.gwtext.client.widgets.layout.BorderLayout;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
+import com.gwtextux.client.data.PagingMemoryProxy;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -47,6 +62,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 	private Panel hPanel = new Panel();
 	private final Button heatMapButton = new Button("Create Heatmap");
+	
+	GridPanel grid = new GridPanel();
+	private Panel tableToDraw = new Panel("GridTable");
+
 
 	public void onModuleLoad() {
 		
@@ -68,7 +87,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		tablePanel.setIconCls("tab.icon");
 		tablePanel.add(createBorderPanelTable());
 		tabPanel.add(tablePanel);
-
+		
 		// tab for charts
 		chartsPanel.setLayout(new FitLayout());
 		chartsPanel.setIconCls("tab.icon");
@@ -77,7 +96,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// tab for map
 		mapPanel.setLayout(new FitLayout());
 		mapPanel.setIconCls("tab.icon");
-		 mapPanel.add(createPanelMap()); 
+		mapPanel.add(createPanelMap()); 
 		tabPanel.add(mapPanel);
 		
 		
@@ -104,7 +123,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 		Viewport viewport = new Viewport(panel);
 	}
-
+	
 	private Panel createBorderPanelTable() {
 
 		Table table = new Table();
@@ -144,6 +163,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add centre Panel
 		centerPanel.expand();
 		centerPanel.add(table.getTable());
+		centerPanel.add(createGritTable());
 		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
 
 		return borderPanel;
@@ -171,6 +191,11 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		 
 		 });
 		return hPanel;
+	}
+	
+	private Panel createGritTable() {
 		
+		Table gridTable = new Table();
+		return gridTable.createGridTable();
 	}
 }

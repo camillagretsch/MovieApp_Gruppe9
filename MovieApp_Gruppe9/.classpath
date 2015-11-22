@@ -8,12 +8,12 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwt-servlet-2.2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwtext/gwtext.jar"/>
-	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwtextux/gwtextux.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Caroline/Documents/eclipseWorkspace/MovieApp_Gruppe9/MovieApp_Gruppe9/war/WEB-INF/lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Caroline/Documents/eclipseWorkspace/MovieApp_Gruppe9/MovieApp_Gruppe9/war/WEB-INF/lib/gwt-servlet-2.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Caroline/Documents/eclipseWorkspace/MovieApp_Gruppe9/MovieApp_Gruppe9/war/WEB-INF/lib/gwtext.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Caroline/Documents/eclipseWorkspace/MovieApp_Gruppe9/MovieApp_Gruppe9/war/WEB-INF/lib/gwtextux.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/camillagretsch/Downloads/gwt-charts-0.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Caroline/Documents/eclipseWorkspace/MovieApp_Gruppe9/MovieApp_Gruppe9/war/WEB-INF/lib/gwt-charts-0.9.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
