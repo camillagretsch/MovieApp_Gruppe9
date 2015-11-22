@@ -65,6 +65,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	
 	GridPanel grid = new GridPanel();
 	private Panel tableToDraw = new Panel("GridTable");
+	
+	private Button piechartButtonBOR = new Button("Create Piechart for Box Office Revenue");
+	private Button piechartButtonRT = new Button("Create Piechart for runtime");
+	private Button barchartButtonCountry = new Button("Create Barchart for Country");
+	private Panel chartExtension = new Panel();
+	
+	private HorizontalPanel horizontalPanel = new HorizontalPanel();
 
 
 	public void onModuleLoad() {
@@ -95,7 +102,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		
 		// add button for creating a Box Office Revenue piechart
 	        chartsPanel.add(hPanel);
-	        hPanel.setBorderWidth(10);
+	        horizontalPanel.setBorderWidth(10);
 	        chartsPanel.add(piechartButtonBOR);
 	        piechartButtonBOR.addStyleName("piechartButtonBOR");
 	        hPanel.add(piechartButtonBOR);
@@ -111,7 +118,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	    	
 	    	// add button for creating a Runtime piechart
 	    	chartsPanel.add(hPanel);
-		    hPanel.setBorderWidth(10);
+		    horizontalPanel.setBorderWidth(10);
 		    chartsPanel.add(piechartButtonRT);
 		    piechartButtonRT.addStyleName("piechartButtonRT");
 		        hPanel.add(piechartButtonRT);
@@ -127,7 +134,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		    	
 		    // add button for creating a Country barchart
 		    chartsPanel.add(hPanel);
-			hPanel.setBorderWidth(10);
+			horizontalPanel.setBorderWidth(10);
 			chartsPanel.add(barchartButtonCountry);
 			barchartButtonCountry.addStyleName("piechartButtonCountry");
 			hPanel.add(barchartButtonCountry);
