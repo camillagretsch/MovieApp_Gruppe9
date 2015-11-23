@@ -2,6 +2,7 @@ package com.SE.gruppe9.client;
 
 
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -15,5 +16,5 @@ public interface DataImportService extends RemoteService {
 	
 	Map<String, String> filterData(String name, int column);
 	
-	String[] filterColumnValues(String[] keys, int constant);
+	Map<String, String> getDataOfTheColumn(int constant);
 }

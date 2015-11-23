@@ -58,6 +58,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	private Panel chartsPanel = new Panel("Charts");
 	private Panel mapPanel = new Panel("Map");
 	
+	@Override
 	public void onModuleLoad() {
 		
 		panel.setBorder(false);
@@ -94,11 +95,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		Viewport viewport = new Viewport(panel);
 	}
 	
+	/**
+	 * layout for the table panel
+	 * @return
+	 */
 	private Panel createBorderPanelTable() {
 
 		Table table = user.choseEvents();
-//		Table table = new Table();
-//		user.choseEvents();
 		
 		Panel borderPanel = new Panel();
 		Panel northPanel = new Panel();
@@ -138,7 +141,11 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 		return borderPanel;
 	}
-
+	
+	/**
+	 * layout for the charts panel 
+	 * @return
+	 */
 	private Panel createBorderPanelCharts() {
 		Panel chartExtension = new Panel();
 		
@@ -215,6 +222,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	     return borderPanel;
 	}
 	
+	/**
+	 * layout for the map panel 
+	 * @return
+	 */
 	private Panel createPanelMap(){
 		Panel mapExtension = new Panel();
 

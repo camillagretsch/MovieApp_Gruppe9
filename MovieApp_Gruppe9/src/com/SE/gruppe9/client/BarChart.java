@@ -59,7 +59,7 @@ public class BarChart {
 			void drawChartCountry(ColumnChart chart) {
 				
 							
-				setNumberOfFilmsCountry();
+				//setNumberOfFilmsCountry();
 
 				// Prepare the data
 				DataTable dataTable = DataTable.create();
@@ -85,7 +85,11 @@ public class BarChart {
 				// Draw the chart
 				chart.draw(dataTable, options);
 			}
-		
+			
+		/**
+		 * set all language entries 
+		 * from hashmap to array 
+		 */
 		public void setLanguage(){
 			int i = 0;
 			for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
@@ -95,6 +99,10 @@ public class BarChart {
 			}
 		}
 		
+		/**
+		 * set all country entries 
+		 * from hashmap to array 
+		 */
 		public void setCountry(){
 			int i = 0;
 			for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
@@ -104,6 +112,10 @@ public class BarChart {
 			}
 		}
 		
+		/**
+		 * set all genre entries 
+		 * from hashmap to array 
+		 */
 		public void setGenre(){
 			int i = 0;
 			for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
@@ -113,8 +125,9 @@ public class BarChart {
 			}
 		}
 		
-		private void setNumberOfFilmsCountry(){
-			
-		}
+		
+//		private void setNumberOfFilmsCountry(){
+//			
+//		}
 }
 

@@ -185,7 +185,10 @@ public class Piechart {
 
 				}
 	
-				
+	/**
+	 *  set all box office revenue entries 
+	 * 	from hashmap to array 	
+	 */
 	public void setBOR(){
 		int i = 0;
 		for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
@@ -195,6 +198,10 @@ public class Piechart {
 		}
 	}
 	
+	/**
+	 * set all runtime entries 
+	 * from hashmap to array 
+	 */
 	public void setRuntime(){
 		int i = 0;
 		for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
@@ -204,6 +211,9 @@ public class Piechart {
 		}
 	}
 	
+	/**
+	 * calculate all movies with the same box office revenue range
+	 */
 	public void setNumberOfFilmsBOR(){
 		int counter1 = 0;
 		int counter2= 0;
@@ -222,6 +232,9 @@ public class Piechart {
 		numberOfFilmsBOR[2]=counter3;
 	}
 	
+	/**
+	 * calculate all movies with the same runtime range
+	 */
 	public void setNumberOfFilmsRT(){
 		int counter1 = 0;
 		int counter2= 0;

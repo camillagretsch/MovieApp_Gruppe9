@@ -1,9 +1,14 @@
 package com.SE.gruppe9;
 
 import java.util.Map;
+
+import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.assertNotNull;
+
 import com.SE.gruppe9.server.*;
+
 import java.util.ArrayList;
 //import java.io.FileNotFoundException;
 //import java.io.IOException;
@@ -18,6 +23,13 @@ public class FilterTests {
 		DataImportServiceImpl dataImport = new DataImportServiceImpl();
 		Map<String, String> filteredData = dataImport.intermediateFilter(MOVIE_FILE_PATH, "1996", 3);
 		assertNotNull("Filtering by year yields no null", filteredData);
+	}
+	
+	@Test
+	public void testFilter2() throws Exception{
+		DataImportServiceImpl dataImport = new DataImportServiceImpl();
+		Map<String, String> filteredData = dataImport.intermediateColumnFilter(MOVIE_FILE_PATH, 6);
+		assertNotNull("Filtering columndatas of the column language yields not null", filteredData);
 	}
 	
 	// Given that the File Path is static, a FileNotFoundException should never occur. Should it happen, it should be handled
@@ -40,6 +52,7 @@ public class FilterTests {
 	// If in a further increment of the development process we find method whose exceptions need to be tested,
 	// it should be done in a similar fashion as the code below.
 	// DUMMY TEST
+	@Ignore
 	@Test(expected=IndexOutOfBoundsException.class)
 	public void testIndexOutOfBoundsException() {
 		try {

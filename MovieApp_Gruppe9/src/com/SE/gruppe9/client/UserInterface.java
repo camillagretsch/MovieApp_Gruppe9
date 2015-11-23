@@ -1,10 +1,18 @@
 package com.SE.gruppe9.client;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -18,8 +26,7 @@ public class UserInterface {
 	private final String[] BoxOfficeRevenue = { "Box Office Revenue",
 			"< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private String[] Languages = { "English Language", "French Language",
-			"Thai Language", "German Language" };
+	private String[] Languages = {"Language"};
 	private String[] Countries = { "United Kingdom", "Germany", "Spain" };
 	private String[] Genres = { "Action", "Comedy" };
 
@@ -38,13 +45,21 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
-	private String searchedMovie;
+	
 	private int count = 0;
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Panel getHPanel() {
 		return hPanel;
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Panel getVPanel() {
 		return vPanel;
 	}
@@ -89,10 +104,12 @@ public class UserInterface {
 
 		// listbox for language
 		listBoxLanguage.addItem("Language");
-		// importFilterValue
-		for (int i = 0; i < Languages.length; i++) {
-			listBoxLanguage.addItem(Languages[i]);
-		}
+		importFilterValues(6);
+//		for (int i = 0; i < Languages.size(); i++) { 
+//			 if (!Languages.get(i).equals("{}")) {
+//				 listBoxLanguage.addItem(Languages.get(i)); 
+//				 } 
+//			 } 
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);
 
@@ -119,11 +136,47 @@ public class UserInterface {
 	}
 
 	/**
-	 * all change events and click events
+	 * all change and click events
+	 * @return
 	 */
 	public Table choseEvents() {
 		createAll();
-
+		searchMovieField.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					
+					String itemStringSelected = searchMovieField.getValue();
+				
+					if (count < 1) {
+						table.firstFilter(itemStringSelected, 2);
+					} else {
+						table.clearFlexTable();
+						table.setFlexTableHeader();
+						table.secondFilter(itemStringSelected, 0);
+					}
+					count++;
+					
+				}
+			}
+		});
+		
+		goButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+				String itemStringSelected = searchMovieField.getValue();
+				
+				if (count < 1) {
+					table.firstFilter(itemStringSelected, 2);
+				} else {
+					table.clearFlexTable();
+					table.setFlexTableHeader();
+					table.secondFilter(itemStringSelected, 0);
+				}
+				count++;
+				
+			}
+		});
+		
 		// change event for listbox year
 		listBoxYear.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -264,6 +317,7 @@ public class UserInterface {
 				listBoxLanguage.setSelectedIndex(0);
 				listBoxCountry.setSelectedIndex(0);
 				listBoxGenre.setSelectedIndex(0);
+				searchMovieField.setText("Entre a movie name");
 				table.setFlexTableHeader();
 
 			}
@@ -271,22 +325,33 @@ public class UserInterface {
 		return table;
 	}
 
-	/*
-	 * public DataImportServiceAsync filter =
-	 * GWT.create(DataImportService.class);
-	 * 
-	 * public void importFilterValues(String[] keys, int constant) { //
-	 * Initialize the service proxy. if (filter == null) { filter =
-	 * GWT.create(DataImportService.class); } // Set up the callback object.
-	 * final AsyncCallback<String[]> callback = new AsyncCallback<String[]>() {
-	 * 
-	 * public void onFailure(Throwable caught) { }
-	 * 
-	 * public void onSuccess(String[] result) { for (int i = 0; i <
-	 * result.length; i++) { Languages[i] = result[i].toString(); } for (int i =
-	 * 0; i < Languages.length; i++) { if (!Languages[i].equals("{}")) {
-	 * listBoxLanguage.addItem(Languages[i]); } } } };
-	 * 
-	 * filter.filterColumnValues(keys, constant, callback); }
-	 */
+	
+	public DataImportServiceAsync filter = GWT.create(DataImportService.class);
+
+	public void importFilterValues(final int constant) { 
+		//Initialize the service proxy. 
+		if (filter == null) { 
+			filter = GWT.create(DataImportService.class); 
+			}
+		// Set up the callback object.
+	 final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+	 public void onFailure(Throwable caught) { 
+		 
+	 }
+	 
+	 public void onSuccess(Map<String, String> result) { 
+		 if (constant == 6){
+			 for (Map.Entry<String, String> entry : result.entrySet()) {
+				listBoxLanguage.addItem(entry.getKey());
+			 }
+		 }
+//		 for (int i = 0; i < Languages.length; i++) { 
+//			 if (!Languages[i].equals("{}")) {
+//				 listBoxLanguage.addItem(Languages[i]); 
+//				 } 
+//			 } 
+		 } 
+	 };
+	 filter.getDataOfTheColumn(constant, callback); 
+	 }
 }

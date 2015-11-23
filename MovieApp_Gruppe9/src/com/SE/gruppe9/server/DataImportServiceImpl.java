@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,29 +187,6 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 							}
 						}
 						break;
-					
-					// filters the language
-					/*case 6:
-						if (movie[LANGUAGE].toUpperCase().contains(name.toUpperCase())) {
-							putDataInMap();
-							//i++;
-						}
-					
-					// filters the country
-					case 7:
-						if (movie[COUNTRY].toUpperCase().contains(name.toUpperCase())) {
-							putDataInMap();
-							//i++;
-						}
-						break;
-					
-					// filters the genre 
-					case 8:
-						if (movie[GENRE].toUpperCase().contains(name.toUpperCase())) {
-							putDataInMap();
-							//i++;
-						}
-						break;*/
 					} 
 				}
 			} catch (FileNotFoundException e) {
@@ -228,29 +206,24 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 		}	
 		
 		/**
-		 * calculates the Data for the Columns and stores them in an Array
-		 * @param keys
-		 * @param constant
-		 * @return
-		 */
-		public String[] filterColumnValues(String[] keys, int constant){
-			getDataOfTheColumn(constant);
-			Object[] tmp = maps.keySet().toArray();
-			Arrays.sort(tmp);
-			for(int i = 0; i < tmp.length; i++){
-				keys[i] = tmp[i].toString();
-			}
-			return keys;
-		}
-
-		/**
 		 * get all the data of the chosen column and store it in a hashMap
 		 * @param constant
 		 * @return
 		 */
-		private Map<String, String> getDataOfTheColumn(int constant) {
+		public Map<String, String> getDataOfTheColumn(int constant) {
+			
 			ServletContext context = getServletContext();
 			String fullPath = context.getRealPath(movieDoc);
+			try {
+				maps = intermediateColumnFilter(fullPath, constant);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return maps;
+		}
+		
+		public Map<String,String> intermediateColumnFilter(String fullPath, int constant){
 			try {
 				br = new BufferedReader(new FileReader(fullPath));
 				while ((line = br.readLine()) != null) {
