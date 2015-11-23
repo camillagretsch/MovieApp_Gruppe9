@@ -134,11 +134,10 @@ public class UserInterface {
 				// Get the string value of the item that has been selected
 				String itemStringSelected = listBoxYear.getValue(itemSelected);
 				if (count < 1) {
-					table.createFlexTable();
 					table.firstFilter(itemStringSelected, 3);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 1);
 				}
 				count++;
@@ -157,11 +156,10 @@ public class UserInterface {
 				String itemStringSelected = listBoxOffice
 						.getValue(itemSelected);
 				if (count < 1) {
-					table.createFlexTable();
 					table.firstFilter(itemStringSelected, 4);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 2);
 				}
 				count++;
@@ -180,11 +178,10 @@ public class UserInterface {
 				String itemStringSelected = listBoxRuntime
 						.getValue(itemSelected);
 				if (count < 1) {
-					table.createFlexTable();
 					table.firstFilter(itemStringSelected, 5);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 3);
 				}
 				count++;
@@ -206,7 +203,7 @@ public class UserInterface {
 					listBoxLanguage.setSelectedIndex(0);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 4);
 					count++;
 				}
@@ -228,7 +225,7 @@ public class UserInterface {
 					listBoxCountry.setSelectedIndex(0);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 5);
 					count++;
 				}
@@ -250,7 +247,7 @@ public class UserInterface {
 					listBoxGenre.setSelectedIndex(0);
 				} else {
 					table.clearFlexTable();
-					table.createFlexTable();
+					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 6);
 					count++;
 				}
@@ -267,6 +264,7 @@ public class UserInterface {
 				listBoxLanguage.setSelectedIndex(0);
 				listBoxCountry.setSelectedIndex(0);
 				listBoxGenre.setSelectedIndex(0);
+				table.setFlexTableHeader();
 
 			}
 		});

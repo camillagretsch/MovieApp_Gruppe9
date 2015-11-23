@@ -133,8 +133,22 @@ public class Table {
 			{ "05WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
 					"swiss", "krimi" } };
 
-	public void createFlexTable() {
+	public Panel createFlexTable() {
 		vPanel.setLayout(new VerticalLayout());
+		
+		setFlexTableHeader();
+		
+		flexibleTable.setCellPadding(2);
+		flexibleTable.setCellPadding(3);
+		flexibleTable.setBorderWidth(2);
+
+		vPanel.add(flexibleTable);
+		// RootPanel.get("flex").add(vPanel);
+		return vPanel;
+
+	}
+	
+	public void setFlexTableHeader(){
 		// name of each column
 		flexibleTable.setText(0, 0, "Wikipedia ID");
 		flexibleTable.setText(0, 1, "Movie Name");
@@ -144,20 +158,8 @@ public class Table {
 		flexibleTable.setText(0, 5, "Language");
 		flexibleTable.setText(0, 6, "Country");
 		flexibleTable.setText(0, 7, "Genre");
-
-		flexibleTable.setCellPadding(2);
-		flexibleTable.setCellPadding(3);
-		flexibleTable.setBorderWidth(2);
-
-		vPanel.add(flexibleTable);
-		// RootPanel.get("flex").add(vPanel);
-
 	}
 
-	public Panel getTable() {
-
-		return vPanel;
-	}
 
 	/**
 	 * remove all entries from the table

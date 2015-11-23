@@ -96,9 +96,9 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	
 	private Panel createBorderPanelTable() {
 
-//		Table table = user.choseEvents();
-		Table table = new Table();
-		user.choseEvents();
+		Table table = user.choseEvents();
+//		Table table = new Table();
+//		user.choseEvents();
 		
 		Panel borderPanel = new Panel();
 		Panel northPanel = new Panel();
@@ -110,30 +110,29 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// border Layout
 		borderPanel.setLayout(new BorderLayout());
 
-		// add north panel
-		northPanel.setHeight(50);
-		northPanel.add(user.getHPanel());
-		northPanel.add(user.getVPanel());
-		borderPanel.add(northPanel, new BorderLayoutData(RegionPosition.NORTH));
-
 		// add south panel
 		southPanel.setHtml("<p>Source</p>");
 		southPanel.setHeight(50);
 		borderPanel.add(southPanel, new BorderLayoutData(RegionPosition.SOUTH));
 
 		// add east panel
-		eastPanel.setHtml("<p>Advertisement</p>");
+		eastPanel.setTitle("Advertisement");
 		eastPanel.setWidth(200);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
 
 		// add west Panel
-		westPanel.setHtml("<p>Advertisement</p>");
+		westPanel.setTitle("Advertisement");
 		westPanel.setWidth(200);
 		borderPanel.add(westPanel, new BorderLayoutData(RegionPosition.WEST));
 
 		// add centre Panel
-		centerPanel.expand();
-		centerPanel.add(table.createGridTable());
+		//centerPanel.expand();
+		centerPanel.setAutoScroll(true);
+		centerPanel.add(user.getHPanel());
+		centerPanel.add(user.getVPanel());
+		centerPanel.add(table.createFlexTable());
+
+		//centerPanel.add(table.createGridTable());
 
 		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
 
