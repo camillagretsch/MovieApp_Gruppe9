@@ -29,3 +29,4 @@ www-test/
 
 .classpath
 war/movieapp_gruppe9/movieapp_gruppe9.nocache.js
+.DS_Store
