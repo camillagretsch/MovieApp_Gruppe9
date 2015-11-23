@@ -32,7 +32,7 @@ public class Table {
 	private Map<String, String> resultMap = new HashMap<String, String>();
 	private Map<String, String> tmpMap = new HashMap<String, String>();
 	private boolean tableIsEmpty;
-	
+
 	private Panel panelToDraw = new Panel();
 	private GridPanel grid = new GridPanel();
 
@@ -41,12 +41,12 @@ public class Table {
 
 	public Panel createGridTable() {
 		if (grid != null) {
-
 			destroyTable();
 		}
-		panelToDraw.setBorder(false);
 
-		PagingMemoryProxy proxy = new PagingMemoryProxy(filteredData());
+		panelToDraw.setBorder(false);
+		panelToDraw.setPaddings(15);
+
 		RecordDef recordDef = new RecordDef(new FieldDef[] {
 				new StringFieldDef("wikiId"), new StringFieldDef("movieName"),
 				new StringFieldDef("releaseYear"),
@@ -54,14 +54,18 @@ public class Table {
 				new StringFieldDef("runtime"), new StringFieldDef("language"),
 				new StringFieldDef("country"), new StringFieldDef("genre"), });
 
-		ArrayReader reader = new ArrayReader(recordDef);
-		final Store store = new Store(proxy, reader, true);
+		PagingMemoryProxy proxy = new PagingMemoryProxy(data);
 
+		ArrayReader reader = new ArrayReader(recordDef);
+		Store store = new Store(proxy, reader, true);
+		store.load();
+		grid.setStore(store);
 
 		// configurate Columns
 		ColumnConfig[] columns = new ColumnConfig[] {
-				new ColumnConfig("Wikipedia ID", "wikiId"),
-				new ColumnConfig("Movie Name", "movieName"),
+				new ColumnConfig("Wikipedia ID", "wikiId", 160, true, null,
+						"wikiId"),
+				new ColumnConfig("Movie Name", "movieName", 200, true, null),
 				new ColumnConfig("Release Year", "releaseYear"),
 				new ColumnConfig("Box Office Revenue", "boxOfficeRevenue"),
 				new ColumnConfig("Runtime", "runtime"),
@@ -71,47 +75,40 @@ public class Table {
 		ColumnModel columnModel = new ColumnModel(columns);
 
 		// Create GridPanel
-		grid.setStore(store);
 		grid.setColumnModel(columnModel);
-
 		grid.setFrame(true); // round borders for true
 		grid.setStripeRows(true); // Rows with stripes for true
-		grid.setAutoExpandColumn("movieName"); // Column expands to fill unused
-												// space
-		grid.setWidth(600);
-		grid.setHeight(260);
+		// grid.setAutoExpandColumn(""); // Column expands to fill unused space
+
 		grid.setTitle("Movie Data Table");
+		// grid.setAutoExpandColumn("wikiId");
 
 		// define PagingToolbar, which you can display a number of movies and
 		// stepp through the others
 		final PagingToolbar pagingToolbar = new PagingToolbar(store);
-		pagingToolbar.setPageSize(10); // Number of displayed Movies per page
+		pagingToolbar.setPageSize(2); // Number of displayed Movies per page
 		pagingToolbar.setDisplayInfo(true);
-		pagingToolbar.setDisplayMsg("Displaying 100 per page");
+		pagingToolbar.setDisplayMsg("Displaying 20 per page");
 		pagingToolbar.setEmptyMsg("No movie was found.");
-
 
 		NumberField pageSizeField = new NumberField();
 		pageSizeField.setWidth(40);
 		pageSizeField.setSelectOnFocus(true);
 		pageSizeField.addListener(new FieldListenerAdapter() {
 			public void onSpecialKey(Field field, EventObject e) {
-
 				if (e.getKey() == EventObject.ENTER) {
-
 					int pageSize = Integer.parseInt(field.getValueAsString());
 					pagingToolbar.setPageSize(pageSize);
 				}
 			}
 		});
 
-
 		ToolTip toolTip = new ToolTip("Enter page size");
 		toolTip.applyTo(pageSizeField);
 
 		pagingToolbar.addField(pageSizeField);
 		grid.setBottomToolbar(pagingToolbar);
-		store.load(0, 10);
+		store.load(0, 2);
 
 		panelToDraw.add(grid);
 
@@ -123,21 +120,18 @@ public class Table {
 	}
 
 	// TODO Methode richtig definieren, so dass die Daten als Object [][]
-	// zurückgegeben werden.
-	private Object[][] filteredData() {
-		return new Object[][] {
-				new Object[] { "01WikiID", "TestFilm", "9999", "00000", "60",
-						"swiss german", "swiss", "krimi" },
-				new Object[] { "01WikiID", "TestFilm", "9999", "00000", "60",
-						"swiss german", "swiss", "krimi" },
-				new Object[] { "01WikiID", "TestFilm", "9999", "00000", "60",
-						"swiss german", "swiss", "krimi" },
-				new Object[] { "01WikiID", "TestFilm", "9999", "00000", "60",
-						"swiss german", "swiss", "krimi" }
-
-		};
-	}
-
+	// zur¸ckgegeben werden.
+	private String[][] data = {
+			{ "01WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
+					"swiss", "krimi" },
+			{ "02WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
+					"swiss", "krimi" },
+			{ "03WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
+					"swiss", "krimi" },
+			{ "04WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
+					"swiss", "krimi" },
+			{ "05WikiID", "TestFilm", "9999", "00000", "60", "swiss german",
+					"swiss", "krimi" } };
 
 	public void createFlexTable() {
 		vPanel.setLayout(new VerticalLayout());
@@ -216,15 +210,6 @@ public class Table {
 		case 5:
 			importMap(name, column);
 			break;
-
-		// filter for language
-		/*
-		 * case 6: importMap(name, 6); break;
-		 * 
-		 * // filter for country case 7: importMap(name, column); break;
-		 * 
-		 * // filter for genre case 8: importMap(name, column); break;
-		 */
 		}
 	}
 

@@ -58,22 +58,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	private Panel chartsPanel = new Panel("Charts");
 	private Panel mapPanel = new Panel("Map");
 	
-	private Panel mapExtension = new Panel();
-
-	private Panel hPanel = new Panel();
-	private final Button heatMapButton = new Button("Create Heatmap");
-	
-	GridPanel grid = new GridPanel();
-	private Panel tableToDraw = new Panel("GridTable");
-	
-	private Button piechartButtonBOR = new Button("Create Piechart for Box Office Revenue");
-	private Button piechartButtonRT = new Button("Create Piechart for runtime");
-	private Button barchartButtonCountry = new Button("Create Barchart for Country");
-	private Panel chartExtension = new Panel();
-	
-	private HorizontalPanel horizontalPanel = new HorizontalPanel();
-
-
 	public void onModuleLoad() {
 		
 		panel.setBorder(false);
@@ -98,60 +82,8 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// tab for charts
 		chartsPanel.setLayout(new FitLayout());
 		chartsPanel.setIconCls("tab.icon");
+		chartsPanel.add(createBorderPanelCharts());
 		tabPanel.add(chartsPanel);
-		
-		// add button for creating a Box Office Revenue piechart
-	        chartsPanel.add(hPanel);
-	        horizontalPanel.setBorderWidth(10);
-	        chartsPanel.add(piechartButtonBOR);
-	        piechartButtonBOR.addStyleName("piechartButtonBOR");
-	        hPanel.add(piechartButtonBOR);
-	        RootPanel.get("piechartButtonBOR").add(hPanel);
-	       
-	    	piechartButtonBOR.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					Piechart piechart = new Piechart();
-					piechart.createChartBOR();
-				}
-						
-			});
-	    	
-	    	// add button for creating a Runtime piechart
-	    	chartsPanel.add(hPanel);
-		    horizontalPanel.setBorderWidth(10);
-		    chartsPanel.add(piechartButtonRT);
-		    piechartButtonRT.addStyleName("piechartButtonRT");
-		        hPanel.add(piechartButtonRT);
-		        RootPanel.get("piechartButtonRT").add(hPanel);
-		       
-		    	piechartButtonRT.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						Piechart piechart = new Piechart();
-						piechart.createChartRT();
-					}
-							
-				});  
-		    	
-		    // add button for creating a Country barchart
-		    chartsPanel.add(hPanel);
-			horizontalPanel.setBorderWidth(10);
-			chartsPanel.add(barchartButtonCountry);
-			barchartButtonCountry.addStyleName("piechartButtonCountry");
-			hPanel.add(barchartButtonCountry);
-			RootPanel.get("barchartButtonCountry").add(hPanel);
-			       
-			barchartButtonCountry.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					BarChart barchart = new BarChart();
-					barchart.createChartCountry();
-				}
-								
-			}); 		
-	    		
-	        chartExtension.setLayout(new BorderLayout());
-	        chartExtension.add(chartsPanel);
-
-		
 
 		// tab for map
 		mapPanel.setLayout(new FitLayout());
@@ -166,7 +98,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 //		Table table = user.choseEvents();
 		Table table = new Table();
-		
 		user.choseEvents();
 		
 		Panel borderPanel = new Panel();
@@ -187,7 +118,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 		// add south panel
 		southPanel.setHtml("<p>Source</p>");
-		southPanel.setHeight(25);
+		southPanel.setHeight(50);
 		borderPanel.add(southPanel, new BorderLayoutData(RegionPosition.SOUTH));
 
 		// add east panel
@@ -203,8 +134,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add centre Panel
 		centerPanel.expand();
 		centerPanel.add(table.createGridTable());
-		
-//		centerPanel.add(createGritTable());
 
 		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
 
@@ -212,16 +141,86 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	}
 
 	private Panel createBorderPanelCharts() {
+		Panel chartExtension = new Panel();
+		
 		Panel borderPanel = new Panel();
 		Panel northPanel = new Panel();
 		Panel southPanel = new Panel();
 		Panel centerPanel = new Panel();
 		Panel westPanel = new Panel();
 		Panel eastPanel = new Panel();
-		return borderPanel;
+		
+		Panel hPanel = new Panel();
+		Button piechartButtonBOR = new Button("Create Piechart for Box Office Revenue");
+		Button piechartButtonRT = new Button("Create Piechart for runtime");
+		Button barchartButtonCountry = new Button("Create Barchart for Country");
+		
+		// border Layout
+		borderPanel.setLayout(new BorderLayout());
+		
+		// add south panel
+		southPanel.setHtml("<p>Source</p>");
+		southPanel.setHeight(50);
+		borderPanel.add(southPanel, new BorderLayoutData(RegionPosition.SOUTH));
+
+		// add east panel
+		eastPanel.setHtml("<p>Advertisement</p>");
+		eastPanel.setWidth(200);
+		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
+
+		// add west Panel
+		westPanel.setHtml("<p>Advertisement</p>");
+		westPanel.setWidth(200);
+		borderPanel.add(westPanel, new BorderLayoutData(RegionPosition.WEST));
+		
+		// add centre Panel
+		centerPanel.expand();
+		centerPanel.add(hPanel);
+		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
+		
+		hPanel.setLayout(new HorizontalLayout(10));
+		hPanel.add(piechartButtonBOR);
+		hPanel.add(piechartButtonRT);
+		hPanel.add(barchartButtonCountry);
+		
+		// add button for creating a Box Office Revenue piechart
+		piechartButtonBOR.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Piechart piechart = new Piechart();
+					piechart.createChartBOR();
+				}
+						
+			});
+		
+		// add button for creating a Runtime piechart
+	    	piechartButtonRT.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Piechart piechart = new Piechart();
+					piechart.createChartRT();
+				}
+						
+			});  
+	    	
+	    // add button for creating a Country barchart
+		barchartButtonCountry.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				BarChart barchart = new BarChart();
+				barchart.createChartCountry();
+			}
+							
+		}); 		
+		
+		 chartExtension.setLayout(new BorderLayout());
+	     chartExtension.add(chartsPanel);
+	     
+	     return borderPanel;
 	}
 	
 	private Panel createPanelMap(){
+		Panel mapExtension = new Panel();
+
+		Panel hPanel = new Panel();
+		Button heatMapButton = new Button("Create Heatmap");
 		
 		hPanel.setLayout(new HorizontalLayout(10));
 		hPanel.add(heatMapButton);
@@ -234,14 +233,8 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		 });
 		
 		 mapExtension.setLayout(new BorderLayout());
-		  mapExtension.add(mapPanel);
+		 mapExtension.add(mapPanel);
 		 
 		return hPanel;
-	}
-	
-	private Panel createGritTable() {
-		
-		Table gridTable = new Table();
-		return gridTable.createGridTable();
 	}
 }
