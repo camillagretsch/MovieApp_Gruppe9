@@ -1,2 +1,0 @@
-# Module movieapp_gruppe9
-# RPC service class, partial path of RPC policy file
