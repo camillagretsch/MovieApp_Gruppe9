@@ -44,6 +44,7 @@ import com.gwtext.client.widgets.layout.BorderLayoutData;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
 import com.gwtextux.client.data.PagingMemoryProxy;
+import com.gwtextux.client.widgets.image.Image;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -121,21 +122,29 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add east panel
 		eastPanel.setTitle("Advertisement");
 		eastPanel.setWidth(200);
+		Image imageE = new Image();
+		imageE.setWidth(200);
+		imageE.setHeight(500);
+		imageE.setSrc("images/mockingjay.jpg");
+		eastPanel.add(imageE);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
 
 		// add west Panel
 		westPanel.setTitle("Advertisement");
 		westPanel.setWidth(200);
+		Image imageW = new Image();
+		imageW.setWidth(200);
+		imageW.setHeight(500);
+		imageW.setSrc("images/hobbit.jpg");
+		westPanel.add(imageW);
 		borderPanel.add(westPanel, new BorderLayoutData(RegionPosition.WEST));
 
 		// add centre Panel
-		//centerPanel.expand();
 		centerPanel.setAutoScroll(true);
 		centerPanel.add(user.getHPanel());
 		centerPanel.add(user.getVPanel());
 		centerPanel.add(table.createFlexTable());
 
-		//centerPanel.add(table.createGridTable());
 
 		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
 
@@ -170,13 +179,23 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		borderPanel.add(southPanel, new BorderLayoutData(RegionPosition.SOUTH));
 
 		// add east panel
-		eastPanel.setHtml("<p>Advertisement</p>");
+		eastPanel.setTitle("Advertisemen");
 		eastPanel.setWidth(200);
+		Image imageE = new Image();
+		imageE.setWidth(200);
+		imageE.setHeight(500);
+		imageE.setSrc("images/mockingjay.jpg");
+		eastPanel.add(imageE);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
 
 		// add west Panel
-		westPanel.setHtml("<p>Advertisement</p>");
+		westPanel.setTitle("Advertisemen");
 		westPanel.setWidth(200);
+		Image imageW = new Image();
+		imageW.setWidth(200);
+		imageW.setHeight(500);
+		imageW.setSrc("images/xman.jpg");
+		westPanel.add(imageW);
 		borderPanel.add(westPanel, new BorderLayoutData(RegionPosition.WEST));
 		
 		// add centre Panel

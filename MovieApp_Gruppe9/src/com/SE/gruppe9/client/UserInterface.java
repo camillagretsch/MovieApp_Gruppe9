@@ -1,6 +1,7 @@
 package com.SE.gruppe9.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
@@ -22,11 +23,11 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class UserInterface {
 
-	// Arrays to get the data for the Listboxes TODO nicht mehr notwendig
-	private final String[] BoxOfficeRevenue = { "Box Office Revenue",
-			"< 100'000", "100'000-1'000'000", "> 1'000'000" };
+	// Arrays to get the data for the Listboxes 
+	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private String[] Languages = {"Language"};
+	private Map<String,String> mapColumn = new HashMap<String,String>();
+	//private String[] Languages = {"Language"};
 	private String[] Countries = { "United Kingdom", "Germany", "Spain" };
 	private String[] Genres = { "Action", "Comedy" };
 
@@ -104,12 +105,14 @@ public class UserInterface {
 
 		// listbox for language
 		listBoxLanguage.addItem("Language");
+		mapColumn.clear();
 		importFilterValues(6);
-//		for (int i = 0; i < Languages.size(); i++) { 
-//			 if (!Languages.get(i).equals("{}")) {
-//				 listBoxLanguage.addItem(Languages.get(i)); 
-//				 } 
+//		for (int i = 0; i < Languages.length; i++) { 
+//		 if (!Languages[i].equals("{}")) {
+//			 listBoxLanguage.addItem(Languages[i]); 
 //			 } 
+//		 } 
+	
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);
 
@@ -328,30 +331,24 @@ public class UserInterface {
 	
 	public DataImportServiceAsync filter = GWT.create(DataImportService.class);
 
-	public void importFilterValues(final int constant) { 
-		//Initialize the service proxy. 
-		if (filter == null) { 
-			filter = GWT.create(DataImportService.class); 
-			}
+	public void importFilterValues(final int constant) {
+		// Initialize the service proxy.
+		if (filter == null) {
+			filter = GWT.create(DataImportService.class);
+		}
 		// Set up the callback object.
-	 final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
-	 public void onFailure(Throwable caught) { 
-		 
-	 }
-	 
-	 public void onSuccess(Map<String, String> result) { 
-		 if (constant == 6){
-			 for (Map.Entry<String, String> entry : result.entrySet()) {
-				listBoxLanguage.addItem(entry.getKey());
-			 }
-		 }
-//		 for (int i = 0; i < Languages.length; i++) { 
-//			 if (!Languages[i].equals("{}")) {
-//				 listBoxLanguage.addItem(Languages[i]); 
-//				 } 
-//			 } 
-		 } 
-	 };
-	 filter.getDataOfTheColumn(constant, callback); 
-	 }
+		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(Map<String, String> result) {
+				mapColumn.putAll(result);
+				for (Map.Entry<String, String> entry : mapColumn.entrySet()) {
+					listBoxLanguage.addItem(entry.getKey());
+				}
+			}
+		};
+		filter.getDataOfTheColumn(constant, callback);
+	}
 }

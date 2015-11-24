@@ -49,6 +49,8 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 		// Map to save the filtered data
 		private Map<String, String> maps = new HashMap<String, String>();
 		
+		private Map<String, String> mapColumn = new HashMap<String, String>();
+		
 		//Array to go through each row of the data file
 		private String[] movie;
 		
@@ -215,17 +217,19 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 			ServletContext context = getServletContext();
 			String fullPath = context.getRealPath(movieDoc);
 			try {
-				maps = intermediateColumnFilter(fullPath, constant);
+				mapColumn = intermediateColumnFilter(fullPath, constant);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			return maps;
+			return mapColumn;
 		}
 		
 		public Map<String,String> intermediateColumnFilter(String fullPath, int constant){
 			try {
 				br = new BufferedReader(new FileReader(fullPath));
+				
+				mapColumn.clear();
 				while ((line = br.readLine()) != null) {
 					cutFreebaseID();
 
@@ -235,7 +239,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 					int i = 0;
 					movie = movie[constant].split(", ");
 					while (i < movie.length) {
-						maps.put(movie[i], "");
+						mapColumn.put(movie[i], "");
 						i++;
 					}
 				}
@@ -252,6 +256,6 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements DataI
 					}
 				}
 			}
-			return maps;
+			return mapColumn;
 		}
 }
