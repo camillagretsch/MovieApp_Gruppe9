@@ -209,8 +209,7 @@ public class UserInterface {
 				int itemSelected = listBoxOffice.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxOffice
-						.getValue(itemSelected);
+				String itemStringSelected = listBoxOffice.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 4);
 				} else {
@@ -231,8 +230,7 @@ public class UserInterface {
 				int itemSelected = listBoxRuntime.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxRuntime
-						.getValue(itemSelected);
+				String itemStringSelected = listBoxRuntime.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 5);
 				} else {
@@ -252,17 +250,15 @@ public class UserInterface {
 				int itemSelected = listBoxLanguage.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxLanguage
-						.getValue(itemSelected);
+				String itemStringSelected = listBoxLanguage.getValue(itemSelected);
 				if (count < 1) {
-					Window.alert("Chose first Release Year, Box Time Office or Runtime");
-					listBoxLanguage.setSelectedIndex(0);
+					table.firstFilter(itemStringSelected, 6);
 				} else {
 					table.clearFlexTable();
 					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 4);
-					count++;
 				}
+				count++;
 			}
 		});
 
@@ -274,17 +270,15 @@ public class UserInterface {
 				int itemSelected = listBoxCountry.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxCountry
-						.getValue(itemSelected);
+				String itemStringSelected = listBoxCountry.getValue(itemSelected);
 				if (count < 1) {
-					Window.alert("Chose first Release Year, Box Time Office or Runtime");
-					listBoxCountry.setSelectedIndex(0);
+					table.firstFilter(itemStringSelected, 7);
 				} else {
 					table.clearFlexTable();
 					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 5);
-					count++;
 				}
+				count++;
 			}
 		});
 
@@ -299,14 +293,13 @@ public class UserInterface {
 				// Get the string value of the item that has been selected
 				String itemStringSelected = listBoxGenre.getValue(itemSelected);
 				if (count < 1) {
-					Window.alert("Chose first Release Year, Box Time Office or Runtime");
-					listBoxGenre.setSelectedIndex(0);
+					table.firstFilter(itemStringSelected, 8);
 				} else {
 					table.clearFlexTable();
 					table.setFlexTableHeader();
 					table.secondFilter(itemStringSelected, 6);
-					count++;
 				}
+				count++;
 			}
 		});
 		deleteButton.addClickHandler(new ClickHandler() {

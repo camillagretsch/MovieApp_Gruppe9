@@ -10,7 +10,7 @@ import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class Table {
-	
+
 	private Panel vPanel = new Panel();
 	private FlexTable flexibleTable = new FlexTable();
 	private Map<String, String> resultMap = new HashMap<String, String>();
@@ -20,29 +20,30 @@ public class Table {
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 
 	/**
-	 * adds the flexTabel to the vertical Panel 
-	 * only one time in the movieapp_gruppe9 to center Panel 
+	 * adds the flexTabel to the vertical Panel only one time in the
+	 * movieapp_gruppe9 to center Panel
+	 * 
 	 * @return
 	 */
 	public Panel createFlexTable() {
 		vPanel.setLayout(new VerticalLayout());
-		
+
 		setFlexTableHeader();
-		
+
 		flexibleTable.setCellPadding(2);
 		flexibleTable.setCellPadding(3);
 		flexibleTable.setBorderWidth(2);
 
 		vPanel.add(flexibleTable);
-		
+
 		return vPanel;
 
 	}
-	
+
 	/**
 	 * sets the Header of the flextable
 	 */
-	public void setFlexTableHeader(){
+	public void setFlexTableHeader() {
 		// name of each column
 		flexibleTable.setText(0, 0, "Wikipedia ID");
 		flexibleTable.setText(0, 1, "Movie Name");
@@ -54,7 +55,6 @@ public class Table {
 		flexibleTable.setText(0, 7, "Genre");
 	}
 
-
 	/**
 	 * remove all entries from the table
 	 */
@@ -62,7 +62,7 @@ public class Table {
 		flexibleTable.removeAllRows();
 		flexibleTable.clear();
 	}
-	
+
 	/**
 	 * remove all entries from the map
 	 */
@@ -71,8 +71,8 @@ public class Table {
 	}
 
 	/**
-	 * filter for name, year, bor, runtime
-	 * filters the data from the csv file
+	 * filter for name, year, bor, runtime filters the data from the csv file
+	 * 
 	 * @param name
 	 * @param column
 	 */
@@ -99,11 +99,27 @@ public class Table {
 		case 5:
 			importMap(name, column);
 			break;
+
+		// filter for language
+		case 6:
+			importMap(name, 6);
+			break;
+
+		// filter for country
+		case 7:
+			importMap(name, column);
+			break;
+
+		// filter for genre
+		case 8:
+			importMap(name, column);
+			break;
 		}
 	}
 
 	/**
 	 * imports data from the server
+	 * 
 	 * @param name
 	 * @param column
 	 */
@@ -137,22 +153,24 @@ public class Table {
 
 		filter.filterData(name, column, callback);
 	}
-	
+
 	/**
-	 * filter for name, year, bor, runtime, language, country, genre
-	 * filters the data from the map 
+	 * filter for name, year, bor, runtime, language, country, genre filters the
+	 * data from the map
+	 * 
 	 * @param name
 	 * @param column
 	 */
 	public void secondFilter(String name, int column) {
 		int i = 1;
 		switch (column) {
-		
+
 		// filter for movie name
 		case 0:
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String tmp[] = entry.getValue().split("==");
-				if (tmp[0].trim().toUpperCase().contains(name.trim().toUpperCase())){
+				if (tmp[0].trim().toUpperCase()
+						.contains(name.trim().toUpperCase())) {
 					flexibleTable.setText(i, 0, entry.getKey());
 					for (int j = 0; j < 7; j++) {
 						flexibleTable.setText(i, j + 1, tmp[j]);
@@ -168,7 +186,6 @@ public class Table {
 			}
 			tmpMap.clear();
 			break;
-		
 
 		// filter for release year
 		case 1:
@@ -353,20 +370,27 @@ public class Table {
 
 		}
 	}
-	
+
 	/**
 	 * gets the map with the filtered data for the charts
+	 * 
 	 * @return
 	 */
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}
-	
-	public void setTestMap(){
-		
-		resultMap.put("id01", "Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-		resultMap.put("id02", "Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-		resultMap.put("id01", "Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
+
+	public void setTestMap() {
+
+		resultMap
+				.put("id01",
+						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+		resultMap
+				.put("id02",
+						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+		resultMap
+				.put("id01",
+						"Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
 
 	}
 }
