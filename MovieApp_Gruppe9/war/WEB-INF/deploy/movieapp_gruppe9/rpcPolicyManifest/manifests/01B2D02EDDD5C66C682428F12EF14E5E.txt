@@ -1,0 +1,2 @@
+serviceClass: com.SE.gruppe9.client.DataImportService
+path: 131E4A33993879516AA70B7DDC5FB39A.gwt.rpc
