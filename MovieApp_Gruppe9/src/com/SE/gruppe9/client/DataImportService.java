@@ -16,5 +16,9 @@ public interface DataImportService extends RemoteService {
 	
 	Map<String, String> filterData(String name, int column);
 	
-	Map<String, String> getDataOfTheColumn(int constant);
+	Map<String, String> getAllLanguages();
+	
+	Map<String, String> getAllCountries();
+	
+	Map<String, String> getAllGenres();
 }

@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.thirdparty.guava.common.util.concurrent.UncaughtExceptionHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -26,10 +27,10 @@ public class UserInterface {
 	// Arrays to get the data for the Listboxes 
 	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private Map<String,String> mapColumn = new HashMap<String,String>();
-	//private String[] Languages = {"Language"};
-	private String[] Countries = { "United Kingdom", "Germany", "Spain" };
-	private String[] Genres = { "Action", "Comedy" };
+	private Map<String,String> allLanguages = new HashMap<String,String>();
+	private Map<String,String> allCountries = new HashMap<String,String>();
+	private Map<String,String> allGenres = new HashMap<String,String>();
+	
 
 	// all Buttons Tetxtbox and Listboxes
 	private final Button goButton = new Button("GO!");
@@ -46,6 +47,8 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
+	
+	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 	
 	private int count = 0;
 
@@ -105,8 +108,7 @@ public class UserInterface {
 
 		// listbox for language
 		listBoxLanguage.addItem("Language");
-		mapColumn.clear();
-		importFilterValues(6);
+		importAllLanguages();
 //		for (int i = 0; i < Languages.length; i++) { 
 //		 if (!Languages[i].equals("{}")) {
 //			 listBoxLanguage.addItem(Languages[i]); 
@@ -118,17 +120,13 @@ public class UserInterface {
 
 		// listbox for country
 		listBoxCountry.addItem("Country");
-		for (int i = 0; i < Countries.length; i++) {
-			listBoxCountry.addItem(Countries[i]);
-		}
+		importAllCountries();
 		listBoxCountry.setVisibleItemCount(1);
 		h1Panel.add(listBoxCountry);
 
 		// listbox for genre
 		listBoxGenre.addItem("Genre");
-		for (int i = 0; i < Genres.length; i++) {
-			listBoxGenre.addItem(Genres[i]);
-		}
+		importAllGenres();
 		listBoxGenre.setVisibleItemCount(1);
 		h1Panel.add(listBoxGenre);
 
@@ -321,10 +319,7 @@ public class UserInterface {
 		return table;
 	}
 
-	
-	public DataImportServiceAsync filter = GWT.create(DataImportService.class);
-
-	public void importFilterValues(final int constant) {
+	public void importAllLanguages() {
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -335,13 +330,58 @@ public class UserInterface {
 
 			}
 
-			public void onSuccess(Map<String, String> result) {
-				mapColumn.putAll(result);
-				for (Map.Entry<String, String> entry : mapColumn.entrySet()) {
+			public void onSuccess(Map<String, String> result){
+				allLanguages.putAll(result);
+				for (Map.Entry<String, String> entry : allLanguages.entrySet()) {
 					listBoxLanguage.addItem(entry.getKey());
 				}
-			}
+					
+				} 
 		};
-		filter.getDataOfTheColumn(constant, callback);
+		filter.getAllLanguages(callback);
+	}
+	
+	public void importAllCountries() {
+		// Initialize the service proxy.
+		if (filter == null) {
+			filter = GWT.create(DataImportService.class);
+		}
+		// Set up the callback object.
+		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(Map<String, String> result){
+				allCountries.putAll(result);
+				for (Map.Entry<String, String> entry : allCountries.entrySet()) {
+					listBoxCountry.addItem(entry.getKey());
+				}
+					
+				} 
+		};
+		filter.getAllCountries(callback);
+	}
+	
+	public void importAllGenres() {
+		// Initialize the service proxy.
+		if (filter == null) {
+			filter = GWT.create(DataImportService.class);
+		}
+		// Set up the callback object.
+		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(Map<String, String> result){
+				allGenres.putAll(result);
+				for (Map.Entry<String, String> entry : allGenres.entrySet()) {
+					listBoxGenre.addItem(entry.getKey());
+				}
+					
+				} 
+		};
+		filter.getAllGenres(callback);
 	}
 }

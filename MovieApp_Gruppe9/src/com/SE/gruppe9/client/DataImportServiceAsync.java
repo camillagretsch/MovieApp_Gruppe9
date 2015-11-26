@@ -12,6 +12,12 @@ public interface DataImportServiceAsync {
 	void filterData(String name, int column,
 			AsyncCallback<Map<String, String>> callback);
 
-	void getDataOfTheColumn(int constant,
+	void getAllLanguages(
+			AsyncCallback<Map<String, String>> callback);
+	
+	void getAllCountries(
+			AsyncCallback<Map<String, String>> callback);
+	
+	void getAllGenres(
 			AsyncCallback<Map<String, String>> callback);
 }

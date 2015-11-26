@@ -50,10 +50,13 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	// Map to save the filtered data
 	private Map<String, String> maps = new HashMap<String, String>();
 
-	private Map<String, String> mapColumn = new HashMap<String, String>();
+	private Map<String, String> mapLanguage = new HashMap<String, String>();
+	private Map<String, String> mapCountry = new HashMap<String, String>();
+	private Map<String, String> mapGenre = new HashMap<String, String>();
 
 	// Array to go through each row of the data file
 	private String[] movie;
+	private String[] tmp;
 
 	private static String line = "";
 	private BufferedReader br = null;
@@ -238,25 +241,49 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	 * @param constant
 	 * @return
 	 */
-	public Map<String, String> getDataOfTheColumn(int constant) {
+	public Map<String, String> getAllLanguages() {
 
 		ServletContext context = getServletContext();
 		String fullPath = context.getRealPath(movieDoc);
 		try {
-			mapColumn = intermediateColumnFilter(fullPath, constant);
+			mapLanguage = intermediateLanguageFilter(fullPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return mapColumn;
+		return mapLanguage;
+	}
+	
+	public Map<String, String> getAllCountries() {
+
+		ServletContext context = getServletContext();
+		String fullPath = context.getRealPath(movieDoc);
+		try {
+			mapCountry = intermediateCountryFilter(fullPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mapCountry;
+	}
+	
+	public Map<String, String> getAllGenres() {
+
+		ServletContext context = getServletContext();
+		String fullPath = context.getRealPath(movieDoc);
+		try {
+			mapGenre = intermediateGenreFilter(fullPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mapGenre;
 	}
 
-	public Map<String, String> intermediateColumnFilter(String fullPath,
-			int constant) {
+	public Map<String, String> intermediateLanguageFilter(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
 
-			mapColumn.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
@@ -264,9 +291,9 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				setMovie(line.split(cvsSplitBy));
 
 				int i = 0;
-				movie = movie[constant].split(", ");
-				while (i < movie.length) {
-					mapColumn.put(movie[i], "");
+				tmp = movie[6].split(", ");
+				while (i < tmp.length) {
+					mapLanguage.put(tmp[i], "");
 					i++;
 				}
 			}
@@ -283,6 +310,72 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 		}
-		return mapColumn;
+		return mapLanguage;
+	}
+	
+	public Map<String, String> intermediateCountryFilter(String fullPath) {
+		try {
+			br = new BufferedReader(new FileReader(fullPath));
+
+			while ((line = br.readLine()) != null) {
+				cutFreebaseID();
+
+				// use semicolon as separator
+				setMovie(line.split(cvsSplitBy));
+
+				int i = 0;
+				tmp = movie[7].split(", ");
+				while (i < tmp.length) {
+					mapCountry.put(tmp[i], "");
+					i++;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return mapCountry;
+	}
+	
+	public Map<String, String> intermediateGenreFilter(String fullPath) {
+		try {
+			br = new BufferedReader(new FileReader(fullPath));
+
+			while ((line = br.readLine()) != null) {
+				cutFreebaseID();
+
+				// use semicolon as separator
+				setMovie(line.split(cvsSplitBy));
+
+				int i = 0;
+				tmp = movie[8].split(", ");
+				while (i < tmp.length) {
+					mapGenre.put(tmp[i], "");
+					i++;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return mapGenre;
 	}
 }
