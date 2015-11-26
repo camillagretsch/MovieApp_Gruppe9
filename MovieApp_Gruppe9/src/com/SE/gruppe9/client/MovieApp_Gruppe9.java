@@ -84,7 +84,8 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// tab for charts
 		chartsPanel.setLayout(new FitLayout());
 		chartsPanel.setIconCls("tab.icon");
-		chartsPanel.add(createBorderPanelCharts());
+		//chartsPanel.add(createBorderPanelCharts());
+		chartsPanel.add(createPanelBarchart());
 		tabPanel.add(chartsPanel);
 
 		// tab for map
@@ -208,6 +209,33 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		hPanel.add(piechartButtonRT);
 		hPanel.add(barchartButtonCountry);
 		
+
+		 chartExtension.setLayout(new BorderLayout());
+	     chartExtension.add(chartsPanel);
+	     
+	     return borderPanel;
+	}
+	
+	private Panel createPanelBarchart(){
+		Panel chartExtension = new Panel();
+
+		Panel hPanel = new Panel();
+		Button barchartButtonCountry = new Button("Create Barchart Country");
+		Button piechartButtonRT = new Button("Create Piechart Runtime");
+		Button piechartButtonBOR = new Button("Create Piechart BOR");
+		
+		hPanel.setLayout(new HorizontalLayout(10));
+		hPanel.add(barchartButtonCountry);
+		hPanel.add(piechartButtonRT);
+		hPanel.add(piechartButtonBOR);
+		
+		barchartButtonCountry.addClickHandler(new ClickHandler() { 
+			 public void onClick(ClickEvent event) { 
+				 BarChart barchart = new BarChart();
+				 barchart.createChartCountry(); }
+		 
+		 });
+		
 		// add button for creating a Box Office Revenue piechart
 		piechartButtonBOR.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
@@ -226,19 +254,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 						
 			});  
 	    	
-	    // add button for creating a Country barchart
-		barchartButtonCountry.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				BarChart barchart = new BarChart();
-				barchart.createChartCountry();
-			}
-							
-		}); 		
-		
 		 chartExtension.setLayout(new BorderLayout());
-	     chartExtension.add(chartsPanel);
-	     
-	     return borderPanel;
+		 chartExtension.add(chartsPanel);
+		 
+		return hPanel;
 	}
 	
 	/**
