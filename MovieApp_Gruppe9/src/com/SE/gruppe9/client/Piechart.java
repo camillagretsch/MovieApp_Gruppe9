@@ -1,6 +1,8 @@
 package com.SE.gruppe9.client;
 
+import java.util.HashMap;
 import java.util.Map;
+
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.json.client.JSONObject;
@@ -26,6 +28,7 @@ public class Piechart {
 	private Double[] runtime;
 	private int[] numberOfFilmsBOR;
 	private int[] numberOfFilmsRT;
+	Map<String, String> map = new HashMap<String, String>();
 	
 		
 		void createChartBOR() {
@@ -40,6 +43,7 @@ public class Piechart {
 		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
 		    // dockPanel.addEast(col.asWidget(), 1);
 		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+		   
 
 		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 		    chartLoader.loadApi(new Runnable() {
@@ -194,9 +198,9 @@ public class Piechart {
 		for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
 			String[] tmp = entry.getValue().split("==");
 			bor[i] = Long.parseLong(tmp[2]);
+			}
 			i++;
 		}
-	}
 	
 	/**
 	 * set all runtime entries 
