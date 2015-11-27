@@ -2,6 +2,7 @@ package com.SE.gruppe9.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
@@ -12,8 +13,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.thirdparty.guava.common.util.concurrent.UncaughtExceptionHandlers;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
@@ -27,7 +26,7 @@ public class UserInterface {
 	// Arrays to get the data for the Listboxes 
 	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private Map<String,String> allLanguages = new HashMap<String,String>();
+	List<String> allLanguages = new ArrayList<String>();
 	private Map<String,String> allCountries = new HashMap<String,String>();
 	private Map<String,String> allGenres = new HashMap<String,String>();
 	
@@ -331,9 +330,12 @@ public class UserInterface {
 			}
 
 			public void onSuccess(Map<String, String> result){
-				allLanguages.putAll(result);
-				for (Map.Entry<String, String> entry : allLanguages.entrySet()) {
-					listBoxLanguage.addItem(entry.getKey());
+				//allLanguages.putAll(result);
+				int i = 0;
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					allLanguages.add(entry.getKey());
+					listBoxLanguage.addItem(allLanguages.get(i));
+					i++;
 				}
 					
 				} 

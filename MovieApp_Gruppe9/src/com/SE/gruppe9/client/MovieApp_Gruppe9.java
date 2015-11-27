@@ -84,8 +84,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// tab for charts
 		chartsPanel.setLayout(new FitLayout());
 		chartsPanel.setIconCls("tab.icon");
-		//chartsPanel.add(createBorderPanelCharts());
-		chartsPanel.add(createPanelBarchart());
+		chartsPanel.add(createBorderPanelCharts());
 		tabPanel.add(chartsPanel);
 
 		// tab for map
@@ -180,17 +179,17 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		borderPanel.add(southPanel, new BorderLayoutData(RegionPosition.SOUTH));
 
 		// add east panel
-		eastPanel.setTitle("Advertisemen");
+		eastPanel.setTitle("Advertisement");
 		eastPanel.setWidth(200);
 		Image imageE = new Image();
 		imageE.setWidth(200);
 		imageE.setHeight(500);
-		imageE.setSrc("images/mockingjay.jpg");
+		imageE.setSrc("images/banana.gif");
 		eastPanel.add(imageE);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
 
 		// add west Panel
-		westPanel.setTitle("Advertisemen");
+		westPanel.setTitle("Advertisement");
 		westPanel.setWidth(200);
 		Image imageW = new Image();
 		imageW.setWidth(200);
@@ -208,33 +207,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		hPanel.add(piechartButtonBOR);
 		hPanel.add(piechartButtonRT);
 		hPanel.add(barchartButtonCountry);
-		
-
-		 chartExtension.setLayout(new BorderLayout());
-	     chartExtension.add(chartsPanel);
-	     
-	     return borderPanel;
-	}
-	
-	private Panel createPanelBarchart(){
-		Panel chartExtension = new Panel();
-
-		Panel hPanel = new Panel();
-		Button barchartButtonCountry = new Button("Create Barchart Country");
-		Button piechartButtonRT = new Button("Create Piechart Runtime");
-		Button piechartButtonBOR = new Button("Create Piechart BOR");
-		
-		hPanel.setLayout(new HorizontalLayout(10));
-		hPanel.add(barchartButtonCountry);
-		hPanel.add(piechartButtonRT);
-		hPanel.add(piechartButtonBOR);
-		
-		barchartButtonCountry.addClickHandler(new ClickHandler() { 
-			 public void onClick(ClickEvent event) { 
-				 BarChart barchart = new BarChart();
-				 barchart.createChartCountry(); }
-		 
-		 });
 		
 		// add button for creating a Box Office Revenue piechart
 		piechartButtonBOR.addClickHandler(new ClickHandler() {
@@ -254,10 +226,19 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 						
 			});  
 	    	
+	    // add button for creating a Country barchart
+		barchartButtonCountry.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				BarChart barchart = new BarChart();
+				barchart.createChartCountry();
+			}
+							
+		}); 		
+		
 		 chartExtension.setLayout(new BorderLayout());
-		 chartExtension.add(chartsPanel);
-		 
-		return hPanel;
+	     chartExtension.add(chartsPanel);
+	     
+	     return borderPanel;
 	}
 	
 	/**

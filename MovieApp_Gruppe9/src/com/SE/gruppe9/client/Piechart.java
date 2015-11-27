@@ -1,6 +1,8 @@
 package com.SE.gruppe9.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JsArray;
@@ -23,11 +25,12 @@ import com.googlecode.gwt.charts.client.corechart.PieChart;
 
 
 public class Piechart {
-	private Table table = new Table();
-	private Long[] bor;
-	private Double[] runtime;
-	private int[] numberOfFilmsBOR;
-	private int[] numberOfFilmsRT;
+	private UserInterface user = new UserInterface();
+	private Table table = user.choseEvents();
+	private List<Long> bor = new ArrayList<Long>();
+	private List<Double> runtime = new ArrayList<Double>();
+	private int[] numberOfFilmsBOR = new int[3];
+	private int[] numberOfFilmsRT = new int[3];
 	Map<String, String> map = new HashMap<String, String>();
 	
 		
@@ -43,7 +46,6 @@ public class Piechart {
 		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
 		    // dockPanel.addEast(col.asWidget(), 1);
 		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
-		   
 
 		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 		    chartLoader.loadApi(new Runnable() {
@@ -67,6 +69,7 @@ public class Piechart {
 				//set the number of films per Range of Box Office Revenue
 				Piechart piechart = new Piechart();
 				piechart.setNumberOfFilmsBOR();
+				 System.out.println(table.getResultMap().size());
 				
 				// Prepare the data
 				DataTable dataTable = DataTable.create();
@@ -194,12 +197,10 @@ public class Piechart {
 	 * 	from hashmap to array 	
 	 */
 	public void setBOR(){
-		int i = 0;
 		for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
 			String[] tmp = entry.getValue().split("==");
-			bor[i] = Long.parseLong(tmp[2]);
+			bor.add(Long.parseLong(tmp[2]));
 			}
-			i++;
 		}
 	
 	/**
@@ -207,11 +208,9 @@ public class Piechart {
 	 * from hashmap to array 
 	 */
 	public void setRuntime(){
-		int i = 0;
 		for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
 			String[] tmp = entry.getValue().split("==");
-			runtime[i] = Double.parseDouble(tmp[3]);
-			i++;
+			runtime.add(Double.parseDouble(tmp[3]));
 		}
 	}
 	
@@ -219,21 +218,22 @@ public class Piechart {
 	 * calculate all movies with the same box office revenue range
 	 */
 	public void setNumberOfFilmsBOR(){
+		setBOR();
 		int counter1 = 0;
-		int counter2= 0;
+		int counter2 = 0;
 		int counter3 = 0; 
 		
-		for (int i=0; i< bor.length; i++){
-			if (bor[i]<=100000)
+		for (int i=0; i< bor.size(); i++){
+			if (bor.get(i) <= 100000)
 				counter1++;
-			else if (bor[i]<=1000000)
+			else if (bor.get(i) <= 1000000)
 				counter2++;
-			else if (bor[i]>1000000)
+			else if (bor.get(i) > 1000000)
 				counter3++;
 		}
-		numberOfFilmsBOR[0]=counter1;
-		numberOfFilmsBOR[1]=counter2;
-		numberOfFilmsBOR[2]=counter3;
+		numberOfFilmsBOR[0] = counter1;
+		numberOfFilmsBOR[1] = counter2;
+		numberOfFilmsBOR[2] = counter3;
 	}
 	
 	/**
@@ -241,19 +241,19 @@ public class Piechart {
 	 */
 	public void setNumberOfFilmsRT(){
 		int counter1 = 0;
-		int counter2= 0;
+		int counter2 = 0;
 		int counter3 = 0; 
 		
-		for (int i=0; i< runtime.length; i++){
-			if (runtime[i]<=60)
+		for (int i=0; i< runtime.size(); i++){
+			if (runtime.get(i) <= 60)
 				counter1++;
-			else if (runtime[i]<=90)
+			else if (runtime.get(i) <= 90)
 				counter2++;
-			else if (runtime[i]>90)
+			else if (runtime.get(i) > 90)
 				counter3++;
 		}
-		numberOfFilmsRT[0]=counter1;
-		numberOfFilmsRT[1]=counter2;
-		numberOfFilmsRT[2]=counter3;
+		numberOfFilmsRT[0] = counter1;
+		numberOfFilmsRT[1] = counter2;
+		numberOfFilmsRT[2] = counter3;
 	}
 }
