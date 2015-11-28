@@ -77,10 +77,12 @@ public class Heatmap  {
 		ColourArray.push("#ffff99");
 		ColourArray.push("#66ff66");
 		
+		// Hier stimmt ziemlich sicher etwas nicht :(
 		DataImportServiceAsync counter = GWT.create(DataImportService.class);
-		String year = "2013";
 		AsyncCallback<Integer> callback;
 		counter.getFilmCount(callback);
+		
+		String year = "2013";
 		
 		// Prepare the data
 		DataTable dataTable = DataTable.create();
