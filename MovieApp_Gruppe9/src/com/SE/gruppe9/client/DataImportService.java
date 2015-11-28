@@ -21,4 +21,6 @@ public interface DataImportService extends RemoteService {
 	Map<String, String> getAllCountries();
 	
 	Map<String, String> getAllGenres();
+	
+	int getFilmCount();
 }
