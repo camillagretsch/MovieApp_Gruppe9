@@ -20,4 +20,6 @@ public interface DataImportServiceAsync {
 	
 	void getAllGenres(
 			AsyncCallback<Map<String, String>> callback);
+			
+	void getFilmCount(AsyncCallback<Integer> callback);
 }
