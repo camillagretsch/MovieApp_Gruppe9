@@ -29,11 +29,10 @@ public class Heatmap  {
 	
 	VerticalPanel verticalPanel = new VerticalPanel();
 	UserInterface ui = new UserInterface();
+
+	private ArrayList<String> list = new ArrayList<String>();
 	
-	private Map<String, String> resultMap = new HashMap<String, String>();
-	private Map<String, String> tmpMap = new HashMap<String, String>();
-	private boolean tableIsEmpty;
-	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
+	
 
 	// creates a Panel and communicates with the HTML page
 	public void createChart() {
@@ -78,22 +77,27 @@ public class Heatmap  {
 		ColourArray.push("#ffff99");
 		ColourArray.push("#66ff66");
 		
+		DataImportServiceAsync counter = GWT.create(DataImportService.class);
+		String year = "2013";
+		AsyncCallback<Integer> callback;
+		counter.getFilmCount(callback);
+		
 		// Prepare the data
 		DataTable dataTable = DataTable.create();
 		
 		dataTable.addColumn(ColumnType.STRING, "Country");
 		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
-						
-		dataTable.addRows(1);
-		dataTable.setValue(0, 0, "Germany");
-		dataTable.setValue(0, 1, 600);
-//		
-//		dataTable.setValue(1, 0, "United Kingdom");
-//		dataTable.setValue(1, 1, 300);
-//		
-//		dataTable.setValue(2, 0, "Brazil");
-//		dataTable.setValue(2, 1, 400);
-//		
+		
+		dataTable.addRows(3);
+		dataTable.setValue(0, 0,"India");
+		dataTable.setValue(0, 1, counter.getCountries("India", year));
+		
+		dataTable.setValue(1, 0, "United Kingdom");
+		dataTable.setValue(1, 1, counter.getCountries("United Kingdom", year));
+		
+		dataTable.setValue(2, 0, "Brazil");
+		dataTable.setValue(2, 1, counter.getCountries("Brazil", year));
+		
 //		dataTable.setValue(3, 0, "Canada");
 //		dataTable.setValue(3, 1, 500);
 //		
