@@ -379,4 +379,58 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 		}
 		return mapGenre;
 	}
+	
+	public int countCountries(String fullpath, String country, String year)   {
+
+			String cvsSplitByCountry = "==";
+			int filmCount = 0;
+			int count = 0;
+
+			try {
+				br = new BufferedReader(new FileReader(movieDoc));
+				while ((line = br.readLine()) != null) {
+
+				      // counts the number of movies from a specific country in a specific year
+					String[] countryArray = line.split(cvsSplitByCountry);
+					System.out.println("length: " + countryArray.length);
+					for (int i=0; i<countryArray.length; i++) {
+						if(countryArray[i].contains(country) && countryArray[i].contains(year)  ) {
+							filmCount++;
+							count++;
+						}else {
+							count++;
+						}
+					}
+			
+			}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return filmCount;
+		  }
+	
+	
+	// Was macht diese Methode genau?
+	public int getFilmCount() {
+		ServletContext context = getServletContext();
+		String fullPath = context.getRealPath(movieDoc);
+		try {
+			// Hier stimmt ziemlich sicher etwas nicht...
+			filmCount = countCountries(fullPath, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return filmCount;
+	}
 }
