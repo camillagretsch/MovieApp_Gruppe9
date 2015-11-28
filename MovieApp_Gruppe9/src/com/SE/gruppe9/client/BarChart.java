@@ -118,8 +118,8 @@ public class BarChart {
 //public void setLanguage(){
 //	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
 //		String[] tmp = entry.getValue().split("==");
-//		if (tmp[6].isEmpty() == false) {
-//		language.add((tmp[6]));
+//		if (tmp[4].isEmpty() == false) {
+//		language.add((tmp[4]));
 //		}
 //	}
 //}
@@ -140,8 +140,8 @@ public class BarChart {
 //public void setGenre(){
 //	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
 //		String[] tmp = entry.getValue().split("==");
-//		if (tmp[8].isEmpty() == false) {
-//		genre.add((tmp[8]));
+//		if (tmp[6].isEmpty() == false) {
+//		genre.add((tmp[6]));
 //		}
 //	}
 //}
