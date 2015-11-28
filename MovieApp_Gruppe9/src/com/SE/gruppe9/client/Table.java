@@ -13,7 +13,7 @@ public class Table {
 
 	private Panel vPanel = new Panel();
 	private FlexTable flexibleTable = new FlexTable();
-	private Map<String, String> resultMap = new HashMap<String, String>();
+	static Map<String, String> resultMap = new HashMap<String, String>();
 	private Map<String, String> tmpMap = new HashMap<String, String>();
 
 	// async object used for the server side import of the data
@@ -376,21 +376,21 @@ public class Table {
 	 * 
 	 * @return
 	 */
-	public Map<String, String> getResultMap() {
+	public static Map<String, String> getResultMap() {
 		return resultMap;
 	}
 
-	public void setTestMap() {
-
-		resultMap
-				.put("id01",
-						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-		resultMap
-				.put("id02",
-						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-		resultMap
-				.put("id01",
-						"Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
-
-	}
+//	public void setTestMap() {
+//
+//		resultMap
+//				.put("id01",
+//						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+//		resultMap
+//				.put("id02",
+//						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+//		resultMap
+//				.put("id01",
+//						"Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
+//
+//	}
 }

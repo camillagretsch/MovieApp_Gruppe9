@@ -56,7 +56,6 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 
 	// Array to go through each row of the data file
 	private String[] movie;
-	private String[] tmp;
 
 	private static String line = "";
 	private BufferedReader br = null;
@@ -283,7 +282,8 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	public Map<String, String> intermediateLanguageFilter(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
-
+			
+			mapLanguage.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
@@ -291,7 +291,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				setMovie(line.split(cvsSplitBy));
 
 				int i = 0;
-				tmp = movie[6].split(", ");
+				String[] tmp = movie[6].split(", ");
 				while (i < tmp.length) {
 					mapLanguage.put(tmp[i], "");
 					i++;
@@ -316,7 +316,8 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	public Map<String, String> intermediateCountryFilter(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
-
+			
+			mapCountry.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
@@ -324,7 +325,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				setMovie(line.split(cvsSplitBy));
 
 				int i = 0;
-				tmp = movie[7].split(", ");
+				String[] tmp = movie[7].split(", ");
 				while (i < tmp.length) {
 					mapCountry.put(tmp[i], "");
 					i++;
@@ -349,7 +350,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	public Map<String, String> intermediateGenreFilter(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
-
+			mapGenre.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
@@ -357,7 +358,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				setMovie(line.split(cvsSplitBy));
 
 				int i = 0;
-				tmp = movie[8].split(", ");
+				String[] tmp = movie[8].split(", ");
 				while (i < tmp.length) {
 					mapGenre.put(tmp[i], "");
 					i++;

@@ -26,10 +26,10 @@ public class UserInterface {
 	// Arrays to get the data for the Listboxes 
 	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	List<String> allLanguages = new ArrayList<String>();
-	private Map<String,String> allCountries = new HashMap<String,String>();
-	private Map<String,String> allGenres = new HashMap<String,String>();
-	
+	private List<String> allLanguages = new ArrayList<String>();
+	private List<String> allCountries = new ArrayList<String>();
+	private List<String> allGenres = new ArrayList<String>();
+	DataImportServiceAsync filter = GWT.create(DataImportService.class);
 
 	// all Buttons Tetxtbox and Listboxes
 	private final Button goButton = new Button("GO!");
@@ -46,8 +46,6 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
-	
-	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 	
 	private int count = 0;
 
@@ -108,12 +106,6 @@ public class UserInterface {
 		// listbox for language
 		listBoxLanguage.addItem("Language");
 		importAllLanguages();
-//		for (int i = 0; i < Languages.length; i++) { 
-//		 if (!Languages[i].equals("{}")) {
-//			 listBoxLanguage.addItem(Languages[i]); 
-//			 } 
-//		 } 
-	
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);
 
@@ -319,6 +311,8 @@ public class UserInterface {
 	}
 
 	public void importAllLanguages() {
+		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
+		
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -330,13 +324,16 @@ public class UserInterface {
 			}
 
 			public void onSuccess(Map<String, String> result){
-				//allLanguages.putAll(result);
+
 				int i = 0;
 				for (Map.Entry<String, String> entry : result.entrySet()) {
+					if (!entry.getKey().equals("{}") && !entry.getKey().equals("France") && entry.getKey().length() < 40) {
 					allLanguages.add(entry.getKey());
 					listBoxLanguage.addItem(allLanguages.get(i));
 					i++;
+					}
 				}
+				System.out.println("L" + allLanguages.size());
 					
 				} 
 		};
@@ -344,6 +341,7 @@ public class UserInterface {
 	}
 	
 	public void importAllCountries() {
+		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -355,10 +353,16 @@ public class UserInterface {
 			}
 
 			public void onSuccess(Map<String, String> result){
-				allCountries.putAll(result);
-				for (Map.Entry<String, String> entry : allCountries.entrySet()) {
-					listBoxCountry.addItem(entry.getKey());
+				
+				int i = 0;
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					if (!entry.getKey().equals("{}") && !entry.getKey().contains("Language")) {
+					allCountries.add(entry.getKey());
+					listBoxCountry.addItem(allCountries.get(i));
+					i++;
+					}
 				}
+				System.out.println("C" + allCountries.size());
 					
 				} 
 		};
@@ -366,6 +370,7 @@ public class UserInterface {
 	}
 	
 	public void importAllGenres() {
+		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -377,10 +382,16 @@ public class UserInterface {
 			}
 
 			public void onSuccess(Map<String, String> result){
-				allGenres.putAll(result);
-				for (Map.Entry<String, String> entry : allGenres.entrySet()) {
-					listBoxGenre.addItem(entry.getKey());
+				
+				int i = 0;
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					if (!entry.getKey().equals("{}")) {
+					allGenres.add(entry.getKey());
+					listBoxGenre.addItem(allGenres.get(i));
+					i++;
+					}
 				}
+				System.out.println("G" + allGenres.size());
 					
 				} 
 		};
