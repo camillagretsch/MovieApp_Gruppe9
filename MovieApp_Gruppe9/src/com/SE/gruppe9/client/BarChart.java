@@ -1,6 +1,7 @@
 package com.SE.gruppe9.client;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -18,28 +20,37 @@ import com.googlecode.gwt.charts.client.ChartLoader;
 import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
+import com.googlecode.gwt.charts.client.Selection;
 import com.googlecode.gwt.charts.client.corechart.ColumnChart;
 import com.googlecode.gwt.charts.client.corechart.ColumnChartOptions;
+import com.googlecode.gwt.charts.client.event.ReadyEvent;
+import com.googlecode.gwt.charts.client.event.ReadyHandler;
 import com.googlecode.gwt.charts.client.options.HAxis;
 import com.googlecode.gwt.charts.client.options.VAxis;
 
-
+/**
+ * drawBarcharts for visualizing the filtered dataset
+ */
 public class BarChart {
 	
 		VerticalPanel verticalPanel = new VerticalPanel();
 		UserInterface ui = new UserInterface();
 		private static Table table = new Table();
-		private String[] language;
-		private  String[] country;
-		private String[] genre;
 		private int[] numberOfFilmsCountry;
 		private int[] numberOfFilmsLanguage;
 		private int[] numberOfFilmsGenre;
-		private String[] uniqueCountry;
+
 		
-		private static Map<String,String> allCountries = new HashMap<String,String>();
-		private static DataImportServiceAsync filter = GWT.create(DataImportService.class);
-		
+		private List<String> genre = new ArrayList<String>();
+		private List<String> language = new ArrayList<String>();
+		private List<String> allCountries = new ArrayList<String>();
+		private List<String> uniqueCountries = new ArrayList<String>();
+
+		Map<String, String> map = new HashMap<String, String>();
+
+		/**
+		*  initialize Barchart for visualizing number of movies per Country 
+		*/
 		void createChartCountry() {
 		   	RootLayoutPanel rp = RootLayoutPanel.get();
 
@@ -69,7 +80,10 @@ public class BarChart {
 		    rp.add(dockLayoutPanel);
 		}
 			
-
+		
+		/** draw Barchart for Country
+		 * @param chart
+		 */
 		void drawChartCountry(ColumnChart chart) {
 				
 		setNumberOfFilmsCountry();
@@ -78,10 +92,10 @@ public class BarChart {
 		DataTable dataTable = DataTable.create();
 		dataTable.addColumn(ColumnType.STRING, "Country");
 		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
-		dataTable.addRows(uniqueCountry.length);
+		dataTable.addRows(uniqueCountries.size());
 
-		for (int i = 0; i < uniqueCountry.length; i++) {
-			dataTable.setValue(i, 0, uniqueCountry[i]);
+		for (int i = 0; i < uniqueCountries.size(); i++) {
+			dataTable.setValue(i, 0, uniqueCountries.get(i));
 		}
 		for (int row = 0; row < numberOfFilmsCountry.length; row++) {
 				dataTable.setValue(row, 1, numberOfFilmsCountry[row]);
@@ -97,51 +111,61 @@ public class BarChart {
 
 		// Draw the chart
 		chart.draw(dataTable, options);
-	}
-
-public void setLanguage(){
-	int i = 0;
-	for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
-		String[] tmp = entry.getValue().split("==");
-		language[i] = tmp[4];
-		i++;
-	}
-}
-
-public void setCountry(){
-	int i = 0;
-	for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
-		String[] tmp = entry.getValue().split("==");
-		country[i] = tmp[5];
-		i++;
-	}
-}
-
-public void setGenre(){
-	int i = 0;
-	for (Map.Entry<String, String> entry : table.getResultMap().entrySet()){
-		String[] tmp = entry.getValue().split("==");
-		genre[i] = tmp[5];
-		i++;
-	}
-}
-
-private void setNumberOfFilmsCountry(){
-	setCountry();
-	List<String> allResultCountries = Arrays.asList(country);
-	Set<String> resultCountrySet = new TreeSet<String>(allResultCountries);
-	uniqueCountry = (String[])resultCountrySet.toArray();
-
-	
-	int counter=0;
-	for(int i=0; i< uniqueCountry.length; i++){
-		for(int j=0; j<country.length; i++){
-			if(uniqueCountry[i]==country[j])
-				counter++;
+			
 		}
-		numberOfFilmsCountry[i]=counter;
+		
+
+//public void setLanguage(){
+//	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+//		String[] tmp = entry.getValue().split("==");
+//		if (tmp[6].isEmpty() == false) {
+//		language.add((tmp[6]));
+//		}
+//	}
+//}
+
+	/**
+	 * set all country entries of the filtred table from hashmap to array 
+	 */
+	public void setCountry(){
+		for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+			String[] tmp = entry.getValue().split("==");
+			if (tmp[5].isEmpty() == false) {
+				String[] temp = tmp[5].split(","); 
+				allCountries.addAll(Arrays.asList(temp));
+			}
+		}
 	}
-}
+
+//public void setGenre(){
+//	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+//		String[] tmp = entry.getValue().split("==");
+//		if (tmp[8].isEmpty() == false) {
+//		genre.add((tmp[8]));
+//		}
+//	}
+//}
+
+	/**
+	 * calculate number of movies for each country
+	 */
+	private void setNumberOfFilmsCountry(){
+		setCountry();
+		
+		Set<String> resultCountrySet = new TreeSet<String>(allCountries);
+		this.uniqueCountries = new ArrayList<String>(resultCountrySet);
+		
+		int counter=0;
+		for(int i=0; i<uniqueCountries.size(); i++){
+			for(int j=0; j<allCountries.size(); i++){
+				if(uniqueCountries.get(i)==allCountries.get(j))
+					counter++;
+			}
+			numberOfFilmsCountry[i]=counter;
+			counter=0;
+		}
+	}
+
 
 
 }
