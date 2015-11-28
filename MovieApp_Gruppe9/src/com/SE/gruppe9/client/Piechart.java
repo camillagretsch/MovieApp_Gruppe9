@@ -23,120 +23,123 @@ import com.googlecode.gwt.charts.client.event.ReadyHandler;
 import com.googlecode.gwt.charts.client.corechart.PieChart;
 
 
+/**
+ * draw Piecharts for visualizing the filtered dataset
+ */
 
 public class Piechart {
 	
 	
-	private List<Long> bor = new ArrayList<Long>();
+	private List<Double> bor = new ArrayList<Double>();
 	private List<Double> runtime = new ArrayList<Double>();
 	private int[] numberOfFilmsBOR = new int[3];
 	private int[] numberOfFilmsRT = new int[3];
 	Map<String, String> map = new HashMap<String, String>();
 
-		
+	/**
+	 * initialize Piechart for visualizing number of movies per Range of Box Office Revenue (BOR)
+	 */
 		void createChartBOR() {
 
-//		   	RootLayoutPanel rp = RootLayoutPanel.get();
-//
-//		    // Create a Dock Panel
-//		    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-//		    dockLayoutPanel.setStyleName("dockpanel");
-//		    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
-//
-//		    // Add text all around
-//		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
-//		    // dockPanel.addEast(col.asWidget(), 1);
-//		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
-//
-//		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
-//		    chartLoader.loadApi(new Runnable() {
-//
-//		        @Override
-//		        public void run() {
-//		            VerticalPanel verticalPanel = new VerticalPanel();
-//		            PieChart col = new PieChart();
-//		            verticalPanel.add(col);
-//		            Piechart piechart = new Piechart();
-//		            piechart.drawChartBOR(col);
-//		            dockLayoutPanel.add(verticalPanel);
-//		        }
-//		    });
-//		    rp.add(dockLayoutPanel);
-//		}
-//			
-//
-//			void drawChartBOR(final PieChart chart) {
-//				
-//				//set the number of films per Range of Box Office Revenue
-//				Piechart piechart = new Piechart();
-//				piechart.setNumberOfFilmsBOR();
-//				
-//				// Prepare the data
-//				DataTable dataTable = DataTable.create();
-//				dataTable.addColumn(ColumnType.STRING, "Box Office Revenue");
-//				dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
-//				dataTable.addRows(3);
-//				dataTable.setValue(0, 0, "<= 100'000");
-//				dataTable.setValue(0, 1, numberOfFilmsBOR[0]);
-//				dataTable.setValue(1, 0, "<= 1'000'000");
-//				dataTable.setValue(1, 1, numberOfFilmsBOR[1]);
-//				dataTable.setValue(2, 0, "> 1'000'000");
-//				dataTable.setValue(2, 1, numberOfFilmsBOR[2]);
-//			
-//
-//				// Set options
-//				PieChartOptions options = PieChartOptions.create();
-//				options.setBackgroundColor("#f0f0f0");
-//
-//				// options.setColors(colors);
-//				options.setFontName("Tahoma");
-//				options.setIs3D(false);
-//				options.setPieResidueSliceColor("#000000");
-//				options.setPieResidueSliceLabel("Others");
-//				options.setSliceVisibilityThreshold(0.1);
-//				options.setTitle("Number of Films per Range of Box Office Revenue");
-//
-//				// Draw the chart
-//				chart.draw(dataTable, options);
-//				chart.addReadyHandler(new ReadyHandler() {
-//
-//					@Override
-//					public void onReady(ReadyEvent event) {
-//						final JsArray<Selection> selectionArray = Selection.createArray().cast();
-//						selectionArray.setLength(1);
-//
-//						final Selection selection = Selection.create(1, null).cast();
-//						selectionArray.set(0, selection);
-//				
-//					}
-//				});
+		   	RootLayoutPanel rp = RootLayoutPanel.get();
+
+		    // Create a Dock Panel
+		    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
+		    dockLayoutPanel.setStyleName("dockpanel");
+		    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
+
+		    // Add text all around
+		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
+		    // dockPanel.addEast(col.asWidget(), 1);
+		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+
+		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
+		    chartLoader.loadApi(new Runnable() {
+
+		        @Override
+		        public void run() {
+		            VerticalPanel verticalPanel = new VerticalPanel();
+		            PieChart col = new PieChart();
+		            verticalPanel.add(col);
+		            Piechart piechart = new Piechart();
+		            piechart.drawChartBOR(col);
+		            dockLayoutPanel.add(verticalPanel);
+		        }
+		    });
+		    rp.add(dockLayoutPanel);
+		}
+			
+		/**
+		 * draw Piechart for Box Office Revenue
+		 * @param chart
+		 */
+			void drawChartBOR(final PieChart chart) {
+				
+				//set the number of films per Range of Box Office Revenue
+				setNumberOfFilmsBOR();
+				
+				
+				// Prepare the data
+				DataTable dataTable = DataTable.create();
+				dataTable.addColumn(ColumnType.STRING, "Box Office Revenue");
+				dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
+				dataTable.addRows(3);
+				dataTable.setValue(0, 0, "<= 100'000");
+				dataTable.setValue(0, 1, numberOfFilmsBOR[0]);
+				dataTable.setValue(1, 0, "<= 1'000'000");
+				dataTable.setValue(1, 1, numberOfFilmsBOR[1]);
+				dataTable.setValue(2, 0, "> 1'000'000");
+				dataTable.setValue(2, 1, numberOfFilmsBOR[2]);
+			
+
+				// Set options
+				PieChartOptions options = PieChartOptions.create();
+				options.setBackgroundColor("#f0f0f0");
+
+				// options.setColors(colors);
+				options.setFontName("Tahoma");
+				options.setIs3D(false);
+				options.setTitle("Number of Films per Range of Box Office Revenue");
+
+				// Draw the chart
+				chart.draw(dataTable, options);
+				chart.addReadyHandler(new ReadyHandler() {
+
+					@Override
+					public void onReady(ReadyEvent event) {
+						final JsArray<Selection> selectionArray = Selection.createArray().cast();
+						selectionArray.setLength(1);
+
+						final Selection selection = Selection.create(1, null).cast();
+						selectionArray.set(0, selection);
+				
+					}
+				});
 
 			}
 	
-			
-			void createChartRT() {
-				//Test
-				System.out.println(Table.getResultMap().size());
-				setNumberOfFilmsRT();
-				System.out.println(numberOfFilmsRT[2]);
-				
-			   	RootLayoutPanel rp = RootLayoutPanel.get();
+		
+		/**
+		*  initialize Piechart for visualizing number of movies per Range of Runtime (RT)
+		*/
+	void createChartRT() {
+		 	RootLayoutPanel rp = RootLayoutPanel.get();
 
-			    // Create a Dock Panel
-			    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-			    dockLayoutPanel.setStyleName("dockpanel");
-			    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
+			// Create a Dock Panel
+			 final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
+			 dockLayoutPanel.setStyleName("dockpanel");
+			 dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
-			    // Add text all around
-			    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
-			    // dockPanel.addEast(col.asWidget(), 1);
-			    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+			 // Add text all around
+			 dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
+			 // dockPanel.addEast(col.asWidget(), 1);
+			 dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
 
-			    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
-			    chartLoader.loadApi(new Runnable() {
+			 ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
+			 chartLoader.loadApi(new Runnable() {
 
-			        @Override
-			        public void run() {
+			     @Override
+			     public void run() {
 			            VerticalPanel verticalPanel = new VerticalPanel();
 			            PieChart col = new PieChart();
 			            verticalPanel.add(col);
@@ -148,7 +151,10 @@ public class Piechart {
 			    rp.add(dockLayoutPanel);
 			}
 				
-
+			/**
+			 	* draw Piechart for Runtime
+			 	* @param chart
+			 */
 				void drawChartRT(final PieChart chart) {
 					
 					//set the number of films per Range of Box Office Revenue
@@ -159,9 +165,9 @@ public class Piechart {
 					dataTable.addColumn(ColumnType.STRING, "Runtime");
 					dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
 					dataTable.addRows(3);
-					dataTable.setValue(0, 0, "≤ 60 min");
+					dataTable.setValue(0, 0, "<= 60 min");
 					dataTable.setValue(0, 1, numberOfFilmsRT[0]);
-					dataTable.setValue(1, 0, "≤ 90 min");
+					dataTable.setValue(1, 0, "<= 90 min");
 					dataTable.setValue(1, 1, numberOfFilmsRT[1]);
 					dataTable.setValue(2, 0, "> 90 min");
 					dataTable.setValue(2, 1, numberOfFilmsRT[2]);
@@ -174,9 +180,7 @@ public class Piechart {
 					// options.setColors(colors);
 					options.setFontName("Tahoma");
 					options.setIs3D(false);
-					options.setPieResidueSliceColor("#000000");
-					options.setPieResidueSliceLabel("Others");
-					options.setSliceVisibilityThreshold(0.1);
+					
 					options.setTitle("Number of Films per Range of Runtime");
 
 					// Draw the chart
@@ -194,7 +198,7 @@ public class Piechart {
 						}
 					});
 
-				}
+				}	
 	
 	/**
 	 *  set all box office revenue entries 
@@ -203,9 +207,11 @@ public class Piechart {
 	public void setBOR(){
 		for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
 			String[] tmp = entry.getValue().split("==");
-			bor.add(Long.parseLong(tmp[2]));
+			if (tmp[2].isEmpty() == false) {
+			bor.add(Double.parseDouble(tmp[2]));
 			}
 		}
+	}
 	
 	/**
 	 * set all runtime entries 
@@ -230,12 +236,14 @@ public class Piechart {
 		int counter3 = 0; 
 		
 		for (int i=0; i< bor.size(); i++){
-			if (bor.get(i) <= 100000)
-				counter1++;
-			else if (bor.get(i) <= 1000000)
-				counter2++;
-			else if (bor.get(i) > 1000000)
-				counter3++;
+			if(bor.get(i)!= null){
+				if (bor.get(i) <= 100000)
+					counter1++;
+				else if (bor.get(i) <= 1000000)
+					counter2++;
+				else if (bor.get(i) > 1000000)
+					counter3++;
+			}
 		}
 		numberOfFilmsBOR[0] = counter1;
 		numberOfFilmsBOR[1] = counter2;
@@ -252,12 +260,14 @@ public class Piechart {
 		int counter3 = 0; 
 		
 		for (int i = 0; i < runtime.size(); i++){
-			if (runtime.get(i) <= 60)
-				counter1++;
-			else if (runtime.get(i) <= 90)
-				counter2++;
-			else if (runtime.get(i) > 90)
-				counter3++;
+			if(runtime.get(i)!= null){
+				if (runtime.get(i) <= 60)
+					counter1++;
+				else if (runtime.get(i) <= 90)
+					counter2++;
+				else if (runtime.get(i) > 90)
+					counter3++;
+			}
 		}
 		numberOfFilmsRT[0] = counter1;
 		numberOfFilmsRT[1] = counter2;
