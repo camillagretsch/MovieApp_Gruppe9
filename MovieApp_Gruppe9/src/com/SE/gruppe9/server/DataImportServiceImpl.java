@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -235,17 +236,17 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * get all the data of the chosen column and store it in a hashMap
+	 * get all data for the filter option 
 	 * 
 	 * @param constant
 	 * @return
 	 */
-	public Map<String, String> getAllLanguages() {
+	public Map<String, String> getAllLCG() {
 
 		ServletContext context = getServletContext();
 		String fullPath = context.getRealPath(movieDoc);
 		try {
-			mapLanguage = intermediateLanguageFilter(fullPath);
+			mapLanguage = intermediateLCG(fullPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -253,49 +254,24 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 		return mapLanguage;
 	}
 	
-	public Map<String, String> getAllCountries() {
-
-		ServletContext context = getServletContext();
-		String fullPath = context.getRealPath(movieDoc);
-		try {
-			mapCountry = intermediateCountryFilter(fullPath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return mapCountry;
-	}
-	
-	public Map<String, String> getAllGenres() {
-
-		ServletContext context = getServletContext();
-		String fullPath = context.getRealPath(movieDoc);
-		try {
-			mapGenre = intermediateGenreFilter(fullPath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return mapGenre;
-	}
-
-	public Map<String, String> intermediateLanguageFilter(String fullPath) {
+	/**
+	 * reads in the csv file and store all languages, countries and genres in an hashmap
+	 * @param fullPath
+	 * @return
+	 */
+	public Map<String, String> intermediateLCG(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
-			
-			mapLanguage.clear();
+
+			maps.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
 				// use semicolon as separator
 				setMovie(line.split(cvsSplitBy));
+				
+				maps.put(movie[WIKIID], movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
 
-				int i = 0;
-				String[] tmp = movie[6].split(", ");
-				while (i < tmp.length) {
-					mapLanguage.put(tmp[i], "");
-					i++;
-				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -310,127 +286,59 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 		}
-		return mapLanguage;
+		return maps;
 	}
 	
-	public Map<String, String> intermediateCountryFilter(String fullPath) {
-		try {
-			br = new BufferedReader(new FileReader(fullPath));
-			
-			mapCountry.clear();
-			while ((line = br.readLine()) != null) {
-				cutFreebaseID();
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<String, String> countMovies() {
 
-				// use semicolon as separator
-				setMovie(line.split(cvsSplitBy));
-
-				int i = 0;
-				String[] tmp = movie[7].split(", ");
-				while (i < tmp.length) {
-					mapCountry.put(tmp[i], "");
-					i++;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return mapCountry;
-	}
-	
-	public Map<String, String> intermediateGenreFilter(String fullPath) {
-		try {
-			br = new BufferedReader(new FileReader(fullPath));
-			mapGenre.clear();
-			while ((line = br.readLine()) != null) {
-				cutFreebaseID();
-
-				// use semicolon as separator
-				setMovie(line.split(cvsSplitBy));
-
-				int i = 0;
-				String[] tmp = movie[8].split(", ");
-				while (i < tmp.length) {
-					mapGenre.put(tmp[i], "");
-					i++;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return mapGenre;
-	}
-	
-	public int countCountries(String fullpath, String country, String year)   {
-
-			String cvsSplitByCountry = "==";
-			int filmCount = 0;
-			int count = 0;
-
-			try {
-				br = new BufferedReader(new FileReader(movieDoc));
-				while ((line = br.readLine()) != null) {
-
-				      // counts the number of movies from a specific country in a specific year
-					String[] countryArray = line.split(cvsSplitByCountry);
-					System.out.println("length: " + countryArray.length);
-					for (int i=0; i<countryArray.length; i++) {
-						if(countryArray[i].contains(country) && countryArray[i].contains(year)  ) {
-							filmCount++;
-							count++;
-						}else {
-							count++;
-						}
-					}
-			
-			}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (br != null) {
-					try {
-						br.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			return filmCount;
-		  }
-	
-	
-	// Was macht diese Methode genau?
-	public int getFilmCount() {
 		ServletContext context = getServletContext();
 		String fullPath = context.getRealPath(movieDoc);
 		try {
-			// Hier stimmt ziemlich sicher etwas nicht...
-			filmCount = countCountries(fullPath, null, null);
+			maps = intermediateCount(fullPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return filmCount;
+
+		return maps;
+	}
+	
+	/**
+	 * 
+	 * @param fullpath
+	 * @return
+	 */
+	public Map<String,String> intermediateCount(String fullpath) {
+
+		try {
+			br = new BufferedReader(new FileReader(movieDoc));
+			
+			maps.clear();
+			while ((line = br.readLine()) != null) {
+				cutFreebaseID();
+				
+				setMovie(line.split(cvsSplitBy));
+				
+				maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[COUNTRY]);
+				
+				}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return maps;
 	}
 }

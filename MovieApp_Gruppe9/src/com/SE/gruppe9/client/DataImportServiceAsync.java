@@ -12,14 +12,8 @@ public interface DataImportServiceAsync {
 	void filterData(String name, int column,
 			AsyncCallback<Map<String, String>> callback);
 
-	void getAllLanguages(
-			AsyncCallback<Map<String, String>> callback);
-	
-	void getAllCountries(
-			AsyncCallback<Map<String, String>> callback);
-	
-	void getAllGenres(
+	void getAllLCG(
 			AsyncCallback<Map<String, String>> callback);
 			
-	void getFilmCount(AsyncCallback<Integer> callback);
+	void countMovies(AsyncCallback<Map<String, String>> callback);
 }

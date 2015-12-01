@@ -1,6 +1,8 @@
 package com.SE.gruppe9.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -28,10 +30,9 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 public class Heatmap  {
 	
 	VerticalPanel verticalPanel = new VerticalPanel();
-	UserInterface ui = new UserInterface();
 
-	private ArrayList<String> list = new ArrayList<String>();
-	
+	private List<String> list = new ArrayList<String>();
+	Map<String,String> countries = new HashMap<String,String>();
 	
 
 	// creates a Panel and communicates with the HTML page
@@ -70,35 +71,32 @@ public class Heatmap  {
 	// Styles and draws a world map and also inserts data values into an array which
 	// the map then visualises.
 	private void draw(GeoChart geoChart) {
-		
+		countMovieForCountries();
 		
 		JsArrayString ColourArray = JavaScriptObject.createArray().cast();
 		ColourArray.push("#ff6666");
 		ColourArray.push("#ffff99");
 		ColourArray.push("#66ff66");
 		
-		// Hier stimmt ziemlich sicher etwas nicht :(
-		DataImportServiceAsync counter = GWT.create(DataImportService.class);
-		AsyncCallback<Integer> callback;
-		counter.getFilmCount(callback);
+		
 		
 		String year = "2013";
 		
 		// Prepare the data
 		DataTable dataTable = DataTable.create();
-		
+		countMovieForCountries();
 		dataTable.addColumn(ColumnType.STRING, "Country");
 		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
 		
 		dataTable.addRows(3);
 		dataTable.setValue(0, 0,"India");
-		dataTable.setValue(0, 1, counter.getCountries("India", year));
+		//dataTable.setValue(0, 1, counter.getCountries("India", year));
 		
 		dataTable.setValue(1, 0, "United Kingdom");
-		dataTable.setValue(1, 1, counter.getCountries("United Kingdom", year));
+		//dataTable.setValue(1, 1, counter.getCountries("United Kingdom", year));
 		
 		dataTable.setValue(2, 0, "Brazil");
-		dataTable.setValue(2, 1, counter.getCountries("Brazil", year));
+		//dataTable.setValue(2, 1, counter.getCountries("Brazil", year));
 		
 //		dataTable.setValue(3, 0, "Canada");
 //		dataTable.setValue(3, 1, 500);
@@ -121,5 +119,35 @@ public class Heatmap  {
 
 		// Draw the chart
 		geoChart.draw(dataTable, options);
+	}
+	
+	public void countMovieForCountries() {
+		DataImportServiceAsync filter = GWT.create(DataImportService.class);
+		
+		// Initialize the service proxy.
+		if (filter == null) {
+			filter = GWT.create(DataImportService.class);
+		}
+		// Set up the callback object.
+		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+			public void onFailure(Throwable caught) {
+
+			}
+
+			public void onSuccess(Map<String, String> result){
+			
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					String[] tmp = entry.getValue().split("==");
+					String[] tmp1 = tmp[1].split(", ");
+					int i = 0;
+					while (i < tmp1.length) {
+						countries.put(tmp1[i], "");
+						i++;
+					}
+				}
+				System.out.println(countries.size());
+			}
+		};
+		filter.countMovies(callback);
 	}
 }

@@ -1,8 +1,6 @@
 package com.SE.gruppe9.client;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
@@ -23,12 +21,12 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class UserInterface {
 
-	// Arrays to get the data for the Listboxes 
+	// Arrays to get the data for the Listboxes
 	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
-	private List<String> allLanguages = new ArrayList<String>();
-	private List<String> allCountries = new ArrayList<String>();
-	private List<String> allGenres = new ArrayList<String>();
+	private Map<String, String> allLanguages = new HashMap<String, String>();
+	private Map<String, String> allCountries = new HashMap<String, String>();
+	private Map<String, String> allGenres = new HashMap<String, String>();
 	DataImportServiceAsync filter = GWT.create(DataImportService.class);
 
 	// all Buttons Tetxtbox and Listboxes
@@ -46,7 +44,7 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
-	
+
 	private int count = 0;
 
 	/**
@@ -56,7 +54,7 @@ public class UserInterface {
 	public Panel getHPanel() {
 		return hPanel;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -70,6 +68,7 @@ public class UserInterface {
 	 */
 	private void createAll() {
 
+		importAllLanguages();
 		hPanel.setLayout(new HorizontalLayout(10));
 		vPanel.setLayout(new VerticalLayout());
 		h1Panel.setLayout(new HorizontalLayout(10));
@@ -105,19 +104,16 @@ public class UserInterface {
 
 		// listbox for language
 		listBoxLanguage.addItem("Language");
-		importAllLanguages();
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);
 
 		// listbox for country
 		listBoxCountry.addItem("Country");
-		importAllCountries();
 		listBoxCountry.setVisibleItemCount(1);
 		h1Panel.add(listBoxCountry);
 
 		// listbox for genre
 		listBoxGenre.addItem("Genre");
-		importAllGenres();
 		listBoxGenre.setVisibleItemCount(1);
 		h1Panel.add(listBoxGenre);
 
@@ -129,6 +125,7 @@ public class UserInterface {
 
 	/**
 	 * all change and click events
+	 * 
 	 * @return
 	 */
 	public Table choseEvents() {
@@ -136,9 +133,9 @@ public class UserInterface {
 		searchMovieField.addKeyDownHandler(new KeyDownHandler() {
 			public void onKeyDown(KeyDownEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					
+
 					String itemStringSelected = searchMovieField.getValue();
-				
+
 					if (count < 1) {
 						table.firstFilter(itemStringSelected, 2);
 					} else {
@@ -147,16 +144,16 @@ public class UserInterface {
 						table.secondFilter(itemStringSelected, 0);
 					}
 					count++;
-					
+
 				}
 			}
 		});
-		
+
 		goButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				
+
 				String itemStringSelected = searchMovieField.getValue();
-				
+
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 2);
 				} else {
@@ -165,10 +162,10 @@ public class UserInterface {
 					table.secondFilter(itemStringSelected, 0);
 				}
 				count++;
-				
+
 			}
 		});
-		
+
 		// change event for listbox year
 		listBoxYear.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -198,7 +195,8 @@ public class UserInterface {
 				int itemSelected = listBoxOffice.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxOffice.getValue(itemSelected);
+				String itemStringSelected = listBoxOffice
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 4);
 				} else {
@@ -219,7 +217,8 @@ public class UserInterface {
 				int itemSelected = listBoxRuntime.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxRuntime.getValue(itemSelected);
+				String itemStringSelected = listBoxRuntime
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 5);
 				} else {
@@ -239,7 +238,8 @@ public class UserInterface {
 				int itemSelected = listBoxLanguage.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxLanguage.getValue(itemSelected);
+				String itemStringSelected = listBoxLanguage
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 6);
 				} else {
@@ -259,7 +259,8 @@ public class UserInterface {
 				int itemSelected = listBoxCountry.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = listBoxCountry.getValue(itemSelected);
+				String itemStringSelected = listBoxCountry
+						.getValue(itemSelected);
 				if (count < 1) {
 					table.firstFilter(itemStringSelected, 7);
 				} else {
@@ -309,10 +310,12 @@ public class UserInterface {
 		});
 		return table;
 	}
-
+	
+	/**
+	 * get all filter options
+	 */
 	public void importAllLanguages() {
-		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
-		
+
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -323,78 +326,69 @@ public class UserInterface {
 
 			}
 
-			public void onSuccess(Map<String, String> result){
-
-				int i = 0;
-				for (Map.Entry<String, String> entry : result.entrySet()) {
-					if (!entry.getKey().equals("{}") && !entry.getKey().equals("France") && entry.getKey().length() < 40) {
-					allLanguages.add(entry.getKey());
-					listBoxLanguage.addItem(allLanguages.get(i));
-					i++;
-					}
-				}
-				System.out.println("L" + allLanguages.size());
-					
-				} 
-		};
-		filter.getAllLanguages(callback);
-	}
-	
-	public void importAllCountries() {
-		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
-		// Initialize the service proxy.
-		if (filter == null) {
-			filter = GWT.create(DataImportService.class);
-		}
-		// Set up the callback object.
-		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
-			public void onFailure(Throwable caught) {
-
-			}
-
-			public void onSuccess(Map<String, String> result){
+			public void onSuccess(Map<String, String> result) {
+				String[] movies;
 				
-				int i = 0;
+				// all Languages in HashMap - no Duplicates
 				for (Map.Entry<String, String> entry : result.entrySet()) {
-					if (!entry.getKey().equals("{}") && !entry.getKey().contains("Language")) {
-					allCountries.add(entry.getKey());
-					listBoxCountry.addItem(allCountries.get(i));
-					i++;
+					movies = entry.getValue().split("==");
+					String[] tmp = movies[0].split(", ");
+
+					int i = 0;
+					while (i < tmp.length) {
+						if (!tmp[i].equals("{}") && !tmp[i].equals("France") && tmp[i].length() < 40) {
+							allLanguages.put(tmp[i], "");
+						}
+						i++;
 					}
 				}
-				System.out.println("C" + allCountries.size());
-					
-				} 
-		};
-		filter.getAllCountries(callback);
-	}
-	
-	public void importAllGenres() {
-		//DataImportServiceAsync filter = GWT.create(DataImportService.class);
-		// Initialize the service proxy.
-		if (filter == null) {
-			filter = GWT.create(DataImportService.class);
-		}
-		// Set up the callback object.
-		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
-			public void onFailure(Throwable caught) {
-
-			}
-
-			public void onSuccess(Map<String, String> result){
 				
-				int i = 0;
+				// all Countries in HashMap - no Duplicates
 				for (Map.Entry<String, String> entry : result.entrySet()) {
-					if (!entry.getKey().equals("{}")) {
-					allGenres.add(entry.getKey());
-					listBoxGenre.addItem(allGenres.get(i));
-					i++;
+					movies = entry.getValue().split("==");
+
+					String[] tmp = movies[1].split(", ");
+
+					int i = 0;
+					while (i < tmp.length) {
+						if (!tmp[i].equals("{}") && !tmp[i].contains("Language")) {
+							allCountries.put(tmp[i], "");
+						}
+						i++;
 					}
 				}
-				System.out.println("G" + allGenres.size());
+				
+				// all Genres in HashMap - no Duplicates
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					movies = entry.getValue().split("==");
 					
-				} 
+					String[] tmp = movies[2].split(", ");
+					
+					int i = 0;
+					while (i < tmp.length) {
+						if (!tmp[i].equals("{}")) {
+							allGenres.put(tmp[i], "");
+						}
+						i++;
+					}
+				}
+				
+				// add Languages to ListBox
+				for (Map.Entry<String, String> entry : allLanguages.entrySet()) {
+					listBoxLanguage.addItem(entry.getKey());
+				}
+				
+				// add Countries to ListBox
+				for (Map.Entry<String,String> entry : allCountries.entrySet()) {
+					listBoxCountry.addItem(entry.getKey());
+				}
+				
+				// add Genres to ListBox
+				for (Map.Entry<String,String> entry : allGenres.entrySet()) {
+					listBoxGenre.addItem(entry.getKey());
+				}
+			}
 		};
-		filter.getAllGenres(callback);
+		filter.getAllLCG(callback);
 	}
 }

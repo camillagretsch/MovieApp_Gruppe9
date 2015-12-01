@@ -1,6 +1,5 @@
 package com.SE.gruppe9.client;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,61 +31,62 @@ import com.googlecode.gwt.charts.client.options.VAxis;
  * drawBarcharts for visualizing the filtered dataset
  */
 public class BarChart {
-	
-		VerticalPanel verticalPanel = new VerticalPanel();
-		UserInterface ui = new UserInterface();
-		private static Table table = new Table();
-		private int[] numberOfFilmsCountry;
-		private int[] numberOfFilmsLanguage;
-		private int[] numberOfFilmsGenre;
 
-		
-		private List<String> genre = new ArrayList<String>();
-		private List<String> language = new ArrayList<String>();
-		private List<String> allCountries = new ArrayList<String>();
-		private List<String> uniqueCountries = new ArrayList<String>();
+	VerticalPanel verticalPanel = new VerticalPanel();
+	private List<Integer> numberOfFilmsCountry = new ArrayList<Integer>();
+	// private int[] numberOfFilmsLanguage;
+	// private int[] numberOfFilmsGenre;
 
-		Map<String, String> map = new HashMap<String, String>();
+	// private List<String> genre = new ArrayList<String>();
+	// private List<String> language = new ArrayList<String>();
+	private List<String> allCountries = new ArrayList<String>();
+	private List<String> uniqueCountries = new ArrayList<String>();
 
-		/**
-		*  initialize Barchart for visualizing number of movies per Country 
-		*/
-		void createChartCountry() {
-		   	RootLayoutPanel rp = RootLayoutPanel.get();
+	Map<String, String> map = new HashMap<String, String>();
 
-		    // Create a Dock Panel
-		    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		    dockLayoutPanel.setStyleName("dockpanel");
-		    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
+	/**
+	 * initialize Barchart for visualizing number of movies per Country
+	 */
+	void createChartCountry() {
+		RootLayoutPanel rp = RootLayoutPanel.get();
 
-		    // Add text all around
-		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
-		    // dockPanel.addEast(col.asWidget(), 1);
-		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+		// Create a Dock Panel
+		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
+		dockLayoutPanel.setStyleName("dockpanel");
+		dockLayoutPanel.getElement().getStyle()
+				.setProperty("border", "solid lightblue 4px");
 
-		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
-		    chartLoader.loadApi(new Runnable() {
+		// Add text all around
+		dockLayoutPanel.addNorth(new HTML("oberer Rand"), 13);
+		dockLayoutPanel.addWest(new HTML("linker Rand"), 27);
 
-		        @Override
-		        public void run() {
-		            
-		            ColumnChart col = new ColumnChart();
-		            verticalPanel.add(col);
-		            BarChart barchart = new BarChart();
-		            barchart.drawChartCountry(col);
-		            dockLayoutPanel.add(verticalPanel);
-		        }
-		    });
-		    rp.add(dockLayoutPanel);
-		}
-			
-		
-		/** draw Barchart for Country
-		 * @param chart
-		 */
-		void drawChartCountry(ColumnChart chart) {
-				
+		ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
+		chartLoader.loadApi(new Runnable() {
+
+			@Override
+			public void run() {
+
+				ColumnChart col = new ColumnChart();
+				verticalPanel.add(col);
+				BarChart barchart = new BarChart();
+				barchart.drawChartCountry(col);
+				dockLayoutPanel.add(verticalPanel);
+			}
+		});
+		rp.add(dockLayoutPanel);
+	}
+
+	/**
+	 * draw Barchart for Country
+	 * 
+	 * @param chart
+	 */
+	void drawChartCountry(ColumnChart chart) {
+
 		setNumberOfFilmsCountry();
+		System.out.println(allCountries.size());
+		System.out.println(uniqueCountries.size());
+		System.out.println(numberOfFilmsCountry.size());
 
 		// Prepare the data
 		DataTable dataTable = DataTable.create();
@@ -97,10 +97,9 @@ public class BarChart {
 		for (int i = 0; i < uniqueCountries.size(); i++) {
 			dataTable.setValue(i, 0, uniqueCountries.get(i));
 		}
-		for (int row = 0; row < numberOfFilmsCountry.length; row++) {
-				dataTable.setValue(row, 1, numberOfFilmsCountry[row]);
-			}
-		
+		for (int row = 0; row < numberOfFilmsCountry.size(); row++) {
+			dataTable.setValue(row, 1, numberOfFilmsCountry.get(row));
+		}
 
 		// Set options
 		ColumnChartOptions options = ColumnChartOptions.create();
@@ -111,62 +110,74 @@ public class BarChart {
 
 		// Draw the chart
 		chart.draw(dataTable, options);
-			
-		}
-		
 
-//public void setLanguage(){
-//	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
-//		String[] tmp = entry.getValue().split("==");
-//		if (tmp[4].isEmpty() == false) {
-//		language.add((tmp[4]));
-//		}
-//	}
-//}
+	}
+
+	// public void setLanguage(){
+	// for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+	// String[] tmp = entry.getValue().split("==");
+	// if (tmp[4].isEmpty() == false) {
+	// language.add((tmp[4]));
+	// }
+	// }
+	// }
 
 	/**
-	 * set all country entries of the filtred table from hashmap to array 
+	 * set all country entries of the filtred table from hashmap to array
 	 */
-	public void setCountry(){
-		for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+	public void setCountry() {
+		for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()) {
 			String[] tmp = entry.getValue().split("==");
-			if (tmp[5].isEmpty() == false) {
-				String[] temp = tmp[5].split(","); 
+			if (tmp[5].isEmpty() == false && !tmp[5].equals("{}")) {
+				String[] temp = tmp[5].split(",");
 				allCountries.addAll(Arrays.asList(temp));
 			}
 		}
 	}
 
-//public void setGenre(){
-//	for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
-//		String[] tmp = entry.getValue().split("==");
-//		if (tmp[6].isEmpty() == false) {
-//		genre.add((tmp[6]));
-//		}
-//	}
-//}
+	// public void setGenre(){
+	// for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()){
+	// String[] tmp = entry.getValue().split("==");
+	// if (tmp[6].isEmpty() == false) {
+	// genre.add((tmp[6]));
+	// }
+	// }
+	// }
 
 	/**
 	 * calculate number of movies for each country
 	 */
-	private void setNumberOfFilmsCountry(){
+	private void setNumberOfFilmsCountry() {
 		setCountry();
-		
-		Set<String> resultCountrySet = new TreeSet<String>(allCountries);
-		this.uniqueCountries = new ArrayList<String>(resultCountrySet);
-		
-		int counter=0;
-		for(int i=0; i<uniqueCountries.size(); i++){
-			for(int j=0; j<allCountries.size(); i++){
-				if(uniqueCountries.get(i)==allCountries.get(j))
-					counter++;
+		int i;
+		for (i = 0; i < allCountries.size(); i++) {
+			int count = 0;
+			if (uniqueCountries.isEmpty() == true
+					|| uniqueCountries.contains(allCountries.get(i)) == false) {
+				uniqueCountries.add(allCountries.get(i));
+
+				for (int j = i; j < allCountries.size(); j++) {
+					if (allCountries.get(i).equalsIgnoreCase(
+							allCountries.get(j))) {
+						count++;
+					}
+				}
+				numberOfFilmsCountry.add(count);
 			}
-			numberOfFilmsCountry[i]=counter;
-			counter=0;
 		}
 	}
 
-
+	// Set<String> resultCountrySet = new TreeSet<String>(allCountries);
+	// this.uniqueCountries = new ArrayList<String>(resultCountrySet);
+	//
+	// int counter=0;
+	// for(int i=0; i<uniqueCountries.size(); i++){
+	// for(int j=0; j<allCountries.size(); i++){
+	// if(uniqueCountries.get(i)==allCountries.get(j))
+	// counter++;
+	// }
+	// numberOfFilmsCountry[i]=counter;
+	// counter=0;
+	// }
 
 }
-

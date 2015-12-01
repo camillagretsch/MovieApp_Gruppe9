@@ -1,13 +1,11 @@
 package com.SE.gruppe9.client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -17,10 +15,10 @@ import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.Selection;
+import com.googlecode.gwt.charts.client.corechart.PieChart;
 import com.googlecode.gwt.charts.client.corechart.PieChartOptions;
 import com.googlecode.gwt.charts.client.event.ReadyEvent;
 import com.googlecode.gwt.charts.client.event.ReadyHandler;
-import com.googlecode.gwt.charts.client.corechart.PieChart;
 
 
 /**
@@ -34,7 +32,6 @@ public class Piechart {
 	private List<Double> runtime = new ArrayList<Double>();
 	private int[] numberOfFilmsBOR = new int[3];
 	private int[] numberOfFilmsRT = new int[3];
-	Map<String, String> map = new HashMap<String, String>();
 
 	/**
 	 * initialize Piechart for visualizing number of movies per Range of Box Office Revenue (BOR)
@@ -49,9 +46,8 @@ public class Piechart {
 		    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
 		    // Add text all around
-		    dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
-		    // dockPanel.addEast(col.asWidget(), 1);
-		    dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+    	    dockLayoutPanel.addNorth(new HTML(""), 13);
+		    dockLayoutPanel.addWest(new HTML(""), 27);
 
 		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 		    chartLoader.loadApi(new Runnable() {
@@ -84,9 +80,9 @@ public class Piechart {
 				dataTable.addColumn(ColumnType.STRING, "Box Office Revenue");
 				dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
 				dataTable.addRows(3);
-				dataTable.setValue(0, 0, "<= 100'000");
+				dataTable.setValue(0, 0, "≤ 100'000");
 				dataTable.setValue(0, 1, numberOfFilmsBOR[0]);
-				dataTable.setValue(1, 0, "<= 1'000'000");
+				dataTable.setValue(1, 0, "≤ 1'000'000");
 				dataTable.setValue(1, 1, numberOfFilmsBOR[1]);
 				dataTable.setValue(2, 0, "> 1'000'000");
 				dataTable.setValue(2, 1, numberOfFilmsBOR[2]);
@@ -130,10 +126,9 @@ public class Piechart {
 			 dockLayoutPanel.setStyleName("dockpanel");
 			 dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
-			 // Add text all around
-			 dockLayoutPanel.addNorth(new HTML("oberer Rand"), 15);
-			 // dockPanel.addEast(col.asWidget(), 1);
-			 dockLayoutPanel.addWest(new HTML("linker Rand"), 15);
+		 	 // Add text all around
+			 dockLayoutPanel.addNorth(new HTML(""), 13);
+			 dockLayoutPanel.addWest(new HTML(""), 27);
 
 			 ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 			 chartLoader.loadApi(new Runnable() {
@@ -165,9 +160,9 @@ public class Piechart {
 					dataTable.addColumn(ColumnType.STRING, "Runtime");
 					dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
 					dataTable.addRows(3);
-					dataTable.setValue(0, 0, "<= 60 min");
+					dataTable.setValue(0, 0, "≤ 60 min");
 					dataTable.setValue(0, 1, numberOfFilmsRT[0]);
-					dataTable.setValue(1, 0, "<= 90 min");
+					dataTable.setValue(1, 0, "≤ 90 min");
 					dataTable.setValue(1, 1, numberOfFilmsRT[1]);
 					dataTable.setValue(2, 0, "> 90 min");
 					dataTable.setValue(2, 1, numberOfFilmsRT[2]);
@@ -237,12 +232,14 @@ public class Piechart {
 		
 		for (int i=0; i< bor.size(); i++){
 			if(bor.get(i)!= null){
-				if (bor.get(i) <= 100000)
+				if (bor.get(i) <= 100000) {
 					counter1++;
-				else if (bor.get(i) <= 1000000)
 					counter2++;
-				else if (bor.get(i) > 1000000)
+				} else if (bor.get(i) <= 1000000) {
+					counter2++;
+				} else if (bor.get(i) > 1000000) {
 					counter3++;
+				}
 			}
 		}
 		numberOfFilmsBOR[0] = counter1;
@@ -261,12 +258,14 @@ public class Piechart {
 		
 		for (int i = 0; i < runtime.size(); i++){
 			if(runtime.get(i)!= null){
-				if (runtime.get(i) <= 60)
+				if (runtime.get(i) <= 60) {
 					counter1++;
-				else if (runtime.get(i) <= 90)
 					counter2++;
-				else if (runtime.get(i) > 90)
+				} else if (runtime.get(i) <= 90) {
+					counter2++;
+				} else if (runtime.get(i) > 90) {
 					counter3++;
+				}
 			}
 		}
 		numberOfFilmsRT[0] = counter1;
