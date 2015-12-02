@@ -19,6 +19,9 @@ import com.googlecode.gwt.charts.client.corechart.PieChart;
 import com.googlecode.gwt.charts.client.corechart.PieChartOptions;
 import com.googlecode.gwt.charts.client.event.ReadyEvent;
 import com.googlecode.gwt.charts.client.event.ReadyHandler;
+import com.gwtext.client.widgets.Panel;
+import com.gwtext.client.widgets.Viewport;
+import com.gwtext.client.widgets.layout.VerticalLayout;
 
 
 /**
@@ -32,12 +35,14 @@ public class Piechart {
 	private List<Double> runtime = new ArrayList<Double>();
 	private int[] numberOfFilmsBOR = new int[3];
 	private int[] numberOfFilmsRT = new int[3];
-
+	Panel vPanel = new Panel();
+	
 	/**
 	 * initialize Piechart for visualizing number of movies per Range of Box Office Revenue (BOR)
 	 */
 		void createChartBOR() {
-
+			
+			vPanel.setLayout(new VerticalLayout());
 		   	RootLayoutPanel rp = RootLayoutPanel.get();
 
 		    // Create a Dock Panel
@@ -62,7 +67,9 @@ public class Piechart {
 		            dockLayoutPanel.add(verticalPanel);
 		        }
 		    });
-		    rp.add(dockLayoutPanel);
+		    vPanel.add(rp);
+		    vPanel.collapse();
+		   rp.add(dockLayoutPanel);
 		}
 			
 		/**
@@ -111,6 +118,7 @@ public class Piechart {
 				
 					}
 				});
+				
 
 			}
 	

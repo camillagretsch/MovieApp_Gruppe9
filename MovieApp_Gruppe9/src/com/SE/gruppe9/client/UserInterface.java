@@ -1,6 +1,8 @@
 package com.SE.gruppe9.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
@@ -27,8 +29,9 @@ public class UserInterface {
 	private Map<String, String> allLanguages = new HashMap<String, String>();
 	private Map<String, String> allCountries = new HashMap<String, String>();
 	private Map<String, String> allGenres = new HashMap<String, String>();
-	DataImportServiceAsync filter = GWT.create(DataImportService.class);
-
+	private List<String> genresArrayList = new ArrayList<String>();
+	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
+	
 	// all Buttons Tetxtbox and Listboxes
 	private final Button goButton = new Button("GO!");
 	private final TextBox searchMovieField = new TextBox();
@@ -68,7 +71,6 @@ public class UserInterface {
 	 */
 	private void createAll() {
 
-		importAllLanguages();
 		hPanel.setLayout(new HorizontalLayout(10));
 		vPanel.setLayout(new VerticalLayout());
 		h1Panel.setLayout(new HorizontalLayout(10));
@@ -101,8 +103,9 @@ public class UserInterface {
 		}
 		listBoxRuntime.setVisibleItemCount(1);
 		hPanel.add(listBoxRuntime);
-
+		
 		// listbox for language
+		importAllEntries();
 		listBoxLanguage.addItem("Language");
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);
@@ -314,8 +317,8 @@ public class UserInterface {
 	/**
 	 * get all filter options
 	 */
-	public void importAllLanguages() {
-
+	public void importAllEntries() {
+		
 		// Initialize the service proxy.
 		if (filter == null) {
 			filter = GWT.create(DataImportService.class);
@@ -373,22 +376,67 @@ public class UserInterface {
 					}
 				}
 				
-				// add Languages to ListBox
+				// create a new array, fill it with the map keys and sort it
+				String[] languagesSorted = new String[allLanguages.size()];
+				int countL = 0;
 				for (Map.Entry<String, String> entry : allLanguages.entrySet()) {
-					listBoxLanguage.addItem(entry.getKey());
+					languagesSorted[countL] = entry.getKey();
+					countL++;
 				}
+				languagesSorted = sortArray(languagesSorted);
+				
+				// add Languages to ListBox
+				for (int i = 0; i < languagesSorted.length; i++) {
+					listBoxLanguage.addItem(languagesSorted[i]);
+				}
+				
+				// create a new array, fill it with the map keys and sort it
+				String[] countriesSorted = new String[allCountries.size()];
+				int countC = 0;
+				for (Map.Entry<String, String> entry : allCountries.entrySet()) {
+					countriesSorted[countC] = entry.getKey();
+					countC++;
+				}
+				countriesSorted = sortArray(countriesSorted);
 				
 				// add Countries to ListBox
-				for (Map.Entry<String,String> entry : allCountries.entrySet()) {
-					listBoxCountry.addItem(entry.getKey());
+				for (int i = 0; i < countriesSorted.length; i++) {
+					listBoxCountry.addItem(countriesSorted[i]);
 				}
 				
-				// add Genres to ListBox
-				for (Map.Entry<String,String> entry : allGenres.entrySet()) {
-					listBoxGenre.addItem(entry.getKey());
+				// create a new array, fill it with the map keys and sort it
+				String[] genresSorted = new String[allGenres.size()];
+				int countG = 0;
+				for (Map.Entry<String, String> entry : allGenres.entrySet()) {
+					genresSorted[countG] = entry.getKey();
+					countG++;
 				}
+				genresSorted = sortArray(genresSorted);
+				
+				// add Genres to ListBox
+				for(int i = 0; i < genresSorted.length; i++){
+					listBoxGenre.addItem(genresSorted[i]);
+				}	
 			}
 		};
 		filter.getAllLCG(callback);
+	}
+	
+	public String[] sortArray(String[] arrayToSort) {	
+
+		boolean flag = true; // will determine when the sort is finished
+		String temp;
+		while (flag) {
+			flag = false;
+			for (int i = 0; i < arrayToSort.length - 1; i++ ) {
+				if (arrayToSort [i].compareToIgnoreCase( arrayToSort[i + 1] ) > 0) {	// ascending sort
+					temp = arrayToSort[i];
+					arrayToSort[i] = arrayToSort[i + 1]; // swapping
+					arrayToSort [i + 1] = temp;
+					flag = true;
+				}
+			}
+		}
+		return arrayToSort;
 	}
 }

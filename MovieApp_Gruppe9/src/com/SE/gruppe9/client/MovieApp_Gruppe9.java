@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+
 import com.gwtext.client.core.Position;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.widgets.Panel;
@@ -21,7 +22,7 @@ import com.gwtextux.client.widgets.image.Image;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class MovieApp_Gruppe9 implements EntryPoint {
-
+	
 	private UserInterface user = new UserInterface();
 
 	private Panel panel = new Panel();
@@ -32,7 +33,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-
+		
 		panel.setBorder(false);
 		panel.setPaddings(15);
 		panel.setLayout(new FitLayout());
@@ -129,7 +130,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	 * @return
 	 */
 	private Panel createBorderPanelCharts() {
-
+		
 		Panel borderPanel = new Panel();
 		Panel northPanel = new Panel();
 		Panel southPanel = new Panel();
@@ -272,3 +273,4 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		return hPanel;
 	}
 }
+
