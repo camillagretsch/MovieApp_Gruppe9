@@ -226,6 +226,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		barchartButtonLanguage.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				BarChart barchart = new BarChart();
+				barchart.createChartLanguage();
 			}
 		});
 		
@@ -233,8 +234,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		barchartButtonGenre.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				BarChart barchart = new BarChart();
+				barchart.createChartGenre();
 			}
 		});
+
 		
 		// add Button to export the visuals
 		exportVisualButton.addClickHandler(new ClickHandler() {
