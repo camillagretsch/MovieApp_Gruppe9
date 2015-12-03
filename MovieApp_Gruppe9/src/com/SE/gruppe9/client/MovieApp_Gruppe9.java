@@ -132,14 +132,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	private Panel createBorderPanelCharts() {
 		
 		Panel borderPanel = new Panel();
-		Panel northPanel = new Panel();
 		Panel southPanel = new Panel();
 		Panel centerPanel = new Panel();
 		Panel westPanel = new Panel();
 		Panel eastPanel = new Panel();
 
 		Panel hPanel = new Panel();
-		Panel vPanel = new Panel();
+		
 		Button piechartButtonBOR = new Button(
 				"Create Piechart for Box Office Revenue");
 		Button piechartButtonRT = new Button("Create Piechart for runtime");
@@ -147,7 +146,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		Button barchartButtonLanguage = new Button(
 				"Create Barchart for Language");
 		Button barchartButtonGenre = new Button("Create Barchart for Genre");
-		Button exportVisualButton = new Button("export Visuals");
 
 		// border Layout
 		borderPanel.setLayout(new BorderLayout());
@@ -180,7 +178,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add centre Panel
 		centerPanel.expand();
 		centerPanel.add(hPanel);
-		centerPanel.add(vPanel);
 
 		borderPanel.add(centerPanel,
 				new BorderLayoutData(RegionPosition.CENTER));
@@ -192,12 +189,10 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		hPanel.add(barchartButtonCountry);
 		hPanel.add(barchartButtonGenre);
 
-		vPanel.setLayout(new VerticalLayout());
-		vPanel.add(exportVisualButton);
-
 		// add button for creating a Box Office Revenue piechart
 		piechartButtonBOR.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				Piechart.rp.setVisible(true);
 				Piechart piechart = new Piechart();
 				piechart.createChartBOR();
 			}
@@ -207,6 +202,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add button for creating a Runtime piechart
 		piechartButtonRT.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				Piechart.rp.setVisible(true);
 				Piechart piechart = new Piechart();
 				piechart.createChartRT();
 			}
@@ -216,6 +212,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add button for creating a Country barchart
 		barchartButtonCountry.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				BarChart.rp.setVisible(true);
 				BarChart barchart = new BarChart();
 				barchart.createChartCountry();
 			}
@@ -225,6 +222,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add button for creating a Language barchart
 		barchartButtonLanguage.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				BarChart.rp.setVisible(true);
 				BarChart barchart = new BarChart();
 				barchart.createChartLanguage();
 			}
@@ -233,18 +231,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add button for creating a Genre barchart
 		barchartButtonGenre.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				BarChart.rp.setVisible(true);
 				BarChart barchart = new BarChart();
 				barchart.createChartGenre();
 			}
 		});
 
 		
-		// add Button to export the visuals
-		exportVisualButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.alert("Screenshot");
-			}
-		});
 		return borderPanel;
 	}
 
@@ -264,6 +257,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 		heatMapButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				Heatmap.rp.setVisible(true);
 				Heatmap heatmap = new Heatmap();
 				heatmap.createChart();
 			}

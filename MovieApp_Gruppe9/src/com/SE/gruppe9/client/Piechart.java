@@ -6,8 +6,13 @@ import java.util.Map;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.googlecode.gwt.charts.client.ChartLoader;
@@ -35,40 +40,60 @@ public class Piechart {
 	private List<Double> runtime = new ArrayList<Double>();
 	private int[] numberOfFilmsBOR = new int[3];
 	private int[] numberOfFilmsRT = new int[3];
-	Panel vPanel = new Panel();
+	
+	final static RootLayoutPanel rp = RootLayoutPanel.get();
+	private Button exportVisualButton = new Button("export Visuals");
+	private Button backButton = new Button("back");
+	private HorizontalPanel hPanel = new HorizontalPanel();
+	private VerticalPanel vPanel = new VerticalPanel();
+	
+	public void createExport(){
+		 hPanel.add(exportVisualButton);
+		 hPanel.add(backButton);
+		 vPanel.add(hPanel);
+		// add Button to export the visuals
+		exportVisualButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				Window.alert("Screenshot");
+			}
+		});
+
+		// leave chart
+		backButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rp.setVisible(false);
+			}
+		});
+	}
 	
 	/**
 	 * initialize Piechart for visualizing number of movies per Range of Box Office Revenue (BOR)
 	 */
 		void createChartBOR() {
 			
-			vPanel.setLayout(new VerticalLayout());
-		   	RootLayoutPanel rp = RootLayoutPanel.get();
-
+			createExport();
+			
 		    // Create a Dock Panel
 		    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		    dockLayoutPanel.setStyleName("dockpanel");
 		    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
-		    // Add text all around
-    	    dockLayoutPanel.addNorth(new HTML(""), 13);
-		    dockLayoutPanel.addWest(new HTML(""), 27);
+		 // Add text all around
+			dockLayoutPanel.addNorth(new HTML(""), 7);
+			dockLayoutPanel.addWest(new HTML(""), 14);
+			dockLayoutPanel.addSouth(new HTML(""), 5);
 
 		    ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 		    chartLoader.loadApi(new Runnable() {
 
 		        @Override
 		        public void run() {
-		            VerticalPanel verticalPanel = new VerticalPanel();
 		            PieChart col = new PieChart();
-		            verticalPanel.add(col);
+		            vPanel.add(col);
 		            Piechart piechart = new Piechart();
 		            piechart.drawChartBOR(col);
-		            dockLayoutPanel.add(verticalPanel);
+		            dockLayoutPanel.add(vPanel);
 		        }
 		    });
-		    vPanel.add(rp);
-		    vPanel.collapse();
 		   rp.add(dockLayoutPanel);
 		}
 			
@@ -81,7 +106,6 @@ public class Piechart {
 				//set the number of films per Range of Box Office Revenue
 				setNumberOfFilmsBOR();
 				
-				
 				// Prepare the data
 				DataTable dataTable = DataTable.create();
 				dataTable.addColumn(ColumnType.STRING, "Box Office Revenue");
@@ -89,9 +113,9 @@ public class Piechart {
 				dataTable.addRows(3);
 				dataTable.setValue(0, 0, "≤ 100'000");
 				dataTable.setValue(0, 1, numberOfFilmsBOR[0]);
-				dataTable.setValue(1, 0, "≤ 1'000'000");
+				dataTable.setValue(1, 0, "100'000 - 1'000'000");
 				dataTable.setValue(1, 1, numberOfFilmsBOR[1]);
-				dataTable.setValue(2, 0, "> 1'000'000");
+				dataTable.setValue(2, 0, "≥ 1'000'000");
 				dataTable.setValue(2, 1, numberOfFilmsBOR[2]);
 			
 
@@ -103,6 +127,8 @@ public class Piechart {
 				options.setFontName("Tahoma");
 				options.setIs3D(false);
 				options.setTitle("Number of Films per Range of Box Office Revenue");
+				options.setHeight(450);
+				options.setWidth(835);
 
 				// Draw the chart
 				chart.draw(dataTable, options);
@@ -127,28 +153,27 @@ public class Piechart {
 		*  initialize Piechart for visualizing number of movies per Range of Runtime (RT)
 		*/
 	void createChartRT() {
-		 	RootLayoutPanel rp = RootLayoutPanel.get();
-
+			
+		createExport();
 			// Create a Dock Panel
 			 final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-			 dockLayoutPanel.setStyleName("dockpanel");
 			 dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
 		 	 // Add text all around
-			 dockLayoutPanel.addNorth(new HTML(""), 13);
-			 dockLayoutPanel.addWest(new HTML(""), 27);
+			 dockLayoutPanel.addNorth(new HTML(""), 7);
+				dockLayoutPanel.addWest(new HTML(""), 14);
+				dockLayoutPanel.addSouth(new HTML(""), 5);
 
 			 ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
 			 chartLoader.loadApi(new Runnable() {
 
 			     @Override
 			     public void run() {
-			            VerticalPanel verticalPanel = new VerticalPanel();
 			            PieChart col = new PieChart();
-			            verticalPanel.add(col);
+			            vPanel.add(col);
 			            Piechart piechart = new Piechart();
 			            piechart.drawChartRT(col);
-			            dockLayoutPanel.add(verticalPanel);
+			            dockLayoutPanel.add(vPanel);
 			        }
 			    });
 			    rp.add(dockLayoutPanel);
@@ -170,9 +195,9 @@ public class Piechart {
 					dataTable.addRows(3);
 					dataTable.setValue(0, 0, "≤ 60 min");
 					dataTable.setValue(0, 1, numberOfFilmsRT[0]);
-					dataTable.setValue(1, 0, "≤ 90 min");
+					dataTable.setValue(1, 0, "60 - 90 min");
 					dataTable.setValue(1, 1, numberOfFilmsRT[1]);
-					dataTable.setValue(2, 0, "> 90 min");
+					dataTable.setValue(2, 0, "≥ 90 min");
 					dataTable.setValue(2, 1, numberOfFilmsRT[2]);
 				
 
@@ -183,7 +208,8 @@ public class Piechart {
 					// options.setColors(colors);
 					options.setFontName("Tahoma");
 					options.setIs3D(false);
-					
+					options.setHeight(450);
+					options.setWidth(835);
 					options.setTitle("Number of Films per Range of Runtime");
 
 					// Draw the chart
@@ -238,14 +264,13 @@ public class Piechart {
 		int counter2 = 0;
 		int counter3 = 0; 
 		
-		for (int i=0; i< bor.size(); i++){
-			if(bor.get(i)!= null){
+		for (int i = 0; i < bor.size(); i++){
+			if (bor.get(i)!= null){
 				if (bor.get(i) <= 100000) {
 					counter1++;
+				} else if (bor.get(i) > 100000 && bor.get(i) < 1000000) {
 					counter2++;
-				} else if (bor.get(i) <= 1000000) {
-					counter2++;
-				} else if (bor.get(i) > 1000000) {
+				} else if (bor.get(i) >= 1000000) {
 					counter3++;
 				}
 			}
@@ -269,9 +294,9 @@ public class Piechart {
 				if (runtime.get(i) <= 60) {
 					counter1++;
 					counter2++;
-				} else if (runtime.get(i) <= 90) {
+				} else if (runtime.get(i) > 60 && runtime.get(i) < 90) {
 					counter2++;
-				} else if (runtime.get(i) > 90) {
+				} else if (runtime.get(i) >= 90) {
 					counter3++;
 				}
 			}

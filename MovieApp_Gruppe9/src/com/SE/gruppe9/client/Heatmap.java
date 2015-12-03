@@ -5,13 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.params.AllClientPNames;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.googlecode.gwt.charts.client.ChartLoader;
@@ -29,24 +35,30 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class Heatmap  {
 	
-	VerticalPanel verticalPanel = new VerticalPanel();
-
-	private List<String> list = new ArrayList<String>();
-	Map<String,String> countries = new HashMap<String,String>();
+	private Button backButton = new Button("back");
+	private VerticalPanel verticalPanel = new VerticalPanel();
+	private HorizontalPanel hPanel = new HorizontalPanel();
+	final static RootLayoutPanel rp = RootLayoutPanel.get();
 	
-
+	private List<String> countries = new ArrayList<String>();
+	private int[] nrOfMovies = new int[UserInterface.getAllCountries().size()];
+	
 	// creates a Panel and communicates with the HTML page
 	public void createChart() {
-	
-		RootLayoutPanel rp = RootLayoutPanel.get();
 		
+		hPanel.add(backButton);
+		// leave map
+		backButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				rp.setVisible(false);
+			}
+		});
+				
 	    // Create a Dock Panel
 	    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-	    dockLayoutPanel.setStyleName("dockpanel");
 	    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
 
 	    // Add text all around
-	  
 	    dockLayoutPanel.addNorth(new HTML(""), 5);
 	    dockLayoutPanel.addWest(new HTML(""), 15);
 		
@@ -65,48 +77,31 @@ public class Heatmap  {
 		});
 		
 		rp.add(dockLayoutPanel);
+		rp.add(hPanel);
 	}
-	
+
 
 	// Styles and draws a world map and also inserts data values into an array which
 	// the map then visualises.
 	private void draw(GeoChart geoChart) {
-		countMovieForCountries();
+		countMovies("2015");
+		DataTable dataTable = DataTable.create();
+		
+		dataTable.addColumn(ColumnType.STRING, "Country");
+		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
+		dataTable.addRows(countries.size());
+		for (int i = 0; i < countries.size(); i++){
+			dataTable.setValue(i, 0, countries.get(i));
+			dataTable.setValue(i, 1, nrOfMovies[i]);
+		}
+		
+		
 		
 		JsArrayString ColourArray = JavaScriptObject.createArray().cast();
 		ColourArray.push("#ff6666");
 		ColourArray.push("#ffff99");
 		ColourArray.push("#66ff66");
 		
-		
-		
-		String year = "2013";
-		
-		// Prepare the data
-		DataTable dataTable = DataTable.create();
-		countMovieForCountries();
-		dataTable.addColumn(ColumnType.STRING, "Country");
-		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
-		
-		dataTable.addRows(3);
-		dataTable.setValue(0, 0,"India");
-		//dataTable.setValue(0, 1, counter.getCountries("India", year));
-		
-		dataTable.setValue(1, 0, "United Kingdom");
-		//dataTable.setValue(1, 1, counter.getCountries("United Kingdom", year));
-		
-		dataTable.setValue(2, 0, "Brazil");
-		//dataTable.setValue(2, 1, counter.getCountries("Brazil", year));
-		
-//		dataTable.setValue(3, 0, "Canada");
-//		dataTable.setValue(3, 1, 500);
-//		
-//		dataTable.setValue(4, 0, "France");
-//		dataTable.setValue(4, 1, 600);
-//		
-//		dataTable.setValue(5, 0, "RU");
-//		dataTable.setValue(5, 1, 700);
-
 		// Set options
 		GeoChartOptions options = GeoChartOptions.create();
 		GeoChartColorAxis geoChartColorAxis = GeoChartColorAxis.create();
@@ -121,33 +116,62 @@ public class Heatmap  {
 		geoChart.draw(dataTable, options);
 	}
 	
-	public void countMovieForCountries() {
-		DataImportServiceAsync filter = GWT.create(DataImportService.class);
+	public void countMovies(String year) {
+		Map<String, String> tmp = new HashMap<String, String>();
 		
-		// Initialize the service proxy.
-		if (filter == null) {
-			filter = GWT.create(DataImportService.class);
+		for (Map.Entry<String, String> entry : UserInterface.getAllCountries().entrySet()) {
+			countries.add(entry.getKey());
 		}
-		// Set up the callback object.
-		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
-			public void onFailure(Throwable caught) {
-
-			}
-
-			public void onSuccess(Map<String, String> result){
+		
+		tmp.clear();
+		for (Map.Entry<String, String> entry : UserInterface.getAllYears().entrySet()) {
+			String[] tmp1 = entry.getValue().split("==");
 			
-				for (Map.Entry<String, String> entry : result.entrySet()) {
-					String[] tmp = entry.getValue().split("==");
-					String[] tmp1 = tmp[1].split(", ");
-					int i = 0;
-					while (i < tmp1.length) {
-						countries.put(tmp1[i], "");
-						i++;
-					}
-				}
-				System.out.println(countries.size());
+			if (tmp1[1].equals(year)){
+				tmp.put(entry.getKey(), tmp1[0]);
 			}
-		};
-		filter.countMovies(callback);
+		}
+		
+		for (int i = 0; i < countries.size(); i++) {
+			
+			int count = 0;
+			
+			for (Map.Entry<String, String> entry : tmp.entrySet()) {
+				
+				if (entry.getValue().contains(countries.get(i))) {
+					count++;
+				}
+			}
+			nrOfMovies[i] = count;
+		}
+		
 	}
+	
+//	public void countMovieForCountries(String year) {
+//		// Initialize the service proxy.
+//		if (filter == null) {
+//			filter = GWT.create(DataImportService.class);
+//		}
+//		// Set up the callback object.
+//		final AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+//			public void onFailure(Throwable caught) {
+//
+//			}
+//
+//			public void onSuccess(Map<String, String> result){
+//				for (int i = 0; i < countries.size(); i++){
+//					int count = 0;
+//					for (Map.Entry<String, String> entry : result.entrySet()) {
+//						String[] tmp = entry.getValue().split("==");
+//						
+//						if (tmp[1].contains(countries.get(i))){
+//							count++;
+//						}
+//					}
+//					nrOfMovies[i] = count;
+//				}		
+//			}
+//		};
+//		filter.countMovies(year, callback);
+//	}
 }

@@ -145,22 +145,22 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 
 				// filters the box office revenue
 				case 4:
-					if (name.equalsIgnoreCase("< 100'000")) {
+					if (name.equalsIgnoreCase("≤ 100'000")) {
 						if (movie[BOX_OFFICE_REVENUE].length() > 0) {
-							if (Long.parseLong(movie[BOX_OFFICE_REVENUE]) < 100000) {
+							if (Long.parseLong(movie[BOX_OFFICE_REVENUE]) <= 100000) {
 								putDataInMap();
 							}
 						}
-					} else if (name.equalsIgnoreCase("100'000-1'000'000")) {
+					} else if (name.equalsIgnoreCase("100'000 - 1'000'000")) {
 						if (movie[BOX_OFFICE_REVENUE].length() > 0) {
 							if (Long.parseLong(movie[BOX_OFFICE_REVENUE]) < 1000000
-									&& Long.parseLong(movie[BOX_OFFICE_REVENUE]) >= 100000) {
+									&& Long.parseLong(movie[BOX_OFFICE_REVENUE]) > 100000) {
 								putDataInMap();
 							}
 						}
-					} else if (name.equalsIgnoreCase("> 1'000'000")) {
+					} else if (name.equalsIgnoreCase("≥ 1'000'000")) {
 						if (movie[BOX_OFFICE_REVENUE].length() > 0) {
-							if (Long.parseLong(movie[BOX_OFFICE_REVENUE]) > 1000000) {
+							if (Long.parseLong(movie[BOX_OFFICE_REVENUE]) >= 1000000) {
 								putDataInMap();
 							}
 						}
@@ -270,7 +270,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				// use semicolon as separator
 				setMovie(line.split(cvsSplitBy));
 				
-				maps.put(movie[WIKIID], movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
+				maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
 
 			}
 		} catch (FileNotFoundException e) {
@@ -293,12 +293,12 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	 * 
 	 * @return
 	 */
-	public Map<String, String> countMovies() {
+	public Map<String, String> countMovies(String year) {
 
 		ServletContext context = getServletContext();
 		String fullPath = context.getRealPath(movieDoc);
 		try {
-			maps = intermediateCount(fullPath);
+			maps = intermediateCount(year, fullPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -311,7 +311,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	 * @param fullpath
 	 * @return
 	 */
-	public Map<String,String> intermediateCount(String fullpath) {
+	public Map<String,String> intermediateCount(String year, String fullpath) {
 
 		try {
 			br = new BufferedReader(new FileReader(movieDoc));
@@ -322,9 +322,10 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				
 				setMovie(line.split(cvsSplitBy));
 				
-				maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[COUNTRY]);
-				
+				if (movie[RELEASE_YEAR].equals(year)) {
+					maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[COUNTRY]);
 				}
+			}
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

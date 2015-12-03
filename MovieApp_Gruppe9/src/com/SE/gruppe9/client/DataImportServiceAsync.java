@@ -15,5 +15,6 @@ public interface DataImportServiceAsync {
 	void getAllLCG(
 			AsyncCallback<Map<String, String>> callback);
 			
-	void countMovies(AsyncCallback<Map<String, String>> callback);
+	void countMovies(String year, 
+			AsyncCallback<Map<String, String>> callback);
 }

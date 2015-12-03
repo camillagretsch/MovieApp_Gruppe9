@@ -24,12 +24,13 @@ import com.gwtext.client.widgets.layout.VerticalLayout;
 public class UserInterface {
 
 	// Arrays to get the data for the Listboxes
-	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "< 100'000", "100'000-1'000'000", "> 1'000'000" };
+	private final String[] BoxOfficeRevenue = { "Box Office Revenue", "≤ 100'000", "100'000 - 1'000'000", "≥ 1'000'000" };
 	private final String[] Runtime = { "Runtime", "≤ 60", "≤ 90", "> 90" };
 	private Map<String, String> allLanguages = new HashMap<String, String>();
-	private Map<String, String> allCountries = new HashMap<String, String>();
+	static Map<String, String> allCountries = new HashMap<String, String>();
 	private Map<String, String> allGenres = new HashMap<String, String>();
-	private List<String> genresArrayList = new ArrayList<String>();
+	static Map<String, String> allYears = new HashMap<String, String>();
+	
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 	
 	// all Buttons Tetxtbox and Listboxes
@@ -49,7 +50,14 @@ public class UserInterface {
 	private Table table = new Table();
 
 	private int count = 0;
-
+	
+	public static Map<String, String> getAllCountries(){
+		return allCountries;
+	}
+	
+	public static Map<String, String> getAllYears(){
+		return allYears;
+	}
 	/**
 	 * 
 	 * @return
@@ -332,10 +340,18 @@ public class UserInterface {
 			public void onSuccess(Map<String, String> result) {
 				String[] movies;
 				
+				// all years and countries in HashMap
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					movies = entry.getValue().split("==");
+					
+					allYears.put(entry.getKey(), movies[0] + "==" + movies[2]);
+				}
+				
 				// all Languages in HashMap - no Duplicates
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					movies = entry.getValue().split("==");
-					String[] tmp = movies[0].split(", ");
+					
+					String[] tmp = movies[1].split(", ");
 
 					int i = 0;
 					while (i < tmp.length) {
@@ -350,11 +366,11 @@ public class UserInterface {
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					movies = entry.getValue().split("==");
 
-					String[] tmp = movies[1].split(", ");
+					String[] tmp = movies[2].split(", ");
 
 					int i = 0;
 					while (i < tmp.length) {
-						if (!tmp[i].equals("{}") && !tmp[i].contains("Language")) {
+						if (!tmp[i].equals("{}") && !tmp[i].contains("Language") && !tmp[i].equals("Crime")) {
 							allCountries.put(tmp[i], "");
 						}
 						i++;
@@ -365,7 +381,7 @@ public class UserInterface {
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					movies = entry.getValue().split("==");
 					
-					String[] tmp = movies[2].split(", ");
+					String[] tmp = movies[3].split(", ");
 					
 					int i = 0;
 					while (i < tmp.length) {
@@ -417,6 +433,10 @@ public class UserInterface {
 				for(int i = 0; i < genresSorted.length; i++){
 					listBoxGenre.addItem(genresSorted[i]);
 				}	
+				System.out.println("allL " + allLanguages.size());
+				System.out.println("allC " + allCountries.size());
+				System.out.println("allG " + allGenres.size());
+				System.out.println("allY" + allYears.size());
 			}
 		};
 		filter.getAllLCG(callback);

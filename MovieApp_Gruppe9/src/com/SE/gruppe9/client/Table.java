@@ -115,6 +115,7 @@ public class Table {
 			importMap(name, column);
 			break;
 		}
+		System.out.println(resultMap.size());
 	}
 
 	/**
@@ -137,6 +138,7 @@ public class Table {
 			public void onSuccess(Map<String, String> result) {
 				int i = 1;
 				resultMap.putAll(result);
+				System.out.println(resultMap.size());
 				for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 					String[] tmp = entry.getValue().split("==");
 					flexibleTable.setText(i, 0, entry.getKey());
@@ -163,6 +165,7 @@ public class Table {
 	 */
 	public void secondFilter(String name, int column) {
 		int i = 1;
+		System.out.println(resultMap.size());
 		switch (column) {
 
 		// filter for movie name
