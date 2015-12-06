@@ -14,6 +14,8 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
@@ -47,7 +49,10 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
+	//private PopupPanel popupPanel = new PopupPanel();
 	private Export export = new Export();
+	final static RootLayoutPanel rp = RootLayoutPanel.get();
+
 
 	private int count = 0;
 	
@@ -85,6 +90,8 @@ public class UserInterface {
 		hPanel.setBorder(false);
 		vPanel.setBorder(false);
 		h1Panel.setBorder(false);
+		rp.setVisible(false);
+
 
 		// Textbox for movie name
 		searchMovieField.setText("Entre a movie name");
@@ -328,7 +335,9 @@ public class UserInterface {
 		// click event for export Button
 		exportTabelButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				export.export();
+				rp.setVisible(true);
+		        rp.add(export.export());
+				//hPanel.add(export.export());
 				
 			}
 		});
