@@ -3,9 +3,7 @@ package com.SE.gruppe9.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.gwtext.client.core.Margins;
 import com.gwtext.client.core.Position;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.widgets.Panel;
@@ -15,14 +13,13 @@ import com.gwtext.client.widgets.layout.BorderLayout;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
 import com.gwtext.client.widgets.layout.FitLayout;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
-import com.gwtext.client.widgets.layout.VerticalLayout;
 import com.gwtextux.client.widgets.image.Image;
-import com.gwtextux.client.widgets.timeline.TimeLineWidget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class MovieApp_Gruppe9 implements EntryPoint {
+
 	private UserInterface user = new UserInterface();
 
 	private Panel panel = new Panel();
@@ -33,7 +30,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		
+
 		panel.setBorder(false);
 		panel.setPaddings(15);
 		panel.setLayout(new FitLayout());
@@ -89,7 +86,8 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add south panel
 		southPanel.setTitle("Source");
 		southPanel.setHeight(45);
-		southPanel.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
+		southPanel
+				.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
 
 		BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
 		southData.setMinHeight(45);
@@ -135,7 +133,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	 * @return
 	 */
 	private Panel createBorderPanelCharts() {
-		
+
 		Panel borderPanel = new Panel();
 		Panel southPanel = new Panel();
 		Panel centerPanel = new Panel();
@@ -143,11 +141,13 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		Panel eastPanel = new Panel();
 
 		Panel hPanel = new Panel();
-		
-		Button piechartButtonBOR = new Button("Create Piechart for Box Office Revenue");
+
+		Button piechartButtonBOR = new Button(
+				"Create Piechart for Box Office Revenue");
 		Button piechartButtonRT = new Button("Create Piechart for runtime");
 		Button barchartButtonCountry = new Button("Create Barchart for Country");
-		Button barchartButtonLanguage = new Button("Create Barchart for Language");
+		Button barchartButtonLanguage = new Button(
+				"Create Barchart for Language");
 		Button barchartButtonGenre = new Button("Create Barchart for Genre");
 
 		// border Layout
@@ -156,14 +156,15 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add south panel
 		southPanel.setTitle("Source");
 		southPanel.setHeight(45);
-		southPanel.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
+		southPanel
+				.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
 
 		BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
 		southData.setMinHeight(45);
 		southData.setMaxSize(100);
 		southData.setSplit(true);
 		borderPanel.add(southPanel, southData);
-		
+
 		// add east panel
 		eastPanel.setTitle("Advertisement");
 		eastPanel.setWidth(200);
@@ -188,7 +189,8 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		centerPanel.expand();
 		centerPanel.add(hPanel);
 
-		borderPanel.add(centerPanel,new BorderLayoutData(RegionPosition.CENTER));
+		borderPanel.add(centerPanel,
+				new BorderLayoutData(RegionPosition.CENTER));
 
 		hPanel.setLayout(new HorizontalLayout(10));
 		hPanel.add(piechartButtonBOR);
@@ -229,7 +231,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 			}
 
 		});
-		
+
 		// add button for creating a Language barchart
 		barchartButtonLanguage.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -239,7 +241,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 				barchart.createChartLanguage();
 			}
 		});
-		
+
 		// add button for creating a Genre barchart
 		barchartButtonGenre.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -250,7 +252,6 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 			}
 		});
 
-		
 		return borderPanel;
 	}
 
@@ -260,39 +261,39 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 	 * @return
 	 */
 	private Panel createPanelMap() {
-		
+
 		Panel borderPanel = new Panel();
 		Panel southPanel = new Panel();
 		Panel centerPanel = new Panel();
-		Panel westPanel = new Panel();
-		Panel eastPanel = new Panel();
-		
+
 		Panel hPanel = new Panel();
-		
+
 		Button heatMapButton = new Button("Create Heatmap");
 
 		// border Layout
-				borderPanel.setLayout(new BorderLayout());
+		borderPanel.setLayout(new BorderLayout());
 
-				// add south panel
-				southPanel.setTitle("Source");
-				southPanel.setHeight(45);
-				southPanel.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
+		// add south panel
+		southPanel.setTitle("Source");
+		southPanel.setHeight(45);
+		southPanel
+				.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
 
-				BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
-				southData.setMinHeight(45);
-				southData.setMaxSize(100);
-				southData.setSplit(true);
-				borderPanel.add(southPanel, southData);
-				
-				// add centre Panel
-				centerPanel.expand();
-				centerPanel.add(hPanel);
+		BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
+		southData.setMinHeight(45);
+		southData.setMaxSize(100);
+		southData.setSplit(true);
+		borderPanel.add(southPanel, southData);
 
-				borderPanel.add(centerPanel,new BorderLayoutData(RegionPosition.CENTER));
+		// add centre Panel
+		centerPanel.expand();
+		centerPanel.add(hPanel);
 
-				hPanel.setLayout(new HorizontalLayout(10));
-				hPanel.add(heatMapButton);
+		borderPanel.add(centerPanel,
+				new BorderLayoutData(RegionPosition.CENTER));
+
+		hPanel.setLayout(new HorizontalLayout(10));
+		hPanel.add(heatMapButton);
 
 		heatMapButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -307,4 +308,3 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		return borderPanel;
 	}
 }
-

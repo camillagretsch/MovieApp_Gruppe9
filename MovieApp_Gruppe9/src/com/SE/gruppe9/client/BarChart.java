@@ -3,7 +3,6 @@ package com.SE.gruppe9.client;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,6 @@ import com.googlecode.gwt.charts.client.corechart.ColumnChart;
 import com.googlecode.gwt.charts.client.corechart.ColumnChartOptions;
 import com.googlecode.gwt.charts.client.options.HAxis;
 import com.googlecode.gwt.charts.client.options.VAxis;
-import com.gwtext.client.widgets.Panel;
-import com.gwtext.client.widgets.layout.HorizontalLayout;
 
 /**
  * drawBarcharts for visualizing the filtered dataset
@@ -55,16 +52,21 @@ public class BarChart {
 	private VerticalPanel vPanel = new VerticalPanel();
 
 	/**
-	 * 
+	 * click events for the export and back button
 	 */
 	public void createExport() {
+		
 		hPanel.add(exportVisualButton);
 		hPanel.add(backButton);
 		vPanel.add(hPanel);
+		
 		// add Button to export the visuals
 		exportVisualButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				Window.alert("Screenshot");
+				Window.alert("Take a Screenshot!"
+						+ "\nMac user: command + shift + 4"
+						+ "\nWindows user: print screen"
+						+ "\nLinux user: shift + print screen");
 			}
 		});
 
@@ -294,9 +296,6 @@ public class BarChart {
 				allGenres.addAll(Arrays.asList(temp));
 			}
 		}
-		for (int i = 0; i < allGenres.size(); i++) {
-			(allGenres.get(i)).trim();
-		}
 	}
 
 	/**
@@ -324,9 +323,6 @@ public class BarChart {
 				String[] temp = tmp[4].split(", ");
 				allLanguages.addAll(Arrays.asList(temp));
 			}
-		}
-		for (int i = 0; i < allLanguages.size(); i++) {
-			(allLanguages.get(i)).trim();
 		}
 	}
 
@@ -357,9 +353,6 @@ public class BarChart {
 				String[] temp = tmp[5].split(", ");
 				allCountries.addAll(Arrays.asList(temp));
 			}
-		}
-		for (int i = 0; i < allCountries.size(); i++) {
-			(allCountries.get(i)).trim();
 		}
 	}
 

@@ -1,6 +1,5 @@
 package com.SE.gruppe9.client;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,9 +11,5 @@ public interface DataImportServiceAsync {
 	void filterData(String name, int column,
 			AsyncCallback<Map<String, String>> callback);
 
-	void getAllLCG(
-			AsyncCallback<Map<String, String>> callback);
-			
-	void countMovies(String year, 
-			AsyncCallback<Map<String, String>> callback);
+	void getAllYLCG(AsyncCallback<Map<String, String>> callback);
 }

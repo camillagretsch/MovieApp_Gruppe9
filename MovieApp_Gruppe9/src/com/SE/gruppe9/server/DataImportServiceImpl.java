@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,17 +40,14 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	private static final int GENRE = 8;
 
 	// Defines where the String split
-	private static final String cvsSplitBy = ";";
+	private static final String csvSplitBy = ";";
 
 	// Data document
 	private static final String movieDoc = "movies_80000.csv";
 
 	// Map to save the filtered data
 	private Map<String, String> maps = new HashMap<String, String>();
-
-	private Map<String, String> mapLanguage = new HashMap<String, String>();
-	private Map<String, String> mapCountry = new HashMap<String, String>();
-	private Map<String, String> mapGenre = new HashMap<String, String>();
+	private Map<String, String> mapYLCG = new HashMap<String, String>();
 
 	// Array to go through each row of the data file
 	private String[] movie;
@@ -120,18 +114,17 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 			br = new BufferedReader(new FileReader(fullPath));
 
 			maps.clear();
-			while ((line = br.readLine()) != null /* && i < 101 */) {
+			while ((line = br.readLine()) != null) {
 
 				cutFreebaseID();
 
 				// use semicolon as separator
-				setMovie(line.split(cvsSplitBy));
+				setMovie(line.split(csvSplitBy));
 
 				switch (column) {
 				// filters the movie name
 				case 2:
-					if (movie[NAME].trim().toUpperCase()
-							.contains(name.trim().toUpperCase())) {
+					if (movie[NAME].trim().toUpperCase().contains(name.trim().toUpperCase())) {
 						putDataInMap();
 					}
 					break;
@@ -241,36 +234,36 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	 * @param constant
 	 * @return
 	 */
-	public Map<String, String> getAllLCG() {
+	public Map<String, String> getAllYLCG() {
 
 		ServletContext context = getServletContext();
 		String fullPath = context.getRealPath(movieDoc);
 		try {
-			mapLanguage = intermediateLCG(fullPath);
+			mapYLCG = intermediateYLCG(fullPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return mapLanguage;
+		return mapYLCG;
 	}
 	
 	/**
-	 * reads in the csv file and store all languages, countries and genres in an hashmap
+	 * reads in the csv file and store all release years, languages, countries and genres in an hashmap
 	 * @param fullPath
 	 * @return
 	 */
-	public Map<String, String> intermediateLCG(String fullPath) {
+	public Map<String, String> intermediateYLCG(String fullPath) {
 		try {
 			br = new BufferedReader(new FileReader(fullPath));
 
-			maps.clear();
+			mapYLCG.clear();
 			while ((line = br.readLine()) != null) {
 				cutFreebaseID();
 
 				// use semicolon as separator
-				setMovie(line.split(cvsSplitBy));
+				setMovie(line.split(csvSplitBy));
 				
-				maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
+				mapYLCG.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
 
 			}
 		} catch (FileNotFoundException e) {
@@ -286,60 +279,6 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 		}
-		return maps;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Map<String, String> countMovies(String year) {
-
-		ServletContext context = getServletContext();
-		String fullPath = context.getRealPath(movieDoc);
-		try {
-			maps = intermediateCount(year, fullPath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return maps;
-	}
-	
-	/**
-	 * 
-	 * @param fullpath
-	 * @return
-	 */
-	public Map<String,String> intermediateCount(String year, String fullpath) {
-
-		try {
-			br = new BufferedReader(new FileReader(movieDoc));
-			
-			maps.clear();
-			while ((line = br.readLine()) != null) {
-				cutFreebaseID();
-				
-				setMovie(line.split(cvsSplitBy));
-				
-				if (movie[RELEASE_YEAR].equals(year)) {
-					maps.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[COUNTRY]);
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return maps;
+		return mapYLCG;
 	}
 }

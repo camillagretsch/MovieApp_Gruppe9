@@ -1,8 +1,5 @@
 package com.SE.gruppe9.client;
 
-
-
-import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -13,12 +10,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("datas")
 public interface DataImportService extends RemoteService {
-	
-	Map<String, String> filterData(String name, int column);
-	
-	Map<String, String> getAllLCG();
 
-	Map<String, String> countMovies(String year);
-	
-	
+	Map<String, String> filterData(String name, int column);
+
+	Map<String, String> getAllYLCG();
+
 }

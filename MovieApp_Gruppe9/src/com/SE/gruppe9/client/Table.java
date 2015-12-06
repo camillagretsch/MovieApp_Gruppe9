@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.VerticalLayout;
@@ -13,8 +16,10 @@ public class Table {
 
 	private Panel vPanel = new Panel();
 	private FlexTable flexibleTable = new FlexTable();
+	private Button nextButton = new Button("next 100");
+	
 	static Map<String, String> resultMap = new HashMap<String, String>();
-	private Map<String, String> tmpMap = new HashMap<String, String>();
+	private Map<String, String> nextMap = new HashMap<String, String>();
 
 	// async object used for the server side import of the data
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
@@ -27,7 +32,7 @@ public class Table {
 	 */
 	public Panel createFlexTable() {
 		vPanel.setLayout(new VerticalLayout());
-
+		vPanel.setBorder(false);
 		setFlexTableHeader();
 
 		flexibleTable.setCellPadding(2);
@@ -35,6 +40,19 @@ public class Table {
 		flexibleTable.setBorderWidth(2);
 
 		vPanel.add(flexibleTable);
+		vPanel.add(nextButton);
+		
+		// click event for next Button 
+		nextButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+			clearFlexTable();
+			setFlexTableHeader();
+			fillFlexTableNextTime();
+			
+
+			}
+		});
 
 		return vPanel;
 
@@ -61,6 +79,69 @@ public class Table {
 	public void clearFlexTable() {
 		flexibleTable.removeAllRows();
 		flexibleTable.clear();
+	}
+	
+	/**
+	 * adds the first 100 entries to the flextable
+	 * only used in the firstFilter and secondFilter
+	 */
+	public void fillFlexTableFirstTime() {
+		
+		if (resultMap.size() > 100) {
+			nextMap.putAll(resultMap);
+		}
+		
+		int i = 1;
+		for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+			String[] tmp1 = entry.getValue().split("==");
+			flexibleTable.setText(i, 0, entry.getKey());
+			for (int j = 0; j < 7; j++) {
+				flexibleTable.setText(i, j + 1, tmp1[j]);
+			}
+			i++;
+
+			if (i > 99) {
+				break;
+			}
+		}
+		
+		System.out.println(flexibleTable.getRowCount());
+		
+	}
+	
+	/**
+	 * 
+	 */
+	public void fillFlexTableNextTime() {
+		Map<String, String> tmpMap = new HashMap<String, String>();
+		
+		int a = 0;
+		for (Map.Entry<String, String> entry : nextMap.entrySet()) {
+			if (a > 99) {
+				tmpMap.put(entry.getKey(), entry.getValue());
+			}
+			a++;
+		}
+		
+		nextMap.clear();
+		nextMap.putAll(tmpMap);
+		tmpMap.clear();
+		
+		int i = 1;
+		for (Map.Entry<String, String> entry : nextMap.entrySet()) {
+			String[] tmp1 = entry.getValue().split("==");
+			flexibleTable.setText(i, 0, entry.getKey());
+			for (int j = 0; j < 7; j++) {
+				flexibleTable.setText(i, j + 1, tmp1[j]);
+			}
+			i++;
+
+			if (i > 99) {
+				break;
+			}
+		}
+		System.out.println(nextMap.size());
+		System.out.println(flexibleTable.getRowCount());
 	}
 
 	/**
@@ -115,7 +196,6 @@ public class Table {
 			importMap(name, column);
 			break;
 		}
-		System.out.println(resultMap.size());
 	}
 
 	/**
@@ -136,20 +216,10 @@ public class Table {
 			}
 
 			public void onSuccess(Map<String, String> result) {
-				int i = 1;
 				resultMap.putAll(result);
+				fillFlexTableFirstTime();
+				
 				System.out.println(resultMap.size());
-				for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-					String[] tmp = entry.getValue().split("==");
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
-					if (i > 100) {
-						break;
-					}
-				}
 			}
 		};
 
@@ -164,21 +234,15 @@ public class Table {
 	 * @param column
 	 */
 	public void secondFilter(String name, int column) {
-		int i = 1;
-		System.out.println(resultMap.size());
+		Map<String, String> tmpMap = new HashMap<String, String>();
+		
 		switch (column) {
 
 		// filter for movie name
 		case 0:
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String tmp[] = entry.getValue().split("==");
-				if (tmp[0].trim().toUpperCase()
-						.contains(name.trim().toUpperCase())) {
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
+				if (tmp[0].trim().toUpperCase().contains(name.trim().toUpperCase())) {
 					tmpMap.put(entry.getKey(), entry.getValue());
 				}
 			}
@@ -188,6 +252,7 @@ public class Table {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for release year
@@ -195,11 +260,6 @@ public class Table {
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String[] tmp = entry.getValue().split("==");
 				if (tmp[1].equals(name)) {
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
 					tmpMap.put(entry.getKey(), entry.getValue());
 				}
 			}
@@ -209,20 +269,16 @@ public class Table {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for box office revenue
 		case 2:
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String[] tmp = entry.getValue().split("==");
-				if (name.equals("< 100'000")) {
+				if (name.equals("≤ 100'000")) {
 					if (tmp[2].length() > 0) {
-						if (Long.parseLong(tmp[2]) < 100000) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
+						if (Long.parseLong(tmp[2]) <= 100000) {
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
@@ -231,25 +287,15 @@ public class Table {
 				if (name.equals("100'000-1'000'000")) {
 					if (tmp[2].length() > 0) {
 						if (Long.parseLong(tmp[2]) < 1000000
-								&& Long.parseLong(tmp[2]) >= 100000) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
+								&& Long.parseLong(tmp[2]) > 100000) {
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
 				}
 
-				if (name.equals("> 1'000'000")) {
+				if (name.equals("≥ 1'000'000")) {
 					if (tmp[2].length() > 0) {
-						if (Long.parseLong(tmp[2]) > 1000000) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
+						if (Long.parseLong(tmp[2]) >= 1000000) {
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
@@ -261,6 +307,7 @@ public class Table {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for runtime
@@ -270,33 +317,18 @@ public class Table {
 				if (name.equals("≤ 60")) {
 					if (tmp[3].length() > 0) {
 						if (Double.parseDouble(tmp[3]) <= 60) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
 				} else if (name.equals("≤ 90")) {
 					if (tmp[3].length() > 0) {
 						if (Double.parseDouble(tmp[3]) <= 90) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
 				} else if (name.equals("> 90")) {
 					if (tmp[3].length() > 0) {
 						if (Double.parseDouble(tmp[3]) > 90) {
-							flexibleTable.setText(i, 0, entry.getKey());
-							for (int j = 0; j < 7; j++) {
-								flexibleTable.setText(i, j + 1, tmp[j]);
-							}
-							i++;
 							tmpMap.put(entry.getKey(), entry.getValue());
 						}
 					}
@@ -308,18 +340,14 @@ public class Table {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for language
 		case 4:
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String[] tmp = entry.getValue().split("==");
-				if (tmp[4].toUpperCase().trim().contains(name.toUpperCase())) {
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
+				if (tmp[4].toUpperCase().contains(name.toUpperCase())) {
 					tmpMap.put(entry.getKey(), entry.getValue());
 				}
 			}
@@ -329,6 +357,7 @@ public class Table {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for country
@@ -336,19 +365,16 @@ public class Table {
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String[] tmp = entry.getValue().split("==");
 				if (tmp[5].toUpperCase().contains(name.toUpperCase())) {
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
 					tmpMap.put(entry.getKey(), entry.getValue());
 				}
 			}
+			// restore the filtered data in the result map
 			resultMap.clear();
 			for (Map.Entry<String, String> entry : tmpMap.entrySet()) {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		// filter for genre
@@ -356,19 +382,16 @@ public class Table {
 			for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 				String[] tmp = entry.getValue().split("==");
 				if (tmp[6].toUpperCase().contains(name.toUpperCase())) {
-					flexibleTable.setText(i, 0, entry.getKey());
-					for (int j = 0; j < 7; j++) {
-						flexibleTable.setText(i, j + 1, tmp[j]);
-					}
-					i++;
 					tmpMap.put(entry.getKey(), entry.getValue());
 				}
 			}
+			// restore the filtered data in the result map
 			resultMap.clear();
 			for (Map.Entry<String, String> entry : tmpMap.entrySet()) {
 				resultMap.put(entry.getKey(), entry.getValue());
 			}
 			tmpMap.clear();
+			fillFlexTableFirstTime();
 			break;
 
 		}
@@ -383,17 +406,17 @@ public class Table {
 		return resultMap;
 	}
 
-//	public void setTestMap() {
-//
-//		resultMap
-//				.put("id01",
-//						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-//		resultMap
-//				.put("id02",
-//						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
-//		resultMap
-//				.put("id01",
-//						"Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
-//
-//	}
+	public void setTestMap() {
+
+		resultMap
+				.put("id01",
+						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+		resultMap
+				.put("id02",
+						"Movie01Name==2008==100000==60==English Language, German Language==UnitedKingdom==Drama");
+		resultMap
+				.put("id01",
+						"Movie01Name==2008==100000==60==German Language==UnitedKingdom==Drama");
+
+	}
 }
