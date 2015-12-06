@@ -87,8 +87,6 @@ public class BarChart {
 
 		// Create a Dock Panel
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "solid lightblue 4px");
 
 		// Add text all around
 		dockLayoutPanel.addNorth(new HTML(""), 7);
@@ -156,8 +154,6 @@ public class BarChart {
 
 		// Create a Dock Panel
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "solid lightblue 4px");
 
 		// Add text all around
 		dockLayoutPanel.addNorth(new HTML(""), 7);
@@ -225,8 +221,6 @@ public class BarChart {
 
 		// Create a Dock Panel
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "solid lightblue 4px");
 
 		// Add text all around
 		dockLayoutPanel.addNorth(new HTML(""), 7);

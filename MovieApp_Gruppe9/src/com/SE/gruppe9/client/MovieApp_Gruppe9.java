@@ -1,9 +1,12 @@
 package com.SE.gruppe9.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ListBox;
 import com.gwtext.client.core.Position;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.widgets.Panel;
@@ -21,7 +24,7 @@ import com.gwtextux.client.widgets.image.Image;
 public class MovieApp_Gruppe9 implements EntryPoint {
 
 	private UserInterface user = new UserInterface();
-
+    private String year = null;
 	private Panel panel = new Panel();
 	private TabPanel tabPanel = new TabPanel();
 	private Panel tablePanel = new Panel("Table");
@@ -267,17 +270,17 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		Panel centerPanel = new Panel();
 
 		Panel hPanel = new Panel();
-
+	
+		final ListBox listBoxYear = new ListBox();
 		Button heatMapButton = new Button("Create Heatmap");
-
+		
 		// border Layout
 		borderPanel.setLayout(new BorderLayout());
 
 		// add south panel
 		southPanel.setTitle("Source");
 		southPanel.setHeight(45);
-		southPanel
-				.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
+		southPanel.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
 
 		BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
 		southData.setMinHeight(45);
@@ -288,19 +291,33 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add centre Panel
 		centerPanel.expand();
 		centerPanel.add(hPanel);
-
-		borderPanel.add(centerPanel,
-				new BorderLayoutData(RegionPosition.CENTER));
-
+		borderPanel.add(centerPanel, new BorderLayoutData(RegionPosition.CENTER));
+		
 		hPanel.setLayout(new HorizontalLayout(10));
+		listBoxYear.addItem("Year");
+		listBoxYear.setVisibleItemCount(1);
+		for (int i = 2016; i >= 1888; i--) {
+			listBoxYear.addItem(Integer.toString(i));
+		}
+		hPanel.add(listBoxYear);
 		hPanel.add(heatMapButton);
+		
+		// change event for listbox year
+		listBoxYear.addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				int itemSelected = listBoxYear.getSelectedIndex();
+				year = listBoxYear.getValue(itemSelected);
+			}
 
+		});
 		heatMapButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				Heatmap.rp.clear();
 				Heatmap.rp.setVisible(true);
 				Heatmap heatmap = new Heatmap();
-				heatmap.createChart();
+				heatmap.createChart(year);
+				listBoxYear.setSelectedIndex(0);
+				year = null;
 			}
 
 		});

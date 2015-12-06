@@ -38,14 +38,13 @@ public class Table {
 		flexibleTable.setCellPadding(2);
 		flexibleTable.setCellPadding(3);
 		flexibleTable.setBorderWidth(2);
-
+	
 		vPanel.add(flexibleTable);
 		vPanel.add(nextButton);
-		
+		nextButton.setEnabled(false);
 		// click event for next Button 
 		nextButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				
 			clearFlexTable();
 			setFlexTableHeader();
 			fillFlexTableNextTime();
@@ -89,6 +88,7 @@ public class Table {
 		
 		if (resultMap.size() > 100) {
 			nextMap.putAll(resultMap);
+			nextButton.setEnabled(true);
 		}
 		
 		int i = 1;
@@ -139,6 +139,9 @@ public class Table {
 			if (i > 99) {
 				break;
 			}
+		}
+		if (nextMap.size() < 100) {
+			nextButton.setEnabled(false);
 		}
 		System.out.println(nextMap.size());
 		System.out.println(flexibleTable.getRowCount());

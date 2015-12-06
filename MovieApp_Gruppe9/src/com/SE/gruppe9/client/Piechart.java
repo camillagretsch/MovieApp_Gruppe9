@@ -78,8 +78,6 @@ public class Piechart {
 
 		// Create a Dock Panel
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "solid lightblue 4px");
 
 		// Add text all around
 		dockLayoutPanel.addNorth(new HTML(""), 7);
@@ -161,8 +159,6 @@ public class Piechart {
 		createExport();
 		// Create a Dock Panel
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-		dockLayoutPanel.getElement().getStyle()
-				.setProperty("border", "solid lightblue 4px");
 
 		// Add text all around
 		dockLayoutPanel.addNorth(new HTML(""), 7);
@@ -297,7 +293,6 @@ public class Piechart {
 			if (runtime.get(i) != null) {
 				if (runtime.get(i) <= 60) {
 					counter1++;
-					counter2++;
 				} else if (runtime.get(i) > 60 && runtime.get(i) < 90) {
 					counter2++;
 				} else if (runtime.get(i) >= 90) {

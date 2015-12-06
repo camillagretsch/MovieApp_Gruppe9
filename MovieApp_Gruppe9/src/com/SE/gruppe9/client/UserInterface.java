@@ -27,14 +27,15 @@ public class UserInterface {
 	private Map<String, String> allLanguages = new HashMap<String, String>();
 	static Map<String, String> allCountries = new HashMap<String, String>();
 	private Map<String, String> allGenres = new HashMap<String, String>();
-	static Map<String, String> allYears = new HashMap<String, String>();
+	static Map<String, String> allYC = new HashMap<String, String>();
+	private Map<String, String> allYears = new HashMap<String, String>();
 	
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 	
 	// all Buttons Tetxtbox and Listboxes
 	private final Button goButton = new Button("GO");
 	private final TextBox searchMovieField = new TextBox();
-	private final ListBox listBoxYear = new ListBox();
+	static ListBox listBoxYear = new ListBox();
 	private final ListBox listBoxOffice = new ListBox();
 	private final ListBox listBoxRuntime = new ListBox();
 	private final ListBox listBoxLanguage = new ListBox();
@@ -50,12 +51,20 @@ public class UserInterface {
 
 	private int count = 0;
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Map<String, String> getAllCountries(){
 		return allCountries;
 	}
 	
-	public static Map<String, String> getAllYears(){
-		return allYears;
+	/**
+	 * 
+	 * @return
+	 */
+	public static Map<String, String> getAllYC(){
+		return allYC;
 	}
 	/**
 	 * 
@@ -94,9 +103,6 @@ public class UserInterface {
 
 		// listbox for release year
 		listBoxYear.addItem("Year");
-		for (int i = 2016; i >= 1888; i--) {
-			listBoxYear.addItem(Integer.toString(i));
-		}
 		listBoxYear.setVisibleItemCount(1);
 		hPanel.add(listBoxYear);
 
@@ -349,9 +355,17 @@ public class UserInterface {
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					movies = entry.getValue().split("==");
 					
-					allYears.put(entry.getKey(), movies[0] + "==" + movies[2]);
+					allYC.put(entry.getKey(), movies[0] + "==" + movies[2]);
 				}
 				
+				// all years in HashMap - no Duplicates
+				for (Map.Entry<String, String> entry : result.entrySet()) {
+					movies = entry.getValue().split("==");
+					
+					if (movies[0].isEmpty() == false) {
+						allYears.put(movies[0], "");
+					}
+				}
 				// all Languages in HashMap - no Duplicates
 				for (Map.Entry<String, String> entry : result.entrySet()) {
 					movies = entry.getValue().split("==");
@@ -396,6 +410,21 @@ public class UserInterface {
 						i++;
 					}
 				}
+				
+				// create a new array, fill it with the map keys and sort it
+				String[] yearSorted = new String[allYears.size()];
+				int countY = 0;
+				for (Map.Entry<String, String> entry : allYears.entrySet()) {
+					yearSorted[countY] = entry.getKey();
+					countY++;
+				}
+				yearSorted = sortArray(yearSorted);
+				
+				// add Years to ListBox
+				for (int i = 0; i < yearSorted.length; i++) {
+					listBoxYear.addItem(yearSorted[i]);
+				}
+				
 				
 				// create a new array, fill it with the map keys and sort it
 				String[] languagesSorted = new String[allLanguages.size()];

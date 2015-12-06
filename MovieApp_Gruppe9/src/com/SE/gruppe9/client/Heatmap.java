@@ -26,28 +26,34 @@ public class Heatmap  {
 	
 	private Button backButton = new Button("back");
 	private VerticalPanel verticalPanel = new VerticalPanel();
-	private HorizontalPanel hPanel = new HorizontalPanel();
+	private HorizontalPanel horizontalPanel = new HorizontalPanel();
 	final static RootLayoutPanel rp = RootLayoutPanel.get();
+
 	
 	private Map<String, Integer> countries = new HashMap<String, Integer>();
 	
 	// creates a Panel and communicates with the HTML page
-	public void createChart() {
+	public void createChart(final String year) {
+		
 		backButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				rp.setVisible(false);
+				countries.clear();
+				
 			}
 
 		});
 		
+		horizontalPanel.add(backButton);
+		verticalPanel.add(horizontalPanel);
 	    // Create a Dock Panel
 	    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-	    dockLayoutPanel.setStyleName("dockpanel");
-	    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
-	    dockLayoutPanel.addWest(backButton, 10);
+
+
 	    // Add text all around
-	    dockLayoutPanel.addNorth(new HTML(""), 5);
+	    dockLayoutPanel.addSouth(new HTML(""), 5);
 	    dockLayoutPanel.addWest(new HTML(""), 15);
+	    dockLayoutPanel.addNorth(new HTML(""), 5);
 		
 		ChartLoader chartLoader = new ChartLoader(ChartPackage.GEOCHART);
 		chartLoader.loadApi(new Runnable() {
@@ -58,7 +64,7 @@ public class Heatmap  {
 				GeoChart geoChart = new GeoChart();
 				verticalPanel.add(geoChart);
 				Heatmap worldMap = new Heatmap();
-				worldMap.draw(geoChart);
+				worldMap.draw(geoChart, year);
 				dockLayoutPanel.add(verticalPanel);
 			}
 		});
@@ -70,10 +76,8 @@ public class Heatmap  {
 
 	// Styles and draws a world map and also inserts data values into an array which
 	// the map then visualises.
-	private void draw(GeoChart geoChart) {
-		countMovies("2012");
-		System.out.println(countries.size());
-		System.out.println(countries);
+	private void draw(GeoChart geoChart, String year) {
+		countMovies(year);
 		
 		JsArrayString ColourArray = JavaScriptObject.createArray().cast();
 		ColourArray.push("#ff6666");
@@ -103,7 +107,7 @@ public class Heatmap  {
 		options.setDatalessRegionColor("#ffebe5");
 		options.setBackgroundColor("#e5ffff");
 		options.setHeight(500);
-		options.setWidth(500);
+		options.setWidth(900);
 	
 
 		// Draw the chart
@@ -115,13 +119,12 @@ public class Heatmap  {
 	Map<String, String> specificYear = new HashMap<String, String>();
 	String[] movie;
 	
-	for (Map.Entry<String, String> entry : UserInterface.getAllYears().entrySet()) {
+	for (Map.Entry<String, String> entry : UserInterface.getAllYC().entrySet()) {
 		movie = entry.getValue().split("==");
 		if (movie[0].equals(year)) {
 			specificYear.put(entry.getKey(), movie[1]);
 		}
 	}
-	System.out.println(specificYear.size());
 	
 	for (Map.Entry<String, String> entry : UserInterface.getAllCountries().entrySet()) {
 		int count = 0;
