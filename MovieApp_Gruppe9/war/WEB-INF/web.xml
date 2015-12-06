@@ -10,15 +10,21 @@
     <servlet-name>dataImportServiceImpl</servlet-name>
     <servlet-class>com.SE.gruppe9.server.DataImportServiceImpl</servlet-class>
   </servlet>
-
-  <servlet>
-             <servlet-name>gwtTableToExcelServlet</servlet-name>
-             <servlet-class>com.googlecode.gwtTableToExcel.server.TableToExcelServlet</servlet-class>
-  </servlet>
-   
+  
   <servlet-mapping>
     <servlet-name>dataImportServiceImpl</servlet-name>
     <url-pattern>/movieapp_gruppe9/datas</url-pattern>
+  </servlet-mapping>
+   
+
+  <servlet>
+   <servlet-name>gwtTableToExcelServlet</servlet-name>
+   <servlet-class>com.googlecode.gwtTableToExcel.server.TableToExcelServlet</servlet-class>
+  </servlet>
+   
+  <servlet-mapping>
+    <servlet-name>gwtTableToExcelServlet</servlet-name>
+    <url-pattern>/movieapp_gruppe9/excel</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
