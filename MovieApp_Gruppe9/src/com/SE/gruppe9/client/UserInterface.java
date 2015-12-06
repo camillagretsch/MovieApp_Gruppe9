@@ -47,6 +47,7 @@ public class UserInterface {
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
+	private Export export = new Export();
 
 	private int count = 0;
 	
@@ -324,6 +325,14 @@ public class UserInterface {
 
 			}
 		});
+		// click event for export Button
+		exportTabelButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				export.export();
+				
+			}
+		});
+
 		return table;
 	}
 	
