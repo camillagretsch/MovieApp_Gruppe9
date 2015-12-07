@@ -111,7 +111,7 @@ public class Heatmap {
 		options.setColorAxis(geoChartColorAxis);
 		options.setDatalessRegionColor("#ffebe5");
 		options.setBackgroundColor("#e5ffff");
-		options.setHeight(500);
+		options.setHeight(400);
 		options.setWidth(900);
 
 		// Draw the chart
