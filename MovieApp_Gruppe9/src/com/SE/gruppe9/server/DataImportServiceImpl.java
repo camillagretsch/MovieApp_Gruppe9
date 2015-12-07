@@ -263,8 +263,8 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 				// use semicolon as separator
 				setMovie(line.split(csvSplitBy));
 				
-				//mapYLCG.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
-				mapYLCG.put(movie[WIKIID], movie[COUNTRY]);
+//				mapYLCG.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[LANGUAGE] + "==" + movie[COUNTRY] + "==" + movie[GENRE]);
+				mapYLCG.put(movie[WIKIID], movie[RELEASE_YEAR] + "==" + movie[COUNTRY]);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -282,3 +282,4 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 		return mapYLCG;
 	}
 }
+

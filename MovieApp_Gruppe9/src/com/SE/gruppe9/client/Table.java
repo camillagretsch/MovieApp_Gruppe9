@@ -16,10 +16,10 @@ public class Table {
 
 	private Panel vPanel = new Panel();
 	private FlexTable flexibleTable = new FlexTable();
-	static Button nextButton = new Button("next 100");
+	private Button nextButton = new Button("next 100");
 	
 	static Map<String, String> resultMap = new HashMap<String, String>();
-	static Map<String, String> nextMap = new HashMap<String, String>();
+	private Map<String, String> nextMap = new HashMap<String, String>();
 
 	// async object used for the server side import of the data
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
