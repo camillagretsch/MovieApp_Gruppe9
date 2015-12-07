@@ -136,7 +136,7 @@ public class UserInterface {
 		importAllEntries();
 		listBoxLanguage.addItem("Language");
 		for (int i = 0; i < allLanguages.length; i++){
-			listBoxLanguage.addItem(allGenres[i]);
+			listBoxLanguage.addItem(allLanguages[i]);
 		}
 		listBoxLanguage.setVisibleItemCount(1);
 		h1Panel.add(listBoxLanguage);

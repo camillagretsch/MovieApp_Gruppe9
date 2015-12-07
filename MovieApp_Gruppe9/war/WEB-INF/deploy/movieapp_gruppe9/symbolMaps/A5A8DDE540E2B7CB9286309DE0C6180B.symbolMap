@@ -201,7 +201,7 @@ Gd,,com.SE.gruppe9.client.UserInterface,,com/SE/gruppe9/client/UserInterface.jav
 Md,com.SE.gruppe9.client.UserInterface::$choseEvents(Lcom/SE/gruppe9/client/UserInterface;)Lcom/SE/gruppe9/client/Table;,com.SE.gruppe9.client.UserInterface,$choseEvents,com/SE/gruppe9/client/UserInterface.java,168,0
 Ld,com.SE.gruppe9.client.UserInterface::$clinit()V,com.SE.gruppe9.client.UserInterface,$clinit,com/SE/gruppe9/client/UserInterface.java,26,0
 Nd,com.SE.gruppe9.client.UserInterface::$createAll(Lcom/SE/gruppe9/client/UserInterface;)V,com.SE.gruppe9.client.UserInterface,$createAll,com/SE/gruppe9/client/UserInterface.java,93,0
-Od,com.SE.gruppe9.client.UserInterface::$sortArray(Lcom/SE/gruppe9/client/UserInterface;[Ljava/lang/String;)[Ljava/lang/String;,com.SE.gruppe9.client.UserInterface,$sortArray,com/SE/gruppe9/client/UserInterface.java,446,0
+Od,com.SE.gruppe9.client.UserInterface::$sortArray(Lcom/SE/gruppe9/client/UserInterface;[Ljava/lang/String;)[Ljava/lang/String;,com.SE.gruppe9.client.UserInterface,$sortArray,com/SE/gruppe9/client/UserInterface.java,496,0
 a,com.SE.gruppe9.client.UserInterface::BoxOfficeRevenue,com.SE.gruppe9.client.UserInterface,BoxOfficeRevenue,com/SE/gruppe9/client/UserInterface.java,29,-1
 b,com.SE.gruppe9.client.UserInterface::Runtime,com.SE.gruppe9.client.UserInterface,Runtime,com/SE/gruppe9/client/UserInterface.java,30,-1
 Pd,com.SE.gruppe9.client.UserInterface::UserInterface()V,com.SE.gruppe9.client.UserInterface,UserInterface,com/SE/gruppe9/client/UserInterface.java,26,0
