@@ -1,6 +1,8 @@
 package com.SE.gruppe9.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.shared.GWT;
@@ -14,11 +16,11 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
+import com.gwtext.client.widgets.layout.LayoutData;
 import com.gwtext.client.widgets.layout.VerticalLayout;
 
 public class UserInterface {
@@ -34,7 +36,7 @@ public class UserInterface {
 	private DataImportServiceAsync filter = GWT.create(DataImportService.class);
 	
 	// all Buttons Tetxtbox and Listboxes
-	private final Button goButton = new Button("GO");
+	private final Button goButton = new Button("GO!");
 	private final TextBox searchMovieField = new TextBox();
 	private final ListBox listBoxYear = new ListBox();
 	private final ListBox listBoxOffice = new ListBox();
@@ -43,16 +45,15 @@ public class UserInterface {
 	private final ListBox listBoxCountry = new ListBox();
 	private final ListBox listBoxGenre = new ListBox();
 	private final Button deleteButton = new Button("Delete");
-	private final Button exportTabelButton = new Button("export Table as ...");
+	private final Button nextButton = new Button("Next 100");
+	private final Button exportTabelButton = new Button("export Table");
 
 	private Panel hPanel = new Panel();
 	private Panel h1Panel = new Panel();
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
-	//private PopupPanel popupPanel = new PopupPanel();
 	private Export export = new Export();
 	final static RootLayoutPanel rp = RootLayoutPanel.get();
-
 
 	private int count = 0;
 	
@@ -92,7 +93,6 @@ public class UserInterface {
 		h1Panel.setBorder(false);
 		rp.setVisible(false);
 
-
 		// Textbox for movie name
 		searchMovieField.setText("Entre a movie name");
 		hPanel.add(searchMovieField);
@@ -123,6 +123,7 @@ public class UserInterface {
 		hPanel.add(listBoxRuntime);
 	
 		hPanel.add(exportTabelButton);
+		
 		// listbox for language
 		importAllEntries();
 		listBoxLanguage.addItem("Language");
@@ -138,7 +139,10 @@ public class UserInterface {
 		listBoxGenre.addItem("Genre");
 		listBoxGenre.setVisibleItemCount(1);
 		h1Panel.add(listBoxGenre);
-				
+		
+		// button to load the next 100 entries
+		h1Panel.add(nextButton);
+		
 		// button to delete filter
 		h1Panel.add(deleteButton);
 
@@ -317,7 +321,6 @@ public class UserInterface {
 		// click event for delete Button 
 		deleteButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				
 				count = 0;
 				table.clearFlexTable();
 				table.clearMap();
@@ -329,19 +332,25 @@ public class UserInterface {
 				listBoxGenre.setSelectedIndex(0);
 				searchMovieField.setText("Entre a movie name");
 				table.setFlexTableHeader();
-
 			}
 		});
+		
+		// click event for next Button 
+		nextButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+			table.clearFlexTable();
+			table.setFlexTableHeader();
+			}
+		});
+		
 		// click event for export Button
 		exportTabelButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				rp.setVisible(true);
-		        rp.add(export.export());
-				//hPanel.add(export.export());
+				rp.add(export.export());
 				
 			}
 		});
-
 		return table;
 	}
 	
@@ -461,11 +470,6 @@ public class UserInterface {
 		filter.getAllYLCG(callback);
 	}
 	
-	/**
-	 * sorts the filter options alphabetically
-	 * @param arrayToSort
-	 * @return
-	 */
 	public String[] sortArray(String[] arrayToSort) {	
 
 		boolean flag = true; // will determine when the sort is finished
