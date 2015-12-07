@@ -102,7 +102,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		eastPanel.setWidth(200);
 		Image imageE = new Image();
 		imageE.setWidth(200);
-		imageE.setHeight(600);
+		imageE.setHeight(500);
 		imageE.setSrc("images/mockingjay.jpg");
 		eastPanel.add(imageE);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));

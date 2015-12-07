@@ -479,6 +479,7 @@ public class UserInterface {
 				for(int i = 0; i < genresSorted.length; i++){
 					listBoxGenre.addItem(genresSorted[i]);
 				}	
+				System.out.println(allCountries.size());
 			}
 		};
 		filter.getAllYLCG(callback);

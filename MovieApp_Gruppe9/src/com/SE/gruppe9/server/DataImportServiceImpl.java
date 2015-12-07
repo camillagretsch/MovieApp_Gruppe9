@@ -43,7 +43,7 @@ public class DataImportServiceImpl extends RemoteServiceServlet implements
 	private static final String csvSplitBy = ";";
 
 	// Data document
-	private static final String movieDoc = "movies_80000.csv";
+	private static final String movieDoc = "movies_81741.csv";
 
 	// Map to save the filtered data
 	private Map<String, String> maps = new HashMap<String, String>();
