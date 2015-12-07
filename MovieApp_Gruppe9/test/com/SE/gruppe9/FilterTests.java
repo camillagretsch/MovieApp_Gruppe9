@@ -15,36 +15,50 @@ import java.util.ArrayList;
 
 public class FilterTests {
 	
-	static final String MOVIE_FILE_PATH = "/Users/carloschida/Apps/MovieApp_Gruppe9/war/movies_80000.csv";
+	static final String MOVIE_FILE_PATH = "/Users/gbellh/Documents/workspaceLuna/MovieApp_Gruppe9/war/movies_80000.csv";
 	static final String WRONG_FILE = "/Users/carloschida/Apps/MovieApp_Gruppe9/war/movies_0.csv";
+	DataImportServiceImpl dataImport = new DataImportServiceImpl();
 	
+
+
 	@Test
-	public void testFilter() throws Exception{
-		DataImportServiceImpl dataImport = new DataImportServiceImpl();
-		Map<String, String> filteredData = dataImport.intermediateFilter(MOVIE_FILE_PATH, "1996", 3);
-		assertNotNull("Filtering by year yields no null", filteredData);
+	public void intermediateFilter() throws Exception {
+		Map<String, String> interFiltered = dataImport.intermediateFilter(MOVIE_FILE_PATH, "1996", 2);
+		assertNotNull("Filtered LCG's are not null ", interFiltered);
 	}
 	
+// Try and catch clause have to be removed (or commented) in class DataImportServiceImpl.java
+//	@Test(expected=FileNotFoundException.class)
+//	public void getAllYCGL() {
+//		Map<String, String> getAll = dataImport.getAllYCGL();
+//		assertNotNull("Movie count is not null ", getAll);
+//	}
+	
+	// Try and catch clause have to be removed (or commented) in class DataImportServiceImpl.java
+//		@Test(expected=FileNotFoundException.class)
+//		public void filterData() {
+//			Map<String, String> filterData = dataImport.filterData();
+//			assertNotNull("Movie count is not null ", dilterData);
+//		}
+	
 	@Test
-	public void testFilter2() throws Exception{
-		DataImportServiceImpl dataImport = new DataImportServiceImpl();
-		Map<String, String> filteredData = dataImport.intermediateColumnFilter(MOVIE_FILE_PATH, 6);
-		assertNotNull("Filtering columndatas of the column language yields not null", filteredData);
+	public void intermediateYLCG() throws Exception {
+		Map<String, String> intermediateLCG = dataImport.intermediateYLCG(MOVIE_FILE_PATH);
+		assertNotNull("intermediate count", intermediateLCG);
 	}
 	
+
 	// Given that the File Path is static, a FileNotFoundException should never occur. Should it happen, it should be handled
 	// at runtime.
 	/*@Test(expected=FileNotFoundException.class)
 	public void testWrongPath() throws Exception {
-		DataImportServiceImpl dataImport = new DataImportServiceImpl();
 		Map<String, String> filteredData = dataImport.intermediateFilter("fake/path", "1996", 3);
 		assertNotNull("Filtering by year yields no null", filteredData);
 	}*/
 	
 	// The only testable expected exception if FileNotFound. IOExceptions are thrown only when the IOReader fails.
 	/*@Test(expected=IOException.class)
-	public void testWrongFile() throws Exception {
-		DataImportServiceImpl dataImport = new DataImportServiceImpl();
+	public void testWrongFile() throws Exception 
 		Map<String, String> filteredData = dataImport.intermediateFilter(WRONG_FILE, "1996", 3);
 		assertNotNull("Filtering by year yields no null", filteredData);
 	}*/
@@ -65,4 +79,6 @@ public class FilterTests {
 	
 
 }
+
+
 
