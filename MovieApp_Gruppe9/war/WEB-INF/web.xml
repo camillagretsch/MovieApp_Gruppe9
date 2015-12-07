@@ -15,17 +15,17 @@
     <servlet-name>dataImportServiceImpl</servlet-name>
     <url-pattern>/movieapp_gruppe9/datas</url-pattern>
   </servlet-mapping>
-   
+  
+  
+   <servlet>
+                <servlet-name>gwtTableToExcelServlet</servlet-name>
+                <servlet-class>com.googlecode.gwtTableToExcel.server.TableToExcelServlet</servlet-class>
+   </servlet>
 
-  <servlet>
-   <servlet-name>gwtTableToExcelServlet</servlet-name>
-   <servlet-class>com.googlecode.gwtTableToExcel.server.TableToExcelServlet</servlet-class>
-  </servlet>
-   
-  <servlet-mapping>
-    <servlet-name>gwtTableToExcelServlet</servlet-name>
-    <url-pattern>/movieapp_gruppe9/excel</url-pattern>
-  </servlet-mapping>
+   <servlet-mapping>
+           <servlet-name>gwtTableToExcelServlet</servlet-name>
+           <url-pattern>/movieapp_gruppe9/excel</url-pattern>
+   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

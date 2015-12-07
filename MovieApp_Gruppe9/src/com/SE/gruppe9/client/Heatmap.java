@@ -22,79 +22,88 @@ import com.googlecode.gwt.charts.client.geochart.GeoChart;
 import com.googlecode.gwt.charts.client.geochart.GeoChartColorAxis;
 import com.googlecode.gwt.charts.client.geochart.GeoChartOptions;
 
-public class Heatmap  {
-	
+public class Heatmap {
+
 	private Button backButton = new Button("back");
 	private VerticalPanel verticalPanel = new VerticalPanel();
-	private HorizontalPanel hPanel = new HorizontalPanel();
+	private HorizontalPanel horizontalPanel = new HorizontalPanel();
 	final static RootLayoutPanel rp = RootLayoutPanel.get();
-	
+
 	private Map<String, Integer> countries = new HashMap<String, Integer>();
-	
-	// creates a Panel and communicates with the HTML page
-	public void createChart() {
+
+	/**
+	 * creates a Panel and communicates with the HTML page
+	 * 
+	 * @param year
+	 */
+	public void createChart(final String year) {
+
 		backButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				rp.setVisible(false);
+				countries.clear();
+
 			}
 
 		});
-		
-	    // Create a Dock Panel
-	    final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
-	    dockLayoutPanel.setStyleName("dockpanel");
-	    dockLayoutPanel.getElement().getStyle().setProperty("border", "solid lightblue 4px");
-	    dockLayoutPanel.addWest(backButton, 10);
-	    // Add text all around
-	    dockLayoutPanel.addNorth(new HTML(""), 5);
-	    dockLayoutPanel.addWest(new HTML(""), 15);
-		
+
+		horizontalPanel.add(backButton);
+		verticalPanel.add(horizontalPanel);
+
+		// Create a Dock Panel
+		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.EM);
+
+		// Add text all around
+		dockLayoutPanel.addSouth(new HTML(""), 5);
+		dockLayoutPanel.addWest(new HTML(""), 15);
+		dockLayoutPanel.addNorth(new HTML(""), 5);
+
 		ChartLoader chartLoader = new ChartLoader(ChartPackage.GEOCHART);
 		chartLoader.loadApi(new Runnable() {
 
 			@Override
 			public void run() {
-				
+
 				GeoChart geoChart = new GeoChart();
 				verticalPanel.add(geoChart);
 				Heatmap worldMap = new Heatmap();
-				worldMap.draw(geoChart);
+				worldMap.draw(geoChart, year);
 				dockLayoutPanel.add(verticalPanel);
 			}
 		});
-
 		rp.add(dockLayoutPanel);
-		
 	}
-	
 
-	// Styles and draws a world map and also inserts data values into an array which
-	// the map then visualises.
-	private void draw(GeoChart geoChart) {
-		countMovies("2012");
-		System.out.println(countries.size());
-		System.out.println(countries);
-		
+	/**
+	 * Styles and draws a world map and also inserts data values into an array
+	 * which the map then visualises.
+	 * 
+	 * @param geoChart
+	 * @param year
+	 */
+	private void draw(GeoChart geoChart, String year) {
+		countMovies(year);
+
 		JsArrayString ColourArray = JavaScriptObject.createArray().cast();
 		ColourArray.push("#ff6666");
 		ColourArray.push("#ffff99");
 		ColourArray.push("#66ff66");
-		
+
 		// Prepare the data
 		DataTable dataTable = DataTable.create();
-		
+
 		dataTable.addColumn(ColumnType.STRING, "Country");
-		dataTable.addColumn(ColumnType.NUMBER, "Number of Films");
-		
+		dataTable.addColumn(ColumnType.NUMBER, "Number of movies");
+
 		dataTable.addRows(countries.size());
-		
+
 		int i = 0;
 		for (Map.Entry<String, Integer> entry : countries.entrySet()) {
 			dataTable.setValue(i, 0, entry.getKey());
 			dataTable.setValue(i, 1, entry.getValue());
 			i++;
 		}
-		
+
 		// Set options
 		GeoChartOptions options = GeoChartOptions.create();
 		GeoChartColorAxis geoChartColorAxis = GeoChartColorAxis.create();
@@ -103,37 +112,42 @@ public class Heatmap  {
 		options.setDatalessRegionColor("#ffebe5");
 		options.setBackgroundColor("#e5ffff");
 		options.setHeight(500);
-		options.setWidth(500);
-	
+		options.setWidth(900);
 
 		// Draw the chart
 		geoChart.draw(dataTable, options);
 	}
-	
+
+	/**
+	 * counts all movies for a specific year and country
+	 * 
+	 * @param year
+	 */
 	public void countMovies(String year) {
-	
-	Map<String, String> specificYear = new HashMap<String, String>();
-	String[] movie;
-	
-	for (Map.Entry<String, String> entry : UserInterface.getAllYears().entrySet()) {
-		movie = entry.getValue().split("==");
-		if (movie[0].equals(year)) {
-			specificYear.put(entry.getKey(), movie[1]);
-		}
-	}
-	System.out.println(specificYear.size());
-	
-	for (Map.Entry<String, String> entry : UserInterface.getAllCountries().entrySet()) {
-		int count = 0;
-		for (Map.Entry<String, String> entry1 : specificYear.entrySet()) {
-			if (entry1.getValue().contains(entry.getKey())) {
-				count++;
+
+		Map<String, String> specificYear = new HashMap<String, String>();
+		String[] movie;
+
+		for (Map.Entry<String, String> entry : UserInterface.getAllYC()
+				.entrySet()) {
+			movie = entry.getValue().split("==");
+			if (movie[0].equals(year)) {
+				specificYear.put(entry.getKey(), movie[1]);
 			}
 		}
-		
-		if (count != 0) {
-			countries.put(entry.getKey(), count);
+
+		for (Map.Entry<String, String> entry : UserInterface.getAllCountries()
+				.entrySet()) {
+			int count = 0;
+			for (Map.Entry<String, String> entry1 : specificYear.entrySet()) {
+				if (entry1.getValue().contains(entry.getKey())) {
+					count++;
+				}
+			}
+
+			if (count != 0) {
+				countries.put(entry.getKey(), count);
+			}
 		}
 	}
-}
 }

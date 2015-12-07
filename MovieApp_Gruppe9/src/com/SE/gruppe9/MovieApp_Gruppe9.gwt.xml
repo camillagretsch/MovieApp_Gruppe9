@@ -21,9 +21,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-  <inherits name="com.googlecode.gwtTableToExcel.gwtTableToExcel" />
 
-
+	<inherits name="com.googlecode.gwtTableToExcel.gwtTableToExcel" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.SE.gruppe9.client.MovieApp_Gruppe9'/>

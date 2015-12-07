@@ -28,6 +28,10 @@ public class Export {
 	private final Button backButton = new Button("Back");
 	final static RootLayoutPanel rp = RootLayoutPanel.get();
 
+	/**
+	 * initialise the export function of the table
+	 * @return DockLayoutPanel
+	 */
 	public DockLayoutPanel export(){
 		System.out.println("Export initialition");
 		Grid gridToExport = DataTableToGrid();
@@ -38,8 +42,6 @@ public class Export {
 		excelPanel.getElement().getStyle().setColor("red");
 		excelPanel.addNorth(tableToExcelClient.getExportFormWidget(), 15);
 		excelPanel.addNorth(backButton, 10);
-//		excelPanel.addButton(backButton);
-		
 		backButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				rp.clear();
@@ -47,19 +49,26 @@ public class Export {
 			}
 		});
 		
-		
 		System.out.println("Export has been initialised.");
 		return excelPanel;
 	}
+	
+	/**
+	 * Add the data of the table to the GridTable which will be used for the exportFunction
+	 * @return Grid
+	 */
 	public Grid DataTableToGrid() {
 		System.out.println("Export will be started.");
 		Grid gridToExport = new Grid(Table.getResultMap().size() + 2, 8);
 		
+		// add the columnLabel to the GridTable
 		for (int i=0; i < NUMBER_OF_COLUMNS; i++) {
 			gridToExport.setText(0, i, columnLabel[i]);
 			System.out.println(gridToExport.getText(0, i));
 		}
 	System.out.println("------Movies: --------");
+	
+	// add all the movies in the resultMap into the GridTable
 	int i = 0;
 		for (Map.Entry<String, String> entry : Table.getResultMap().entrySet()) {
 			String[] tmp1 = entry.getValue().split("==");
@@ -77,11 +86,12 @@ public class Export {
 			System.out.println("---------------");
 			i++;
 		}
-		
+		// Add the Source at the end of the gridTable
 		gridToExport.setText(gridToExport.getRowCount()-1, 0, "Source:");
 		gridToExport.setText(gridToExport.getRowCount()-1, 1, SOURCE);
 		System.out.println(gridToExport.getText(gridToExport.getRowCount()-1, 0));
 		System.out.println("GridSize: " + gridToExport.getRowCount());
+		
 		return gridToExport;
 	}
 }
