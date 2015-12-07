@@ -40,6 +40,8 @@ public class Table {
 		flexibleTable.setBorderWidth(2);
 	
 		vPanel.add(flexibleTable);
+		
+
 		vPanel.add(nextButton);
 		nextButton.setEnabled(false);
 		// click event for next Button 
@@ -110,7 +112,7 @@ public class Table {
 	}
 	
 	/**
-	 * 
+	 * adds the next 100 entries from the resultmap to the flextable 
 	 */
 	public void fillFlexTableNextTime() {
 		Map<String, String> tmpMap = new HashMap<String, String>();

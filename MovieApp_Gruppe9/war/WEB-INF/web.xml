@@ -10,11 +10,14 @@
     <servlet-name>dataImportServiceImpl</servlet-name>
     <servlet-class>com.SE.gruppe9.server.DataImportServiceImpl</servlet-class>
   </servlet>
-
+  
   <servlet-mapping>
     <servlet-name>dataImportServiceImpl</servlet-name>
     <url-pattern>/movieapp_gruppe9/datas</url-pattern>
   </servlet-mapping>
+   
+
+ 
   
   <!-- Default page to serve -->
   <welcome-file-list>

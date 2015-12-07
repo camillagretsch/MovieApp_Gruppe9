@@ -14,6 +14,8 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.layout.HorizontalLayout;
@@ -49,10 +51,12 @@ public class UserInterface {
 	private Panel vPanel = new Panel();
 	private Table table = new Table();
 
+
+
 	private int count = 0;
 	
 	/**
-	 * 
+	 * get all countries
 	 * @return
 	 */
 	public static Map<String, String> getAllCountries(){
@@ -60,14 +64,14 @@ public class UserInterface {
 	}
 	
 	/**
-	 * 
+	 * get all countries and years
 	 * @return
 	 */
 	public static Map<String, String> getAllYC(){
 		return allYC;
 	}
 	/**
-	 * 
+	 * get horizontale Panel with the added widgets
 	 * @return
 	 */
 	public Panel getHPanel() {
@@ -75,7 +79,7 @@ public class UserInterface {
 	}
 
 	/**
-	 * 
+	 * get vertival Panel with the added widget
 	 * @return
 	 */
 	public Panel getVPanel() {
@@ -93,6 +97,7 @@ public class UserInterface {
 		hPanel.setBorder(false);
 		vPanel.setBorder(false);
 		h1Panel.setBorder(false);
+
 
 		// Textbox for movie name
 		searchMovieField.setText("Entre a movie name");
@@ -330,6 +335,13 @@ public class UserInterface {
 
 			}
 		});
+		// click event for export Button
+		exportTabelButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				
+			}
+		});
+
 		return table;
 	}
 	

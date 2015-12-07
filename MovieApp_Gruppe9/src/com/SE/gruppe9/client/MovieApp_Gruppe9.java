@@ -89,8 +89,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		// add south panel
 		southPanel.setTitle("Source");
 		southPanel.setHeight(45);
-		southPanel
-				.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
+		southPanel.setHtml("David Bamman, Brendan O'Connor and Noah Smith, \"Learning Latent Personas of Film Characters,\" in: Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL 2013), Sofia, Bulgaria, August 2013.");
 
 		BorderLayoutData southData = new BorderLayoutData(RegionPosition.SOUTH);
 		southData.setMinHeight(45);
@@ -103,7 +102,7 @@ public class MovieApp_Gruppe9 implements EntryPoint {
 		eastPanel.setWidth(200);
 		Image imageE = new Image();
 		imageE.setWidth(200);
-		imageE.setHeight(500);
+		imageE.setHeight(600);
 		imageE.setSrc("images/mockingjay.jpg");
 		eastPanel.add(imageE);
 		borderPanel.add(eastPanel, new BorderLayoutData(RegionPosition.EAST));
